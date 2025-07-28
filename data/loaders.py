@@ -7,24 +7,11 @@ from typing import Tuple
 
 
 def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """
-    # fixed random seed for reproducibility, and datasets split
-    Load dataset and split into training and test sets.
-    Args:
-        name (str): Name of the dataset to load. Options are 'esol', 'freesolv', 'lipophil'.
-    Returns:
-        X_train (np.ndarray): Training set features.
-        X_test (np.ndarray): Test set features.
-        y_train (np.ndarray): Training set targets.
-        y_test (np.ndarray): Test set targets.
-    """
     if name.lower() == "esol":
         data_path = (
             pkg_resources.files("polyatomic_complexes.dataset.esol") / "ESOL.csv"
         )
         df = pd.read_csv(str(data_path))
-        smiles = df["smiles"]
-        targets = df["measured log solubility in mols per litre"]
         target_col = "measured log solubility in mols per litre"
     elif name.lower() == "freesolv":
         data_path = (
@@ -32,8 +19,6 @@ def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
             / "FreeSolv.csv"
         )
         df = pd.read_csv(str(data_path))
-        smiles = df["smiles"]
-        targets = df["expt"]  # expt
         target_col = "expt"
     elif name.lower() == "lipophil":
         data_path = (
@@ -41,8 +26,6 @@ def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
             / "Lipophilicity.csv"
         )
         df = pd.read_csv(str(data_path))
-        smiles = df["smiles"]
-        targets = df["exp"]  # exp
         target_col = "exp"
     else:
         raise ValueError(f"Unknown dataset: {name}")
