@@ -1,0 +1,44 @@
+Experiment: gp+selfies on lipophil
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.2131, MAE: 0.9734, R2: -0.0002
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.2638, MAE: 1.0187, R2: -0.0015
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.1822, MAE: 0.9767, R2: -0.0014
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.2005, MAE: 0.9741, R2: -0.0018
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.1767, MAE: 0.9494, R2: -0.0005
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.2077  [1.1836, 1.2373]
+MAE: 0.9782  [0.9598, 1.0012]
+R2: -0.0011  [-0.0016, -0.0005]
+
+★ Using fold 5 model for test inference
+Evaluating GP model...
+RMSE: 1.1853, MAE: 0.9536, R2: -0.0009
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.1852768402423433, 'mae': 0.953605998096012, 'r2': -0.0009194432153685206}
+Test RMSE: 1.1848  (95 % CI: 1.1314–1.2404)
+
+Test MAE : 0.9536  (95 % CI: 0.9081–0.9977)
+
+Test R²  : -0.0020  (95 % CI: -0.0085–-0.0000)
+

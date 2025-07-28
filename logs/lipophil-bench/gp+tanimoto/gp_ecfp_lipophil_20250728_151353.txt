@@ -1,0 +1,44 @@
+Experiment: gp+ecfp on lipophil
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7270, MAE: 0.5327, R2: 0.6408
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.8035, MAE: 0.5910, R2: 0.5952
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7576, MAE: 0.5731, R2: 0.5888
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7141, MAE: 0.5306, R2: 0.6455
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7635, MAE: 0.5711, R2: 0.5788
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7528  [0.7279, 0.7802]
+MAE: 0.5595  [0.5395, 0.5798]
+R2: 0.6101  [0.5861, 0.6342]
+
+★ Using fold 4 model for test inference
+Evaluating GP model...
+RMSE: 0.7500, MAE: 0.5596, R2: 0.5992
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.750037190910615, 'mae': 0.5596041773131916, 'r2': 0.5992023876075723}
+Test RMSE: 0.7498  (95 % CI: 0.7048–0.7956)
+
+Test MAE : 0.5594  (95 % CI: 0.5255–0.5936)
+
+Test R²  : 0.5964  (95 % CI: 0.5473–0.6434)
+
