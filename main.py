@@ -48,8 +48,11 @@ def featurize_dataset(X, y, featurizer):
     data_list = []
     for xi, yi in zip(X, y):
         g = featurizer(xi)
-        g.y = torch.tensor([yi], dtype=torch.float)
-        data_list.append(g)
+        if g is not None:  # ✅ skip invalid conversions
+            g.y = torch.tensor([yi], dtype=torch.float)
+            data_list.append(g)
+    if len(data_list) == 0:
+        raise ValueError("All graph inputs were invalid! Check featurizer or dataset.")
     return data_list
 
 

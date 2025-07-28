@@ -28,31 +28,40 @@ def smiles_to_graph(smiles):
     return mol_to_graph(mol)
 
 
-def selfies_to_graph(selfies_str):
+def selfies_to_graph(smiles_string):
     try:
-        smiles = sf.decoder(selfies_str)
+        selfies_string = sf.encoder(smiles_string)
+        smiles = sf.decoder(selfies_string)
         mol = Chem.MolFromSmiles(smiles)  # type: ignore
         if mol is None:
-            return None
+            raise ValueError("Decoded SELFIES is invalid")
         return mol_to_graph(mol)
-    except:
+    except Exception:
+        fallback = smiles_to_graph(smiles_string)
+        if fallback is None:
+            return None
+        return fallback
+
+
+def ecfp_to_graph(smiles_str: str, max_bits: int = 2048, k: int = 2) -> Data | None:
+    mol = Chem.MolFromSmiles(smiles_str)  # type: ignore
+    if mol is None:
         return None
-
-
-def ecfp_to_graph(fp, radius=2):
-    node_indices = [i for i, bit in enumerate(fp) if bit == 1]
-    x = torch.eye(len(node_indices))
-
+    fp = mfpgen.GetFingerprintAsNumPy(mol)
+    active_bits = np.nonzero(fp)[0]
+    n = len(active_bits)
+    if n == 0:
+        return None
     edge_index = []
-    for i in range(len(node_indices)):
-        for j in range(i + 1, len(node_indices)):
+    for i in range(n):
+        for j in range(i + 1, min(i + 1 + k, n)):
             edge_index.append([i, j])
             edge_index.append([j, i])
-
     edge_index = torch.tensor(edge_index, dtype=torch.long).t().contiguous()
-    edge_attr = torch.ones((edge_index.size(1), 1))
-
-    return Data(x=x, edge_index=edge_index, edge_attr=edge_attr)
+    x = torch.zeros((n, max_bits), dtype=torch.float)
+    for i, bit_idx in enumerate(active_bits):
+        x[i, bit_idx] = 1.0
+    return Data(x=x, edge_index=edge_index)
 
 
 def mol_to_graph(mol):
