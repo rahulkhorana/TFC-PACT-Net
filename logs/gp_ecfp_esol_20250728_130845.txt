@@ -1,0 +1,44 @@
+Experiment: gp+ecfp on esol
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.0363, MAE: 0.7947, R2: 0.7119
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.2251, MAE: 0.8642, R2: 0.7189
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.9953, MAE: 0.7663, R2: 0.7585
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.0954, MAE: 0.8471, R2: 0.7219
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.0513, MAE: 0.7919, R2: 0.7194
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.0797  [1.0229, 1.1532]
+MAE: 0.8127  [0.7822, 0.8446]
+R2: 0.7262  [0.7159, 0.7429]
+
+★ Using fold 3 model for test inference
+Evaluating GP model...
+RMSE: 1.0497, MAE: 0.7789, R2: 0.7669
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.0497223731781768, 'mae': 0.778936529429613, 'r2': 0.7668790202085198}
+Test RMSE: 1.0513  (95 % CI: 0.9318–1.1691)
+
+Test MAE : 0.7792  (95 % CI: 0.6939–0.8670)
+
+Test R²  : 0.7658  (95 % CI: 0.7082–0.8132)
+

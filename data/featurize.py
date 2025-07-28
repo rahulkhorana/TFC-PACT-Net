@@ -101,8 +101,11 @@ def selfies_for_gp(selfies_str, radius=2, n_bits=2048):
         return np.zeros(n_bits)
 
 
-def ecfp_for_gp(fp_str):
-    return np.array([int(x) for x in fp_str], dtype=np.float32)
+def ecfp_for_gp(smiles_str: str) -> np.ndarray:
+    mol = Chem.MolFromSmiles(smiles_str)  # type: ignore
+    if mol is None:
+        return np.zeros(mfpgen.GetNumBits(), dtype=np.float32)
+    return mfpgen.GetFingerprintAsNumPy(mol).astype(np.float32)
 
 
 def graph_native_loader(graph_list, batch_size=32, shuffle=True):

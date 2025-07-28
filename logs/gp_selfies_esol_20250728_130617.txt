@@ -1,0 +1,44 @@
+Experiment: gp+selfies on esol
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.9308, MAE: 1.5431, R2: -0.0001
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.3342, MAE: 1.8513, R2: -0.0204
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.0263, MAE: 1.6086, R2: -0.0008
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.0774, MAE: 1.6662, R2: -0.0001
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.9991, MAE: 1.5442, R2: -0.0146
+
+====== K-FOLD SUMMARY ======
+RMSE: 2.0740  [1.9718, 2.2110]
+MAE: 1.6436  [1.5569, 1.7526]
+R2: -0.0070  [-0.0151, -0.0002]
+
+★ Using fold 1 model for test inference
+Evaluating GP model...
+RMSE: 2.1742, MAE: 1.7323, R2: -0.0001
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.1742307536415177, 'mae': 1.7322798912419684, 'r2': -0.00010067704218408302}
+Test RMSE: 2.1744  (95 % CI: 1.9719–2.3680)
+
+Test MAE : 1.7338  (95 % CI: 1.5690–1.9121)
+
+Test R²  : -0.0046  (95 % CI: -0.0233–-0.0000)
+
