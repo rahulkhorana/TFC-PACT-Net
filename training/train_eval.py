@@ -7,6 +7,9 @@ import numpy as np
 import os
 from datetime import datetime
 
+# polyatomic
+from torch.amp.autocast_mode import autocast
+
 LOG_ROOT = "logs"
 os.makedirs(LOG_ROOT, exist_ok=True)
 
@@ -111,6 +114,57 @@ def bootstrap_metric_ci(metric_fn, y_true, y_pred, n_boot=1000, ci=95, rng=None)
     mean_val = np.mean(boot_vals)
     lo, hi = np.percentile(boot_vals, [(100 - ci) / 2, 100 - (100 - ci) / 2])
     return mean_val, (lo, hi)
+
+
+def train_polyatomic(
+    model, loader, optimizer, loss_fn, scaler_grad, device, accum_steps=8
+):
+    """
+    custom training loop for polyatomic GNNs
+    uses mixed precision training with autocast
+    accum_steps allows gradient accumulation for larger effective batch size
+    this was designed for GPU training, but here is in CPU mode
+    """
+    model.train()
+    total_loss = 0.0
+    optimizer.zero_grad()
+    for i, batch in enumerate(loader):
+        batch = batch.to(device)
+        with autocast(
+            device_type="cpu", dtype=torch.float16
+        ):  # CHANGE to 'cuda' if using GPU
+            output = model(batch)
+            loss = loss_fn(output, batch.y.view(-1)) / accum_steps
+        scaler_grad.scale(loss).backward()
+        if (i + 1) % accum_steps == 0 or (i + 1 == len(loader)):
+            scaler_grad.step(optimizer)
+            scaler_grad.update()
+            optimizer.zero_grad()
+        total_loss += loss.item() * batch.num_graphs * accum_steps
+    return total_loss / len(loader.dataset)
+
+
+def evaluate_polyatomic(model, loader, device, log_file, return_preds=False):
+    """
+    uses autocast for mixed precision evaluation
+    this was designed for GPU training, but here is in CPU mode
+    """
+    model.eval()
+    preds, trues = [], []
+    with torch.no_grad(), autocast(
+        device_type="cpu", dtype=torch.float16
+    ):  # change to 'cuda' if using GPU
+        for batch in loader:
+            batch = batch.to(device)
+            out = model(batch)
+            preds.append(out.view(-1))
+            trues.append(batch.y.view(-1))
+    y_pred = torch.cat(preds)
+    y_test = torch.cat(trues)
+    metrics = report_metrics(y_test, y_pred, log_file)
+    if return_preds:
+        return metrics, y_test, y_pred
+    return metrics
 
 
 def k_fold_eval(
