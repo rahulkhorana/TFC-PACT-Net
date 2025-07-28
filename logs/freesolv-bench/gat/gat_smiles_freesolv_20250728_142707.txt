@@ -1,0 +1,38 @@
+Experiment: gat+smiles on freesolv
+
+FOLD 1/5
+GNN Train Loss: 1.0368
+RMSE: 3.4548, MAE: 2.6873, R2: 0.0589
+
+FOLD 2/5
+GNN Train Loss: 1.0207
+RMSE: 3.9280, MAE: 2.6746, R2: 0.0597
+
+FOLD 3/5
+GNN Train Loss: 0.9268
+RMSE: 3.9262, MAE: 2.9105, R2: 0.0004
+
+FOLD 4/5
+GNN Train Loss: 0.9955
+RMSE: 3.2844, MAE: 2.4966, R2: 0.0690
+
+FOLD 5/5
+GNN Train Loss: 0.9483
+RMSE: 3.4824, MAE: 2.6416, R2: 0.1638
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.6143  [3.3921, 3.8378]
+MAE: 2.6825  [2.5704, 2.8096]
+R2: 0.0699  [0.0260, 0.1218]
+
+★ Using fold 4 model for test inference
+RMSE: 3.8643, MAE: 2.8368, R2: 0.0983
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.8643283948412392, 'mae': 2.836815118789673, 'r2': 0.09829568862915039}
+Test RMSE: 3.8344  (95 % CI: 3.0692–4.7923)
+
+Test MAE : 2.8460  (95 % CI: 2.4451–3.2601)
+
+Test R²  : 0.0884  (95 % CI: -0.0523–0.2022)
+

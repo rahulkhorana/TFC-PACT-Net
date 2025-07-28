@@ -1,0 +1,44 @@
+Experiment: gp+selfies on freesolv
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 3.6069, MAE: 2.7750, R2: -0.0258
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 4.0669, MAE: 2.7979, R2: -0.0080
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 3.9273, MAE: 2.7863, R2: -0.0002
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 3.4218, MAE: 2.5423, R2: -0.0105
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 3.8557, MAE: 3.0618, R2: -0.0251
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.7788  [3.5826, 3.9688]
+MAE: 2.7894  [2.6422, 2.9516]
+R2: -0.0139  [-0.0224, -0.0049]
+
+★ Using fold 4 model for test inference
+Evaluating GP model...
+RMSE: 4.1211, MAE: 3.0954, R2: -0.0255
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 4.121051340849616, 'mae': 3.095356932795325, 'r2': -0.02549158593200107}
+Test RMSE: 4.1141  (95 % CI: 3.3755–4.9763)
+
+Test MAE : 3.0900  (95 % CI: 2.6772–3.5569)
+
+Test R²  : -0.0384  (95 % CI: -0.1529–-0.0002)
+

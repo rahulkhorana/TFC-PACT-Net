@@ -53,7 +53,7 @@ def eval_gnn_model(model, loader, log_file, scaler, return_preds=False):
     with torch.no_grad():
         for batch in tqdm(loader, desc="Evaluating GNN"):
             batch = batch.to(next(model.parameters()).device)
-            out = model(batch).squeeze()
+            out = model(batch).view(-1)
             y_true.append(batch.y.cpu())
             y_pred.append(out.cpu())
     y_true = scaler.inverse_transform(torch.cat(y_true).numpy().reshape(-1, 1)).ravel()

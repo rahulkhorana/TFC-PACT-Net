@@ -1,0 +1,38 @@
+Experiment: gcn+selfies on freesolv
+
+FOLD 1/5
+GNN Train Loss: 1.0188
+RMSE: 3.3930, MAE: 2.6487, R2: 0.0923
+
+FOLD 2/5
+GNN Train Loss: 0.9658
+RMSE: 3.8778, MAE: 2.6590, R2: 0.0836
+
+FOLD 3/5
+GNN Train Loss: 0.9972
+RMSE: 3.7618, MAE: 2.6463, R2: 0.0824
+
+FOLD 4/5
+GNN Train Loss: 1.2228
+RMSE: 3.5738, MAE: 2.5712, R2: -0.1023
+
+FOLD 5/5
+GNN Train Loss: 1.3768
+RMSE: 3.9090, MAE: 3.0293, R2: -0.0537
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.7007  [3.5324, 3.8608]
+MAE: 2.7136  [2.6063, 2.8766]
+R2: 0.0183  [-0.0554, 0.0868]
+
+★ Using fold 1 model for test inference
+RMSE: 4.2019, MAE: 3.3491, R2: -0.0661
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 4.201948603958942, 'mae': 3.34914231300354, 'r2': -0.06614816188812256}
+Test RMSE: 4.1878  (95 % CI: 3.5612–4.9369)
+
+Test MAE : 3.3525  (95 % CI: 2.9760–3.8025)
+
+Test R²  : -0.0908  (95 % CI: -0.3347–0.0498)
+

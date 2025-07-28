@@ -1,0 +1,38 @@
+Experiment: gat+ecfp on freesolv
+
+FOLD 1/5
+GNN Train Loss: 0.9851
+RMSE: 3.4894, MAE: 2.6719, R2: 0.0400
+
+FOLD 2/5
+GNN Train Loss: 0.9750
+RMSE: 3.9432, MAE: 2.6884, R2: 0.0524
+
+FOLD 3/5
+GNN Train Loss: 0.9597
+RMSE: 3.7524, MAE: 2.6340, R2: 0.0869
+
+FOLD 4/5
+GNN Train Loss: 0.9760
+RMSE: 3.2786, MAE: 2.4137, R2: 0.0723
+
+FOLD 5/5
+GNN Train Loss: 0.9711
+RMSE: 3.6956, MAE: 2.9316, R2: 0.0582
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.6318  [3.4155, 3.8287]
+MAE: 2.6677  [2.5203, 2.8234]
+R2: 0.0618  [0.0474, 0.0782]
+
+★ Using fold 4 model for test inference
+RMSE: 3.9553, MAE: 2.9394, R2: 0.0553
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.955308032476725, 'mae': 2.9393692016601562, 'r2': 0.05533742904663086}
+Test RMSE: 3.9145  (95 % CI: 3.1458–4.7895)
+
+Test MAE : 2.9439  (95 % CI: 2.5068–3.4619)
+
+Test R²  : 0.0462  (95 % CI: -0.0428–0.0786)
+

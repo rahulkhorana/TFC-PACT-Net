@@ -1,0 +1,38 @@
+Experiment: sage+selfies on freesolv
+
+FOLD 1/5
+GNN Train Loss: 0.9946
+RMSE: 3.4454, MAE: 2.7153, R2: 0.0640
+
+FOLD 2/5
+GNN Train Loss: 1.2399
+RMSE: 3.9320, MAE: 2.6850, R2: 0.0578
+
+FOLD 3/5
+GNN Train Loss: 0.9894
+RMSE: 3.7566, MAE: 2.6720, R2: 0.0849
+
+FOLD 4/5
+GNN Train Loss: 1.2686
+RMSE: 3.3357, MAE: 2.4925, R2: 0.0397
+
+FOLD 5/5
+GNN Train Loss: 1.0220
+RMSE: 3.6571, MAE: 2.8898, R2: 0.0778
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.6237  [3.4418, 3.8069]
+MAE: 2.6878  [2.5814, 2.8028]
+R2: 0.0651  [0.0518, 0.0779]
+
+★ Using fold 4 model for test inference
+RMSE: 4.0007, MAE: 2.9383, R2: 0.0335
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 4.000740936320518, 'mae': 2.9382553100585938, 'r2': 0.03351092338562012}
+Test RMSE: 3.9835  (95 % CI: 3.2036–4.7925)
+
+Test MAE : 2.9357  (95 % CI: 2.5121–3.4393)
+
+Test R²  : 0.0243  (95 % CI: -0.0804–0.1114)
+
