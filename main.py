@@ -109,7 +109,9 @@ def run_gnn(args):
     def eval_fn(model, X_te, y_te, log_file, scaler, return_preds=False):
         data_list = featurize_dataset(X_te, y_te, featurizer)
         loader = DataLoader(data_list, batch_size=32)
-        return eval_gnn_model(model, loader, log_file, scaler)
+        return eval_gnn_model(
+            model, loader, log_file, scaler, return_preds=return_preds
+        )
 
     wandb.init(
         project="chem-reps",

@@ -47,7 +47,7 @@ def train_gnn_model(model, loader, optimizer, log_file, loss_fn=torch.nn.MSELoss
     return total_loss / len(loader)
 
 
-def eval_gnn_model(model, loader, log_file, scaler):
+def eval_gnn_model(model, loader, log_file, scaler, return_preds=False):
     model.eval()
     y_true, y_pred = [], []
     with torch.no_grad():
@@ -58,7 +58,10 @@ def eval_gnn_model(model, loader, log_file, scaler):
             y_pred.append(out.cpu())
     y_true = scaler.inverse_transform(torch.cat(y_true).numpy().reshape(-1, 1)).ravel()
     y_pred = scaler.inverse_transform(torch.cat(y_pred).numpy().reshape(-1, 1)).ravel()
-    return report_metrics(y_true, y_pred, log_file)
+    metrics = report_metrics(y_true, y_pred, log_file)
+    if return_preds:
+        return metrics, y_true, y_pred
+    return metrics
 
 
 def train_gp_model(gp_model, X_train, y_train, log_file):
