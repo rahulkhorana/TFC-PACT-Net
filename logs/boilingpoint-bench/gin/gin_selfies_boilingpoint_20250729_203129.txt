@@ -1,0 +1,38 @@
+Experiment: gin+selfies on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.7156
+RMSE: 72.8064, MAE: 56.4089, R2: 0.2686
+
+FOLD 2/5
+GNN Train Loss: 0.7301
+RMSE: 64.2829, MAE: 49.2077, R2: 0.3494
+
+FOLD 3/5
+GNN Train Loss: 0.7157
+RMSE: 71.0719, MAE: 56.1007, R2: 0.1911
+
+FOLD 4/5
+GNN Train Loss: 0.7229
+RMSE: 73.4997, MAE: 57.8782, R2: 0.2488
+
+FOLD 5/5
+GNN Train Loss: 0.6998
+RMSE: 65.7907, MAE: 52.6860, R2: 0.3246
+
+====== K-FOLD SUMMARY ======
+RMSE: 69.4469  [66.2409, 72.5982]
+MAE: 54.4603  [51.3436, 56.9349]
+R2: 0.2750  [0.2293, 0.3233]
+
+★ Using fold 2 model for test inference
+RMSE: 72.1316, MAE: 54.6580, R2: 0.1734
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 72.13157668780539, 'mae': 54.6579704284668, 'r2': 0.1734023094177246}
+Test RMSE: 72.0029  (95 % CI: 66.4804–77.3895)
+
+Test MAE : 54.6066  (95 % CI: 50.2223–59.4431)
+
+Test R²  : 0.1692  (95 % CI: 0.0452–0.2750)
+

@@ -1,0 +1,38 @@
+Experiment: gcn+smiles on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.7120
+RMSE: 71.0407, MAE: 55.0565, R2: 0.3036
+
+FOLD 2/5
+GNN Train Loss: 0.6757
+RMSE: 62.9607, MAE: 48.5271, R2: 0.3759
+
+FOLD 3/5
+GNN Train Loss: 0.6704
+RMSE: 69.8276, MAE: 51.9118, R2: 0.2191
+
+FOLD 4/5
+GNN Train Loss: 0.6836
+RMSE: 69.9763, MAE: 54.3068, R2: 0.3191
+
+FOLD 5/5
+GNN Train Loss: 0.7002
+RMSE: 65.4859, MAE: 51.0074, R2: 0.3309
+
+====== K-FOLD SUMMARY ======
+RMSE: 67.9077  [65.0764, 70.3723]
+MAE: 52.2176  [50.1791, 54.1277]
+R2: 0.3104  [0.2615, 0.3524]
+
+★ Using fold 2 model for test inference
+RMSE: 68.8002, MAE: 52.4742, R2: 0.2480
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 68.80023022990184, 'mae': 52.474151611328125, 'r2': 0.24799084663391113}
+Test RMSE: 68.6942  (95 % CI: 63.6000–73.7829)
+
+Test MAE : 52.5543  (95 % CI: 48.4512–56.9878)
+
+Test R²  : 0.2454  (95 % CI: 0.1304–0.3379)
+

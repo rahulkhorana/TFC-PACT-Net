@@ -28,12 +28,12 @@ def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         )
         df = pd.read_csv(str(data_path))
         target_col = "exp"
-    elif name.lower() == "qm8":
+    elif name.lower() == "boilingpoint":
         data_path = (
-            Path(__file__).parent.parent / "benchmark_csv/qm8_subset.csv".__str__()
+            Path(__file__).parent.parent / "benchmark_csv/boiling_point.csv".__str__()
         )
         df = pd.read_csv(data_path)
-        target_col = "f1-CAM"
+        target_col = "boiling_point_K"
     elif name.lower() == "qm9":
         data_path = (
             Path(__file__).parent.parent / "benchmark_csv/qm9_subset.csv".__str__()

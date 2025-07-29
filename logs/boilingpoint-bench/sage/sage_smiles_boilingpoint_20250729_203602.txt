@@ -1,0 +1,38 @@
+Experiment: sage+smiles on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.5331
+RMSE: 63.2506, MAE: 48.2120, R2: 0.4480
+
+FOLD 2/5
+GNN Train Loss: 0.5548
+RMSE: 58.4127, MAE: 44.2368, R2: 0.4628
+
+FOLD 3/5
+GNN Train Loss: 0.5391
+RMSE: 61.6733, MAE: 47.9831, R2: 0.3909
+
+FOLD 4/5
+GNN Train Loss: 0.5621
+RMSE: 62.9847, MAE: 49.5898, R2: 0.4483
+
+FOLD 5/5
+GNN Train Loss: 0.5531
+RMSE: 61.2254, MAE: 49.3617, R2: 0.4151
+
+====== K-FOLD SUMMARY ======
+RMSE: 61.4661  [59.8896, 62.8288]
+MAE: 47.8889  [46.0567, 49.2230]
+R2: 0.4332  [0.4101, 0.4541]
+
+★ Using fold 2 model for test inference
+RMSE: 62.1058, MAE: 46.6291, R2: 0.3872
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 62.105754611463944, 'mae': 46.62908172607422, 'r2': 0.38721656799316406}
+Test RMSE: 62.0991  (95 % CI: 57.4973–66.8543)
+
+Test MAE : 46.6419  (95 % CI: 42.6169–50.7307)
+
+Test R²  : 0.3800  (95 % CI: 0.2681–0.4690)
+

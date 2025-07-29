@@ -1,0 +1,38 @@
+Experiment: sage+selfies on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.5642
+RMSE: 65.4180, MAE: 48.0273, R2: 0.4095
+
+FOLD 2/5
+GNN Train Loss: 0.5651
+RMSE: 57.4463, MAE: 44.4124, R2: 0.4804
+
+FOLD 3/5
+GNN Train Loss: 0.5467
+RMSE: 62.3395, MAE: 46.2084, R2: 0.3776
+
+FOLD 4/5
+GNN Train Loss: 0.5378
+RMSE: 61.8394, MAE: 47.2259, R2: 0.4682
+
+FOLD 5/5
+GNN Train Loss: 0.5446
+RMSE: 61.3520, MAE: 47.5264, R2: 0.4127
+
+====== K-FOLD SUMMARY ======
+RMSE: 61.7010  [59.2060, 63.9891]
+MAE: 46.6665  [45.4900, 47.6666]
+R2: 0.4303  [0.3974, 0.4620]
+
+★ Using fold 2 model for test inference
+RMSE: 59.3171, MAE: 44.6586, R2: 0.4410
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 59.317103762979905, 'mae': 44.65864181518555, 'r2': 0.44101107120513916}
+Test RMSE: 59.2558  (95 % CI: 54.7944–64.2917)
+
+Test MAE : 44.8262  (95 % CI: 40.8595–48.4985)
+
+Test R²  : 0.4414  (95 % CI: 0.3598–0.5206)
+

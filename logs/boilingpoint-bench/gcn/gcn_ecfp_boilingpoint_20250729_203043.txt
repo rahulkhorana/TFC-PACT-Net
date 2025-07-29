@@ -1,0 +1,38 @@
+Experiment: gcn+ecfp on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.0470
+RMSE: 69.8726, MAE: 53.8127, R2: 0.3264
+
+FOLD 2/5
+GNN Train Loss: 0.0486
+RMSE: 67.2414, MAE: 51.5744, R2: 0.2881
+
+FOLD 3/5
+GNN Train Loss: 0.0362
+RMSE: 70.1854, MAE: 52.7899, R2: 0.2111
+
+FOLD 4/5
+GNN Train Loss: 0.0440
+RMSE: 67.9179, MAE: 51.5008, R2: 0.3585
+
+FOLD 5/5
+GNN Train Loss: 0.0375
+RMSE: 69.9591, MAE: 52.5685, R2: 0.2363
+
+====== K-FOLD SUMMARY ======
+RMSE: 69.0227  [67.9029, 70.0150]
+MAE: 52.4433  [51.7438, 53.1549]
+R2: 0.2834  [0.2342, 0.3328]
+
+★ Using fold 2 model for test inference
+RMSE: 63.2932, MAE: 48.2241, R2: 0.3636
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 63.29316438765821, 'mae': 48.22407531738281, 'r2': 0.3635607361793518}
+Test RMSE: 63.2157  (95 % CI: 58.1825–68.3604)
+
+Test MAE : 48.2488  (95 % CI: 44.3807–52.2295)
+
+Test R²  : 0.3593  (95 % CI: 0.2320–0.4740)
+

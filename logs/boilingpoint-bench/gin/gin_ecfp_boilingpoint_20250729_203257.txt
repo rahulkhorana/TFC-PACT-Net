@@ -1,0 +1,38 @@
+Experiment: gin+ecfp on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.0113
+RMSE: 61.3718, MAE: 47.1698, R2: 0.4803
+
+FOLD 2/5
+GNN Train Loss: 0.0104
+RMSE: 61.6748, MAE: 47.0310, R2: 0.4011
+
+FOLD 3/5
+GNN Train Loss: 0.0118
+RMSE: 66.8881, MAE: 49.5290, R2: 0.2835
+
+FOLD 4/5
+GNN Train Loss: 0.0142
+RMSE: 62.8507, MAE: 46.8086, R2: 0.4507
+
+FOLD 5/5
+GNN Train Loss: 0.0101
+RMSE: 62.9604, MAE: 47.0711, R2: 0.3815
+
+====== K-FOLD SUMMARY ======
+RMSE: 63.1586  [61.7501, 65.0599]
+MAE: 47.5227  [46.9333, 48.5458]
+R2: 0.3993  [0.3365, 0.4546]
+
+★ Using fold 1 model for test inference
+RMSE: 59.5519, MAE: 44.7449, R2: 0.4366
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 59.55186035940124, 'mae': 44.744850158691406, 'r2': 0.4365777373313904}
+Test RMSE: 59.5471  (95 % CI: 54.6784–64.8380)
+
+Test MAE : 44.7224  (95 % CI: 40.9831–48.9338)
+
+Test R²  : 0.4339  (95 % CI: 0.3280–0.5305)
+

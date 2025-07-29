@@ -1,0 +1,44 @@
+Experiment: gp+selfies on boilingpoint
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 85.1317, MAE: 67.4568, R2: -0.0000
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 79.8633, MAE: 64.6445, R2: -0.0042
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 79.0686, MAE: 63.2376, R2: -0.0012
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 84.8178, MAE: 68.7179, R2: -0.0004
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 80.0615, MAE: 66.0971, R2: -0.0001
+
+====== K-FOLD SUMMARY ======
+RMSE: 81.8288  [79.6247, 84.0549]
+MAE: 66.0318  [64.3628, 67.6893]
+R2: -0.0012  [-0.0028, -0.0001]
+
+★ Using fold 3 model for test inference
+Evaluating GP model...
+RMSE: 79.4702, MAE: 63.4164, R2: -0.0033
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 79.47015506907266, 'mae': 63.416413952636724, 'r2': -0.003347626488782618}
+Test RMSE: 79.3254  (95 % CI: 73.6080–85.3324)
+
+Test MAE : 63.3404  (95 % CI: 58.9658–68.1350)
+
+Test R²  : -0.0060  (95 % CI: -0.0259–-0.0000)
+

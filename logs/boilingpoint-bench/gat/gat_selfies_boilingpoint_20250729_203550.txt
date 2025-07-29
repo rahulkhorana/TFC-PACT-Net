@@ -1,0 +1,38 @@
+Experiment: gat+selfies on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.5480
+RMSE: 60.5901, MAE: 45.4457, R2: 0.4934
+
+FOLD 2/5
+GNN Train Loss: 0.5361
+RMSE: 57.2543, MAE: 43.9552, R2: 0.4839
+
+FOLD 3/5
+GNN Train Loss: 0.5523
+RMSE: 61.2499, MAE: 48.2317, R2: 0.3992
+
+FOLD 4/5
+GNN Train Loss: 0.5518
+RMSE: 63.1904, MAE: 50.3941, R2: 0.4447
+
+FOLD 5/5
+GNN Train Loss: 0.5393
+RMSE: 59.8413, MAE: 46.9372, R2: 0.4413
+
+====== K-FOLD SUMMARY ======
+RMSE: 60.3947  [58.5886, 62.0261]
+MAE: 46.9671  [45.1086, 48.8377]
+R2: 0.4525  [0.4244, 0.4799]
+
+★ Using fold 2 model for test inference
+RMSE: 60.1515, MAE: 44.2776, R2: 0.4252
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 60.15153796480394, 'mae': 44.277584075927734, 'r2': 0.42517346143722534}
+Test RMSE: 60.0938  (95 % CI: 55.3119–65.2983)
+
+Test MAE : 44.2603  (95 % CI: 40.3585–48.2360)
+
+Test R²  : 0.4214  (95 % CI: 0.3193–0.5124)
+

@@ -1,0 +1,38 @@
+Experiment: gat+ecfp on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.0372
+RMSE: 78.0904, MAE: 59.8778, R2: 0.1586
+
+FOLD 2/5
+GNN Train Loss: 0.0377
+RMSE: 73.4101, MAE: 55.4288, R2: 0.1515
+
+FOLD 3/5
+GNN Train Loss: 0.0352
+RMSE: 81.4680, MAE: 61.1589, R2: -0.0629
+
+FOLD 4/5
+GNN Train Loss: 0.0368
+RMSE: 78.6284, MAE: 60.3925, R2: 0.1403
+
+FOLD 5/5
+GNN Train Loss: 0.0361
+RMSE: 76.6873, MAE: 57.9401, R2: 0.0824
+
+====== K-FOLD SUMMARY ======
+RMSE: 77.6151  [75.1092, 79.8363]
+MAE: 58.9168  [57.0736, 60.5961]
+R2: 0.0932  [0.0206, 0.1535]
+
+★ Using fold 2 model for test inference
+RMSE: 73.2012, MAE: 53.8653, R2: 0.1487
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 73.20124564022971, 'mae': 53.865325927734375, 'r2': 0.14870458841323853}
+Test RMSE: 73.1437  (95 % CI: 66.4370–79.6764)
+
+Test MAE : 53.9304  (95 % CI: 49.2536–58.6133)
+
+Test R²  : 0.1413  (95 % CI: -0.0589–0.3178)
+

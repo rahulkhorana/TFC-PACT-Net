@@ -1,0 +1,38 @@
+Experiment: gin+smiles on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.7016
+RMSE: 70.4793, MAE: 54.6593, R2: 0.3146
+
+FOLD 2/5
+GNN Train Loss: 0.7170
+RMSE: 67.9560, MAE: 53.4831, R2: 0.2729
+
+FOLD 3/5
+GNN Train Loss: 0.7029
+RMSE: 69.0791, MAE: 52.5093, R2: 0.2358
+
+FOLD 4/5
+GNN Train Loss: 0.7063
+RMSE: 74.6538, MAE: 59.3849, R2: 0.2250
+
+FOLD 5/5
+GNN Train Loss: 0.7017
+RMSE: 69.9189, MAE: 55.1017, R2: 0.2372
+
+====== K-FOLD SUMMARY ======
+RMSE: 70.4272  [68.7411, 72.7039]
+MAE: 55.0484  [53.3288, 57.3479]
+R2: 0.2564  [0.2315, 0.2905]
+
+★ Using fold 2 model for test inference
+RMSE: 70.1267, MAE: 55.1206, R2: 0.2187
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 70.12669199161971, 'mae': 55.12058639526367, 'r2': 0.21871399879455566}
+Test RMSE: 70.0021  (95 % CI: 65.2385–75.2084)
+
+Test MAE : 55.1386  (95 % CI: 50.7973–59.3468)
+
+Test R²  : 0.2164  (95 % CI: 0.1404–0.2809)
+

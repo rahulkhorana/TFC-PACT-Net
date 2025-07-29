@@ -1,0 +1,38 @@
+Experiment: sage+ecfp on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.0283
+RMSE: 72.4983, MAE: 55.9575, R2: 0.2748
+
+FOLD 2/5
+GNN Train Loss: 0.0258
+RMSE: 67.8160, MAE: 52.1426, R2: 0.2759
+
+FOLD 3/5
+GNN Train Loss: 0.0259
+RMSE: 72.7572, MAE: 55.1328, R2: 0.1522
+
+FOLD 4/5
+GNN Train Loss: 0.0384
+RMSE: 70.6124, MAE: 53.9133, R2: 0.3066
+
+FOLD 5/5
+GNN Train Loss: 0.0332
+RMSE: 71.9125, MAE: 54.6514, R2: 0.1931
+
+====== K-FOLD SUMMARY ======
+RMSE: 71.1310  [69.4938, 72.4847]
+MAE: 54.3854  [53.2050, 55.3837]
+R2: 0.2404  [0.1913, 0.2877]
+
+★ Using fold 2 model for test inference
+RMSE: 64.4998, MAE: 47.8499, R2: 0.3391
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 64.49977289204203, 'mae': 47.84987258911133, 'r2': 0.33906352519989014}
+Test RMSE: 64.4034  (95 % CI: 59.1904–69.9921)
+
+Test MAE : 47.8241  (95 % CI: 43.8330–52.1125)
+
+Test R²  : 0.3353  (95 % CI: 0.1852–0.4637)
+

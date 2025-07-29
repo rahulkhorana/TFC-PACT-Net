@@ -1,0 +1,44 @@
+Experiment: gp+ecfp on boilingpoint
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 51.2254, MAE: 39.2345, R2: 0.6379
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 52.2225, MAE: 39.3987, R2: 0.5706
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 54.2514, MAE: 39.7716, R2: 0.5286
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 54.9253, MAE: 39.6450, R2: 0.5805
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 54.3252, MAE: 40.4723, R2: 0.5395
+
+====== K-FOLD SUMMARY ======
+RMSE: 53.3681  [52.0301, 54.5505]
+MAE: 39.7083  [39.3821, 40.1414]
+R2: 0.5712  [0.5412, 0.6068]
+
+★ Using fold 1 model for test inference
+Evaluating GP model...
+RMSE: 51.6787, MAE: 37.8442, R2: 0.5757
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 51.678703654278934, 'mae': 37.844151638793946, 'r2': 0.575706353380506}
+Test RMSE: 51.6225  (95 % CI: 46.8898–56.8055)
+
+Test MAE : 37.8647  (95 % CI: 34.5927–41.5900)
+
+Test R²  : 0.5733  (95 % CI: 0.4894–0.6445)
+
