@@ -23,7 +23,7 @@ class PolyatomicNet(nn.Module):
         dropout=0.1,
     ):
         super().__init__()
-
+        self.graph_feat_dim = graph_feat_dim
         self.node_emb = nn.Linear(node_feat_dim, hidden_dim)
         self.deg = deg
         self.virtualnode_emb = nn.Embedding(1, hidden_dim)
@@ -102,20 +102,38 @@ class PolyatomicNet(nn.Module):
 
         mean_pool = global_mean_pool(h, batch)
         max_pool = global_max_pool(h, batch)
-        add_pool = global_add_pool(h, batch)
+        # add_pool = global_add_pool(h, batch)
 
-        # graph_feats shape: [batch_size, graph_feat_dim]
+        max_feat_dim = self.graph_feat_dim
+
         if hasattr(data, "graph_feats") and isinstance(
             data, torch_geometric.data.Batch  # type: ignore
         ):
-            g_feats = torch.stack(
-                [g.graph_feats for g in data.to_data_list()], dim=0
-            ).to(x.device)
+            g_proj_list = []
+            for g in data.to_data_list():
+                g_feat = g.graph_feats.to(x.device)
+
+                if g_feat.size(0) < max_feat_dim:
+                    padded = torch.zeros(max_feat_dim, device=g_feat.device)
+                    padded[: g_feat.size(0)] = g_feat
+                    g_feat = padded
+                elif g_feat.size(0) > max_feat_dim:
+                    g_feat = g_feat[:max_feat_dim]
+                g_feat = torch.nan_to_num(g_feat, nan=0.0, posinf=1e5, neginf=-1e5)
+                g_proj_list.append(self.graph_proj(g_feat))
+
+            g_proj = torch.stack(g_proj_list, dim=0)
+
         else:
-            g_feats = data.graph_feats.unsqueeze(0).to(
-                x.device
-            )  # handles single graph batch
-        g_proj = self.graph_proj(g_feats)
+            g_feat = data.graph_feats.to(x.device)
+            if g_feat.size(0) < max_feat_dim:
+                padded = torch.zeros(max_feat_dim, device=g_feat.device)
+                padded[: g_feat.size(0)] = g_feat
+                g_feat = padded
+            elif g_feat.size(0) > max_feat_dim:
+                g_feat = g_feat[:max_feat_dim]
+            g_feat = torch.nan_to_num(g_feat, nan=0.0, posinf=1e5, neginf=-1e5)
+            g_proj = self.graph_proj(g_feat).unsqueeze(0)
 
         final_input = torch.cat([mean_pool, max_pool, g_proj], dim=1)
         return self.readout(final_input).view(-1)

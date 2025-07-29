@@ -1,0 +1,33 @@
+Experiment: polyatomic+polyatomic on lipophil
+
+FOLD 1/5
+RMSE: 0.7893, MAE: 0.6141, R2: 0.3842
+
+FOLD 2/5
+RMSE: 0.6875, MAE: 0.5247, R2: 0.5328
+
+FOLD 3/5
+RMSE: 0.7262, MAE: 0.5433, R2: 0.4787
+
+FOLD 4/5
+RMSE: 0.7069, MAE: 0.5474, R2: 0.5060
+
+FOLD 5/5
+RMSE: 0.9067, MAE: 0.7328, R2: 0.1872
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7615  [0.7068, 0.8346]
+MAE: 0.5911  [0.5367, 0.6712]
+R2: 0.4166  [0.2957, 0.5112]
+
+★ Using fold 2 model for test inference
+RMSE: 0.6875, MAE: 0.5247, R2: 0.5328
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.6875144566836632, 'mae': 0.5247464776039124, 'r2': 0.532752513885498}
+Test RMSE: 0.6875  (95 % CI: 0.6414–0.7380)
+
+Test MAE : 0.5251  (95 % CI: 0.4913–0.5602)
+
+Test R²  : 0.5303  (95 % CI: 0.4697–0.5861)
+
