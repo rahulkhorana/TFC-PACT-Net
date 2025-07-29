@@ -1,4 +1,24 @@
 
+BINDINGDB Benchmark Summary:
+
+Model         Encoding RMSE ±               MAE ±               
+-----------------------------------------------------------------
+gat           ecfp     2.6672 ± 0.4774     1.9156 ± 0.1894
+gat           selfies  1.8164 ± 0.2667     1.3696 ± 0.1159
+gat           smiles   1.7932 ± 0.2338     1.3722 ± 0.1176
+gcn           ecfp     2.1744 ± 0.3132     1.5856 ± 0.1452
+gcn           selfies  1.7671 ± 0.2332     1.3612 ± 0.1056
+gcn           smiles   1.8313 ± 0.2654     1.3773 ± 0.1171
+gin           ecfp     2.0116 ± 0.3040     1.4942 ± 0.1247
+gin           selfies  1.7480 ± 0.2425     1.3502 ± 0.1123
+gin           smiles   1.7566 ± 0.2513     1.3585 ± 0.1048
+gp+tanimoto   ecfp     1.6921 ± 0.2544     1.2645 ± 0.1051
+gp+tanimoto   selfies  1.8034 ± 0.2504     1.3793 ± 0.1135
+gp+tanimoto   smiles   1.6945 ± 0.2640     1.2650 ± 0.1057
+sage          ecfp     2.1945 ± 0.3115     1.6303 ± 0.1384
+sage          selfies  1.9251 ± 0.3445     1.4001 ± 0.1262
+sage          smiles   1.8614 ± 0.3434     1.3816 ± 0.1282
+
 BOILINGPOINT Benchmark Summary:
 
 Model         Encoding RMSE ±               MAE ±               

@@ -1,0 +1,38 @@
+Experiment: sage+ecfp on bindingdb
+
+FOLD 1/5
+GNN Train Loss: 0.0328
+RMSE: 2.0164, MAE: 1.5621, R2: -0.5885
+
+FOLD 2/5
+GNN Train Loss: 0.0291
+RMSE: 2.0527, MAE: 1.6329, R2: -0.8471
+
+FOLD 3/5
+GNN Train Loss: 0.0314
+RMSE: 1.9125, MAE: 1.5087, R2: -0.6659
+
+FOLD 4/5
+GNN Train Loss: 0.0254
+RMSE: 2.0702, MAE: 1.6654, R2: -0.7277
+
+FOLD 5/5
+GNN Train Loss: 0.0349
+RMSE: 2.0278, MAE: 1.6167, R2: -0.8065
+
+====== K-FOLD SUMMARY ======
+RMSE: 2.0157  [1.9613, 2.0563]
+MAE: 1.5984  [1.5506, 1.6427]
+R2: -0.7272  [-0.8028, -0.6442]
+
+★ Using fold 3 model for test inference
+RMSE: 2.1999, MAE: 1.6335, R2: -0.4755
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.1999243896669416, 'mae': 1.6334670782089233, 'r2': -0.47553515434265137}
+Test RMSE: 2.1945  (95 % CI: 1.9240–2.5469)
+
+Test MAE : 1.6303  (95 % CI: 1.4934–1.7703)
+
+Test R²  : -0.4847  (95 % CI: -0.6705–-0.3110)
+

@@ -1,0 +1,38 @@
+Experiment: gin+ecfp on bindingdb
+
+FOLD 1/5
+GNN Train Loss: 0.0171
+RMSE: 1.7724, MAE: 1.3869, R2: -0.2273
+
+FOLD 2/5
+GNN Train Loss: 0.0217
+RMSE: 1.7963, MAE: 1.4253, R2: -0.4145
+
+FOLD 3/5
+GNN Train Loss: 0.0179
+RMSE: 1.7046, MAE: 1.3570, R2: -0.3235
+
+FOLD 4/5
+GNN Train Loss: 0.0196
+RMSE: 1.8985, MAE: 1.5419, R2: -0.4530
+
+FOLD 5/5
+GNN Train Loss: 0.0135
+RMSE: 1.7420, MAE: 1.4135, R2: -0.3332
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.7838  [1.7318, 1.8468]
+MAE: 1.4238  [1.3796, 1.4852]
+R2: -0.3489  [-0.4146, -0.2697]
+
+★ Using fold 3 model for test inference
+RMSE: 2.0158, MAE: 1.4913, R2: -0.2389
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.0158109357372025, 'mae': 1.4913249015808105, 'r2': -0.23889243602752686}
+Test RMSE: 2.0116  (95 % CI: 1.7335–2.3415)
+
+Test MAE : 1.4942  (95 % CI: 1.3729–1.6222)
+
+Test R²  : -0.2441  (95 % CI: -0.3634–-0.1405)
+

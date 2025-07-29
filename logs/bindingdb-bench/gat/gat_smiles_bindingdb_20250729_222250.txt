@@ -1,0 +1,38 @@
+Experiment: gat+smiles on bindingdb
+
+FOLD 1/5
+GNN Train Loss: 0.9514
+RMSE: 1.5340, MAE: 1.2692, R2: 0.0806
+
+FOLD 2/5
+GNN Train Loss: 0.9419
+RMSE: 1.4995, MAE: 1.2323, R2: 0.0143
+
+FOLD 3/5
+GNN Train Loss: 0.9412
+RMSE: 1.4703, MAE: 1.2275, R2: 0.0155
+
+FOLD 4/5
+GNN Train Loss: 0.9436
+RMSE: 1.5220, MAE: 1.2454, R2: 0.0662
+
+FOLD 5/5
+GNN Train Loss: 0.9476
+RMSE: 1.4768, MAE: 1.2251, R2: 0.0418
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.5002  [1.4787, 1.5223]
+MAE: 1.2401  [1.2275, 1.2561]
+R2: 0.0438  [0.0205, 0.0671]
+
+★ Using fold 3 model for test inference
+RMSE: 1.8019, MAE: 1.3712, R2: 0.0101
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.8018726674096883, 'mae': 1.3711559772491455, 'r2': 0.010120749473571777}
+Test RMSE: 1.7932  (95 % CI: 1.5775–2.0451)
+
+Test MAE : 1.3722  (95 % CI: 1.2613–1.4966)
+
+Test R²  : 0.0054  (95 % CI: -0.1048–0.0787)
+

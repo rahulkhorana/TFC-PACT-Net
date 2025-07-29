@@ -1,0 +1,38 @@
+Experiment: gat+selfies on bindingdb
+
+FOLD 1/5
+GNN Train Loss: 1.0133
+RMSE: 1.5494, MAE: 1.2730, R2: 0.0621
+
+FOLD 2/5
+GNN Train Loss: 0.9337
+RMSE: 1.4945, MAE: 1.2274, R2: 0.0210
+
+FOLD 3/5
+GNN Train Loss: 0.9459
+RMSE: 1.4927, MAE: 1.2433, R2: -0.0148
+
+FOLD 4/5
+GNN Train Loss: 0.9468
+RMSE: 1.5140, MAE: 1.2402, R2: 0.0760
+
+FOLD 5/5
+GNN Train Loss: 0.9547
+RMSE: 1.5082, MAE: 1.2453, R2: 0.0007
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.5119  [1.4965, 1.5313]
+MAE: 1.2456  [1.2338, 1.2609]
+R2: 0.0292  [0.0016, 0.0581]
+
+★ Using fold 3 model for test inference
+RMSE: 1.8185, MAE: 1.3746, R2: -0.0082
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.8185145458387524, 'mae': 1.3745886087417603, 'r2': -0.008248567581176758}
+Test RMSE: 1.8164  (95 % CI: 1.5619–2.0952)
+
+Test MAE : 1.3696  (95 % CI: 1.2537–1.4855)
+
+Test R²  : -0.0126  (95 % CI: -0.1590–0.0830)
+

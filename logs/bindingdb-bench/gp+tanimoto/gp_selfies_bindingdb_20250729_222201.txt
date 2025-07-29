@@ -1,0 +1,44 @@
+Experiment: gp+selfies on bindingdb
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.6027, MAE: 1.3185, R2: -0.0035
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.5107, MAE: 1.2320, R2: -0.0004
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.5007, MAE: 1.2661, R2: -0.0257
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.5753, MAE: 1.2975, R2: -0.0004
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.5153, MAE: 1.2604, R2: -0.0087
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.5400  [1.5085, 1.5768]
+MAE: 1.2753  [1.2501, 1.3017]
+R2: -0.0077  [-0.0172, -0.0010]
+
+★ Using fold 3 model for test inference
+Evaluating GP model...
+RMSE: 1.8114, MAE: 1.3790, R2: -0.0003
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.8113702712418467, 'mae': 1.3790373572231982, 'r2': -0.00034197488555598454}
+Test RMSE: 1.8034  (95 % CI: 1.5761–2.0769)
+
+Test MAE : 1.3793  (95 % CI: 1.2702–1.4972)
+
+Test R²  : -0.0028  (95 % CI: -0.0139–-0.0000)
+

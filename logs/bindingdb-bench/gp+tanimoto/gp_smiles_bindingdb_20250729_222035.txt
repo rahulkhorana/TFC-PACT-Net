@@ -1,0 +1,44 @@
+Experiment: gp+smiles on bindingdb
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.5326, MAE: 1.2571, R2: 0.0823
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.4593, MAE: 1.1720, R2: 0.0665
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.3997, MAE: 1.1361, R2: 0.1077
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.5166, MAE: 1.2414, R2: 0.0728
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 1.4447, MAE: 1.2015, R2: 0.0831
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.4717  [1.4325, 1.5118]
+MAE: 1.2009  [1.1635, 1.2370]
+R2: 0.0824  [0.0722, 0.0945]
+
+★ Using fold 3 model for test inference
+Evaluating GP model...
+RMSE: 1.7011, MAE: 1.2663, R2: 0.1177
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.7011460718590876, 'mae': 1.2663183300531364, 'r2': 0.11769805958162904}
+Test RMSE: 1.6945  (95 % CI: 1.4576–1.9855)
+
+Test MAE : 1.2650  (95 % CI: 1.1628–1.3742)
+
+Test R²  : 0.1167  (95 % CI: 0.0702–0.1678)
+

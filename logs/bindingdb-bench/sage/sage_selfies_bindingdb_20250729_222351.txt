@@ -1,0 +1,38 @@
+Experiment: sage+selfies on bindingdb
+
+FOLD 1/5
+GNN Train Loss: 0.9560
+RMSE: 1.5570, MAE: 1.2700, R2: 0.0528
+
+FOLD 2/5
+GNN Train Loss: 0.9405
+RMSE: 1.5295, MAE: 1.2208, R2: -0.0255
+
+FOLD 3/5
+GNN Train Loss: 0.9346
+RMSE: 1.4611, MAE: 1.2000, R2: 0.0277
+
+FOLD 4/5
+GNN Train Loss: 0.9611
+RMSE: 1.5587, MAE: 1.2779, R2: 0.0205
+
+FOLD 5/5
+GNN Train Loss: 0.9435
+RMSE: 1.5036, MAE: 1.2408, R2: 0.0068
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.5221  [1.4866, 1.5522]
+MAE: 1.2423  [1.2167, 1.2673]
+R2: 0.0164  [-0.0084, 0.0372]
+
+★ Using fold 3 model for test inference
+RMSE: 1.9238, MAE: 1.3998, R2: -0.1283
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.9237669029757383, 'mae': 1.399815320968628, 'r2': -0.12833726406097412}
+Test RMSE: 1.9251  (95 % CI: 1.6046–2.2936)
+
+Test MAE : 1.4001  (95 % CI: 1.2816–1.5341)
+
+Test R²  : -0.1460  (95 % CI: -0.5350–0.0634)
+

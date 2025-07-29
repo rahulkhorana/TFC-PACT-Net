@@ -46,6 +46,12 @@ def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         )
         df = pd.read_csv(data_path)
         target_col = "pIC50"
+    elif name.lower() == "bindingdb":
+        data_path = (
+            Path(__file__).parent.parent / "benchmark_csv/bindingdb.csv".__str__()
+        )
+        df = pd.read_csv(data_path)
+        target_col = "pIC50"
     else:
         raise ValueError(f"Unknown dataset: {name}")
 
