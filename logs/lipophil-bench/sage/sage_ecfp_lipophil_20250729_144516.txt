@@ -1,0 +1,38 @@
+Experiment: sage+ecfp on lipophil
+
+FOLD 1/5
+GNN Train Loss: 0.0894
+RMSE: 0.9230, MAE: 0.6961, R2: 0.4209
+
+FOLD 2/5
+GNN Train Loss: 0.0784
+RMSE: 1.0060, MAE: 0.7459, R2: 0.3654
+
+FOLD 3/5
+GNN Train Loss: 0.0530
+RMSE: 0.9831, MAE: 0.7154, R2: 0.3075
+
+FOLD 4/5
+GNN Train Loss: 0.0745
+RMSE: 0.9216, MAE: 0.6708, R2: 0.4096
+
+FOLD 5/5
+GNN Train Loss: 0.0388
+RMSE: 0.9985, MAE: 0.7188, R2: 0.2796
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.9662  [0.9345, 0.9969]
+MAE: 0.7092  [0.6860, 0.7305]
+R2: 0.3567  [0.3079, 0.4053]
+
+★ Using fold 4 model for test inference
+RMSE: 0.9368, MAE: 0.7012, R2: 0.3747
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.9368432923817854, 'mae': 0.7012372612953186, 'r2': 0.37469273805618286}
+Test RMSE: 0.9368  (95 % CI: 0.8804–0.9945)
+
+Test MAE : 0.7010  (95 % CI: 0.6612–0.7449)
+
+Test R²  : 0.3716  (95 % CI: 0.2895–0.4509)
+

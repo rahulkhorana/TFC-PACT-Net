@@ -1,0 +1,38 @@
+Experiment: gat+ecfp on lipophil
+
+FOLD 1/5
+GNN Train Loss: 0.0733
+RMSE: 0.9729, MAE: 0.7342, R2: 0.3566
+
+FOLD 2/5
+GNN Train Loss: 0.0766
+RMSE: 1.0224, MAE: 0.7443, R2: 0.3446
+
+FOLD 3/5
+GNN Train Loss: 0.0773
+RMSE: 1.0058, MAE: 0.7261, R2: 0.2751
+
+FOLD 4/5
+GNN Train Loss: 0.0752
+RMSE: 0.9836, MAE: 0.7139, R2: 0.3275
+
+FOLD 5/5
+GNN Train Loss: 0.0649
+RMSE: 1.0762, MAE: 0.7633, R2: 0.1630
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.0128  [0.9837, 1.0448]
+MAE: 0.7360  [0.7220, 0.7501]
+R2: 0.2946  [0.2302, 0.3460]
+
+★ Using fold 1 model for test inference
+RMSE: 0.9953, MAE: 0.7423, R2: 0.2942
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.9952930598254346, 'mae': 0.7422714829444885, 'r2': 0.29423272609710693}
+Test RMSE: 0.9952  (95 % CI: 0.9277–1.0610)
+
+Test MAE : 0.7434  (95 % CI: 0.7020–0.7866)
+
+Test R²  : 0.2916  (95 % CI: 0.1867–0.3866)
+

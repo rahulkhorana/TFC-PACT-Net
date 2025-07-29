@@ -1,0 +1,38 @@
+Experiment: gin+smiles on freesolv
+
+FOLD 1/5
+GNN Train Loss: 0.8659
+RMSE: 3.4377, MAE: 2.7013, R2: 0.0682
+
+FOLD 2/5
+GNN Train Loss: 0.8895
+RMSE: 3.8813, MAE: 2.6282, R2: 0.0819
+
+FOLD 3/5
+GNN Train Loss: 0.8878
+RMSE: 3.7151, MAE: 2.5864, R2: 0.1050
+
+FOLD 4/5
+GNN Train Loss: 0.8683
+RMSE: 3.2512, MAE: 2.4255, R2: 0.0877
+
+FOLD 5/5
+GNN Train Loss: 0.8904
+RMSE: 3.5669, MAE: 2.7989, R2: 0.1227
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.5770  [3.3813, 3.7593]
+MAE: 2.6282  [2.5066, 2.7257]
+R2: 0.0932  [0.0783, 0.1087]
+
+★ Using fold 4 model for test inference
+RMSE: 3.7932, MAE: 2.7270, R2: 0.1312
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.7932367672107077, 'mae': 2.7269906997680664, 'r2': 0.13116759061813354}
+Test RMSE: 3.7822  (95 % CI: 2.9994–4.6367)
+
+Test MAE : 2.7178  (95 % CI: 2.2620–3.1859)
+
+Test R²  : 0.1216  (95 % CI: -0.0223–0.2268)
+

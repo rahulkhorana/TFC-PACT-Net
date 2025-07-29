@@ -1,0 +1,38 @@
+Experiment: gat+smiles on esol
+
+FOLD 1/5
+GNN Train Loss: 0.4349
+RMSE: 1.3426, MAE: 1.0463, R2: 0.5164
+
+FOLD 2/5
+GNN Train Loss: 0.4577
+RMSE: 1.5814, MAE: 1.2004, R2: 0.5317
+
+FOLD 3/5
+GNN Train Loss: 0.5187
+RMSE: 1.3590, MAE: 1.0256, R2: 0.5498
+
+FOLD 4/5
+GNN Train Loss: 0.4773
+RMSE: 1.4368, MAE: 1.1037, R2: 0.5216
+
+FOLD 5/5
+GNN Train Loss: 0.5247
+RMSE: 1.3672, MAE: 1.0055, R2: 0.5254
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.4159  [1.3541, 1.4957]
+MAE: 1.0783  [1.0217, 1.1424]
+R2: 0.5290  [0.5203, 0.5401]
+
+★ Using fold 1 model for test inference
+RMSE: 1.5168, MAE: 1.1519, R2: 0.5133
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.5167663838369498, 'mae': 1.1519267559051514, 'r2': 0.5132904648780823}
+Test RMSE: 1.5192  (95 % CI: 1.3508–1.6987)
+
+Test MAE : 1.1516  (95 % CI: 1.0302–1.2876)
+
+Test R²  : 0.5080  (95 % CI: 0.4151–0.5932)
+

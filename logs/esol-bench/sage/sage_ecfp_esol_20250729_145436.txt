@@ -1,0 +1,38 @@
+Experiment: sage+ecfp on esol
+
+FOLD 1/5
+GNN Train Loss: 0.0255
+RMSE: 1.2065, MAE: 0.9007, R2: 0.6095
+
+FOLD 2/5
+GNN Train Loss: 0.0272
+RMSE: 1.3326, MAE: 1.0061, R2: 0.6674
+
+FOLD 3/5
+GNN Train Loss: 0.0330
+RMSE: 1.3335, MAE: 0.9863, R2: 0.5665
+
+FOLD 4/5
+GNN Train Loss: 0.0258
+RMSE: 1.3108, MAE: 1.0032, R2: 0.6018
+
+FOLD 5/5
+GNN Train Loss: 0.0330
+RMSE: 1.4817, MAE: 1.0496, R2: 0.4426
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.3322  [1.2528, 1.4179]
+MAE: 0.9894  [0.9428, 1.0243]
+R2: 0.5780  [0.5093, 0.6341]
+
+★ Using fold 1 model for test inference
+RMSE: 1.1489, MAE: 0.8723, R2: 0.7207
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.14890627473613, 'mae': 0.8722635507583618, 'r2': 0.7207445502281189}
+Test RMSE: 1.1407  (95 % CI: 1.0132–1.2773)
+
+Test MAE : 0.8713  (95 % CI: 0.7765–0.9731)
+
+Test R²  : 0.7157  (95 % CI: 0.6354–0.7802)
+

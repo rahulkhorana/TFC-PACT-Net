@@ -1,0 +1,38 @@
+Experiment: gcn+ecfp on lipophil
+
+FOLD 1/5
+GNN Train Loss: 0.0810
+RMSE: 0.8803, MAE: 0.6539, R2: 0.4733
+
+FOLD 2/5
+GNN Train Loss: 0.0993
+RMSE: 0.9675, MAE: 0.7270, R2: 0.4131
+
+FOLD 3/5
+GNN Train Loss: 0.0965
+RMSE: 0.9384, MAE: 0.6848, R2: 0.3690
+
+FOLD 4/5
+GNN Train Loss: 0.0954
+RMSE: 0.9100, MAE: 0.6657, R2: 0.4243
+
+FOLD 5/5
+GNN Train Loss: 0.0945
+RMSE: 0.9985, MAE: 0.7148, R2: 0.2796
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.9391  [0.9038, 0.9745]
+MAE: 0.6886  [0.6648, 0.7137]
+R2: 0.3911  [0.3352, 0.4427]
+
+★ Using fold 1 model for test inference
+RMSE: 0.8876, MAE: 0.6653, R2: 0.4388
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.8875540945196227, 'mae': 0.6652875542640686, 'r2': 0.4387592077255249}
+Test RMSE: 0.8879  (95 % CI: 0.8351–0.9399)
+
+Test MAE : 0.6652  (95 % CI: 0.6265–0.7059)
+
+Test R²  : 0.4365  (95 % CI: 0.3612–0.5059)
+

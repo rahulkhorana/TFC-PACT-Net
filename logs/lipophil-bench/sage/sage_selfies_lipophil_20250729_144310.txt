@@ -1,0 +1,38 @@
+Experiment: sage+selfies on lipophil
+
+FOLD 1/5
+GNN Train Loss: 0.8825
+RMSE: 1.1587, MAE: 0.9459, R2: 0.0874
+
+FOLD 2/5
+GNN Train Loss: 0.8673
+RMSE: 1.1984, MAE: 0.9549, R2: 0.0994
+
+FOLD 3/5
+GNN Train Loss: 0.8836
+RMSE: 1.1211, MAE: 0.9127, R2: 0.0993
+
+FOLD 4/5
+GNN Train Loss: 0.9064
+RMSE: 1.1168, MAE: 0.8875, R2: 0.1330
+
+FOLD 5/5
+GNN Train Loss: 0.8944
+RMSE: 1.1698, MAE: 0.9199, R2: 0.0112
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.1530  [1.1269, 1.1790]
+MAE: 0.9244  [0.9041, 0.9447]
+R2: 0.0852  [0.0441, 0.1172]
+
+★ Using fold 4 model for test inference
+RMSE: 1.1445, MAE: 0.9115, R2: 0.0667
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.1445227612906463, 'mae': 0.9114981293678284, 'r2': 0.0667276382446289}
+Test RMSE: 1.1439  (95 % CI: 1.0905–1.1974)
+
+Test MAE : 0.9102  (95 % CI: 0.8663–0.9532)
+
+Test R²  : 0.0656  (95 % CI: 0.0217–0.1076)
+

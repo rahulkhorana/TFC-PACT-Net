@@ -1,0 +1,38 @@
+Experiment: gat+ecfp on esol
+
+FOLD 1/5
+GNN Train Loss: 0.0286
+RMSE: 1.3150, MAE: 0.9893, R2: 0.5361
+
+FOLD 2/5
+GNN Train Loss: 0.0248
+RMSE: 1.3747, MAE: 1.0435, R2: 0.6461
+
+FOLD 3/5
+GNN Train Loss: 0.0356
+RMSE: 1.3700, MAE: 1.0226, R2: 0.5425
+
+FOLD 4/5
+GNN Train Loss: 0.0262
+RMSE: 1.3732, MAE: 1.0522, R2: 0.5630
+
+FOLD 5/5
+GNN Train Loss: 0.0375
+RMSE: 1.5337, MAE: 1.0635, R2: 0.4028
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.3935  [1.3386, 1.4688]
+MAE: 1.0343  [1.0108, 1.0550]
+R2: 0.5390  [0.4628, 0.6034]
+
+★ Using fold 1 model for test inference
+RMSE: 1.2549, MAE: 0.9408, R2: 0.6669
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.2548568307287193, 'mae': 0.9407985806465149, 'r2': 0.6668645739555359}
+Test RMSE: 1.2483  (95 % CI: 1.0970–1.4039)
+
+Test MAE : 0.9410  (95 % CI: 0.8366–1.0485)
+
+Test R²  : 0.6609  (95 % CI: 0.5504–0.7524)
+

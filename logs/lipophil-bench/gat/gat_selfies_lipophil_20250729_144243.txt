@@ -1,0 +1,38 @@
+Experiment: gat+selfies on lipophil
+
+FOLD 1/5
+GNN Train Loss: 0.9046
+RMSE: 1.1631, MAE: 0.9465, R2: 0.0806
+
+FOLD 2/5
+GNN Train Loss: 0.8937
+RMSE: 1.2244, MAE: 0.9675, R2: 0.0599
+
+FOLD 3/5
+GNN Train Loss: 0.9217
+RMSE: 1.1358, MAE: 0.9208, R2: 0.0756
+
+FOLD 4/5
+GNN Train Loss: 0.9085
+RMSE: 1.1185, MAE: 0.9116, R2: 0.1303
+
+FOLD 5/5
+GNN Train Loss: 0.8873
+RMSE: 1.0831, MAE: 0.8740, R2: 0.1523
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.1456  [1.1078, 1.1910]
+MAE: 0.9234  [0.8965, 0.9521]
+R2: 0.1003  [0.0703, 0.1325]
+
+★ Using fold 5 model for test inference
+RMSE: 1.1278, MAE: 0.9182, R2: 0.0939
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.1277524338198939, 'mae': 0.9181647896766663, 'r2': 0.09387707710266113}
+Test RMSE: 1.1282  (95 % CI: 1.0802–1.1763)
+
+Test MAE : 0.9185  (95 % CI: 0.8759–0.9594)
+
+Test R²  : 0.0929  (95 % CI: 0.0552–0.1304)
+

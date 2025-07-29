@@ -1,0 +1,38 @@
+Experiment: gin+ecfp on esol
+
+FOLD 1/5
+GNN Train Loss: 0.0212
+RMSE: 1.1588, MAE: 0.8814, R2: 0.6397
+
+FOLD 2/5
+GNN Train Loss: 0.0279
+RMSE: 1.2718, MAE: 0.9532, R2: 0.6971
+
+FOLD 3/5
+GNN Train Loss: 0.0306
+RMSE: 1.1992, MAE: 0.9184, R2: 0.6494
+
+FOLD 4/5
+GNN Train Loss: 0.0260
+RMSE: 1.2563, MAE: 0.9668, R2: 0.6343
+
+FOLD 5/5
+GNN Train Loss: 0.0304
+RMSE: 1.2068, MAE: 0.9033, R2: 0.6303
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.2179  [1.1780, 1.2526]
+MAE: 0.9248  [0.8975, 0.9517]
+R2: 0.6509  [0.6346, 0.6742]
+
+★ Using fold 1 model for test inference
+RMSE: 1.1527, MAE: 0.8547, R2: 0.7189
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.1526609856962138, 'mae': 0.8547297120094299, 'r2': 0.7189162969589233}
+Test RMSE: 1.1526  (95 % CI: 1.0244–1.2798)
+
+Test MAE : 0.8507  (95 % CI: 0.7494–0.9578)
+
+Test R²  : 0.7176  (95 % CI: 0.6432–0.7810)
+

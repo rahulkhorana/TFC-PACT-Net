@@ -1,0 +1,38 @@
+Experiment: gcn+smiles on freesolv
+
+FOLD 1/5
+GNN Train Loss: 0.8754
+RMSE: 3.3961, MAE: 2.6382, R2: 0.0906
+
+FOLD 2/5
+GNN Train Loss: 0.8774
+RMSE: 3.8759, MAE: 2.6121, R2: 0.0845
+
+FOLD 3/5
+GNN Train Loss: 0.8707
+RMSE: 3.7354, MAE: 2.5668, R2: 0.0952
+
+FOLD 4/5
+GNN Train Loss: 0.8800
+RMSE: 3.2584, MAE: 2.4776, R2: 0.0837
+
+FOLD 5/5
+GNN Train Loss: 0.8952
+RMSE: 3.5678, MAE: 2.8178, R2: 0.1223
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.5607  [3.3754, 3.7581]
+MAE: 2.6249  [2.5366, 2.7265]
+R2: 0.0952  [0.0855, 0.1093]
+
+★ Using fold 4 model for test inference
+RMSE: 3.8673, MAE: 2.8618, R2: 0.0969
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.8673295428459094, 'mae': 2.86177659034729, 'r2': 0.09689462184906006}
+Test RMSE: 3.8458  (95 % CI: 3.0620–4.7722)
+
+Test MAE : 2.8537  (95 % CI: 2.4158–3.3218)
+
+Test R²  : 0.0850  (95 % CI: -0.0425–0.1978)
+

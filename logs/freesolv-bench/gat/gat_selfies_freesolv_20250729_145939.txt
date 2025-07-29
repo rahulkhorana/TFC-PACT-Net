@@ -1,0 +1,38 @@
+Experiment: gat+selfies on freesolv
+
+FOLD 1/5
+GNN Train Loss: 0.7667
+RMSE: 3.3944, MAE: 2.5839, R2: 0.0915
+
+FOLD 2/5
+GNN Train Loss: 0.8129
+RMSE: 3.7210, MAE: 2.4873, R2: 0.1562
+
+FOLD 3/5
+GNN Train Loss: 0.8399
+RMSE: 3.6435, MAE: 2.5785, R2: 0.1391
+
+FOLD 4/5
+GNN Train Loss: 0.8376
+RMSE: 3.2357, MAE: 2.4622, R2: 0.0964
+
+FOLD 5/5
+GNN Train Loss: 0.9170
+RMSE: 3.3063, MAE: 2.4931, R2: 0.2462
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.4598  [3.2957, 3.6381]
+MAE: 2.5205  [2.4784, 2.5635]
+R2: 0.1471  [0.1030, 0.2034]
+
+★ Using fold 4 model for test inference
+RMSE: 3.7898, MAE: 2.8510, R2: 0.1328
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.789755091340831, 'mae': 2.850984573364258, 'r2': 0.13276177644729614}
+Test RMSE: 3.7543  (95 % CI: 3.1051–4.5488)
+
+Test MAE : 2.8503  (95 % CI: 2.4634–3.2559)
+
+Test R²  : 0.1193  (95 % CI: -0.0645–0.2465)
+

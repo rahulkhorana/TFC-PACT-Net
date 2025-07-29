@@ -1,0 +1,38 @@
+Experiment: gin+smiles on lipophil
+
+FOLD 1/5
+GNN Train Loss: 0.9268
+RMSE: 1.1635, MAE: 0.9229, R2: 0.0799
+
+FOLD 2/5
+GNN Train Loss: 0.9184
+RMSE: 1.2309, MAE: 0.9833, R2: 0.0500
+
+FOLD 3/5
+GNN Train Loss: 0.9177
+RMSE: 1.1425, MAE: 0.9345, R2: 0.0646
+
+FOLD 4/5
+GNN Train Loss: 0.9301
+RMSE: 1.1873, MAE: 0.9833, R2: 0.0200
+
+FOLD 5/5
+GNN Train Loss: 0.9246
+RMSE: 1.1353, MAE: 0.9108, R2: 0.0686
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.1720  [1.1438, 1.2045]
+MAE: 0.9474  [0.9204, 0.9735]
+R2: 0.0568  [0.0380, 0.0723]
+
+★ Using fold 5 model for test inference
+RMSE: 1.1698, MAE: 0.9387, R2: 0.0251
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.1697787545981366, 'mae': 0.9386965036392212, 'r2': 0.02508443593978882}
+Test RMSE: 1.1698  (95 % CI: 1.1100–1.2263)
+
+Test MAE : 0.9380  (95 % CI: 0.8912–0.9883)
+
+Test R²  : 0.0239  (95 % CI: -0.0147–0.0625)
+

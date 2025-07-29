@@ -1,0 +1,38 @@
+Experiment: sage+smiles on esol
+
+FOLD 1/5
+GNN Train Loss: 0.4495
+RMSE: 1.4767, MAE: 1.1599, R2: 0.4150
+
+FOLD 2/5
+GNN Train Loss: 0.4835
+RMSE: 1.5992, MAE: 1.2936, R2: 0.5211
+
+FOLD 3/5
+GNN Train Loss: 0.4892
+RMSE: 1.3215, MAE: 1.0112, R2: 0.5743
+
+FOLD 4/5
+GNN Train Loss: 0.4818
+RMSE: 1.5106, MAE: 1.1371, R2: 0.4712
+
+FOLD 5/5
+GNN Train Loss: 0.4774
+RMSE: 1.4686, MAE: 1.1736, R2: 0.4525
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.4766  [1.3904, 1.5486]
+MAE: 1.1535  [1.0688, 1.2310]
+R2: 0.4865  [0.4412, 0.5330]
+
+★ Using fold 3 model for test inference
+RMSE: 1.5437, MAE: 1.1616, R2: 0.4959
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.5436616910935124, 'mae': 1.1616016626358032, 'r2': 0.4958767890930176}
+Test RMSE: 1.5419  (95 % CI: 1.3725–1.7113)
+
+Test MAE : 1.1597  (95 % CI: 1.0338–1.2990)
+
+Test R²  : 0.4942  (95 % CI: 0.3928–0.5798)
+
