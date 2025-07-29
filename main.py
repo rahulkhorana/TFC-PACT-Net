@@ -26,7 +26,7 @@ from training.train_eval import (
     k_fold_eval,
 )
 import torch
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
 from torch.amp.grad_scaler import GradScaler
 
 import multiprocessing
@@ -189,7 +189,7 @@ def run_polyatomic(args):
 
         model_cls = GNN_MODELS[args.model]
         loader = DataLoader(
-            data_list, batch_size=128, shuffle=True, num_workers=8, pin_memory=True
+            data_list, batch_size=32, shuffle=True, num_workers=8, pin_memory=False
         )
 
         node_feat_dim = data_list[0].x.shape[1]
@@ -197,7 +197,7 @@ def run_polyatomic(args):
         graph_feat_dim = data_list[0].graph_feats.shape[0]
         from torch_geometric.utils import degree
 
-        deg = torch.zeros(128, dtype=torch.long)
+        deg = torch.zeros(32, dtype=torch.long)
         for data in loader:
             d = degree(data.edge_index[1], num_nodes=data.num_nodes, dtype=torch.long)
             bc = torch.bincount(d, minlength=deg.size(0))
@@ -220,7 +220,7 @@ def run_polyatomic(args):
         )
         loss_fn = nn.SmoothL1Loss(beta=0.5)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model = model.to(device)
+        model = model.to(dtype=torch.float32, device=device)
         scaler_grad = GradScaler()
         train_polyatomic(
             model,
@@ -229,6 +229,7 @@ def run_polyatomic(args):
             loss_fn=loss_fn,
             device=device,
             scaler_grad=scaler_grad,
+            scheduler=scheduler,
         )
         return model
 

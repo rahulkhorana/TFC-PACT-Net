@@ -36,18 +36,21 @@ def write_log(log_file, text):
 
 
 def train_gnn_model(model, loader, optimizer, log_file, loss_fn=torch.nn.MSELoss()):
-    model.train()
     total_loss = 0
-    for batch in tqdm(loader, desc="Training GNN"):
-        batch = batch.to(next(model.parameters()).device)
-        optimizer.zero_grad()
-        out = model(batch).squeeze()
-        loss = loss_fn(out, batch.y)
-        loss.backward()
-        optimizer.step()
-        total_loss += loss.item()
-    write_log(log_file, f"GNN Train Loss: {total_loss / len(loader):.4f}")
-    return total_loss / len(loader)
+    for _ in range(20):
+        model.train()
+        total_loss = 0
+        for batch in loader:
+            batch = batch.to(next(model.parameters()).device)
+            optimizer.zero_grad()
+            out = model(batch).squeeze()
+            loss = loss_fn(out, batch.y)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
+    avg_loss = total_loss / len(loader)
+    write_log(log_file, f"GNN Train Loss: {avg_loss:.4f}")
+    return avg_loss
 
 
 def eval_gnn_model(model, loader, log_file, scaler, return_preds=False):
@@ -117,7 +120,7 @@ def bootstrap_metric_ci(metric_fn, y_true, y_pred, n_boot=1000, ci=95, rng=None)
 
 
 def train_polyatomic(
-    model, loader, optimizer, loss_fn, scaler_grad, device, accum_steps=8
+    model, loader, optimizer, loss_fn, scaler_grad, device, scheduler, accum_steps=1
 ):
     """
     custom training loop for polyatomic GNNs
@@ -125,23 +128,50 @@ def train_polyatomic(
     accum_steps allows gradient accumulation for larger effective batch size
     this was designed for GPU training, but here is in CPU mode
     """
-    model.train()
-    total_loss = 0.0
-    optimizer.zero_grad()
-    for i, batch in enumerate(loader):
-        batch = batch.to(device)
-        with autocast(
-            device_type="cpu", dtype=torch.float16
-        ):  # CHANGE to 'cuda' if using GPU
-            output = model(batch)
-            loss = loss_fn(output, batch.y.view(-1)) / accum_steps
-        scaler_grad.scale(loss).backward()
-        if (i + 1) % accum_steps == 0 or (i + 1 == len(loader)):
-            scaler_grad.step(optimizer)
-            scaler_grad.update()
-            optimizer.zero_grad()
-        total_loss += loss.item() * batch.num_graphs * accum_steps
-    return total_loss / len(loader.dataset)
+    use_amp = torch.cuda.is_available()
+    for _ in range(20):
+        model.train()
+        total_loss = 0.0
+        optimizer.zero_grad()
+
+        for i, batch in enumerate(loader):
+            batch = batch.to(device)
+            batch.x = batch.x.float()
+            batch.edge_attr = batch.edge_attr.float()
+            batch.graph_feats = batch.graph_feats.float()
+            batch.y = batch.y.float()
+
+            if use_amp:
+                with autocast(device_type="cuda", dtype=torch.float16):
+                    output = model(batch)
+                    loss = loss_fn(output, batch.y.view(-1)) / accum_steps
+            else:
+                output = model(batch)
+                loss = loss_fn(output, batch.y.view(-1)) / accum_steps
+
+            if use_amp:
+                scaler_grad.scale(loss).backward()
+            else:
+                loss.backward()
+
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
+            if (i + 1) % accum_steps == 0 or (i + 1 == len(loader)):
+                if use_amp:
+                    scaler_grad.step(optimizer)
+                    scaler_grad.update()
+                else:
+                    optimizer.step()
+
+                optimizer.zero_grad()
+
+            total_loss += loss.item() * batch.num_graphs * accum_steps
+
+        avg_loss = total_loss / len(loader.dataset)
+        if scheduler is not None:
+            scheduler.step(avg_loss)
+
+    return model
 
 
 def evaluate_polyatomic(model, loader, device, log_file, return_preds=False):
