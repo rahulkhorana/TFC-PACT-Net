@@ -1,0 +1,44 @@
+Experiment: gp+selfies on ic50
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7294, MAE: 0.5937, R2: -0.0006
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7905, MAE: 0.6174, R2: -0.0133
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7916, MAE: 0.6192, R2: -0.0000
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.8422, MAE: 0.6374, R2: -0.0084
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.8750, MAE: 0.6490, R2: -0.0014
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.8073  [0.7644, 0.8515]
+MAE: 0.6232  [0.6072, 0.6384]
+R2: -0.0047  [-0.0098, -0.0006]
+
+★ Using fold 1 model for test inference
+Evaluating GP model...
+RMSE: 0.7842, MAE: 0.6138, R2: -0.0017
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7842372298268165, 'mae': 0.6137832109271052, 'r2': -0.0016797167612061514}
+Test RMSE: 0.7833  (95 % CI: 0.7049–0.8586)
+
+Test MAE : 0.6129  (95 % CI: 0.5667–0.6618)
+
+Test R²  : -0.0044  (95 % CI: -0.0208–-0.0000)
+

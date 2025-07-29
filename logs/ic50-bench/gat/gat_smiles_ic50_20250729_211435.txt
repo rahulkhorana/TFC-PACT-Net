@@ -1,0 +1,38 @@
+Experiment: gat+smiles on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.9521
+RMSE: 0.7231, MAE: 0.6038, R2: 0.0165
+
+FOLD 2/5
+GNN Train Loss: 0.9390
+RMSE: 0.7831, MAE: 0.5890, R2: 0.0057
+
+FOLD 3/5
+GNN Train Loss: 0.9375
+RMSE: 0.7850, MAE: 0.6060, R2: 0.0164
+
+FOLD 4/5
+GNN Train Loss: 0.9733
+RMSE: 0.8061, MAE: 0.6225, R2: 0.0763
+
+FOLD 5/5
+GNN Train Loss: 0.9548
+RMSE: 0.8522, MAE: 0.6323, R2: 0.0500
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7897  [0.7562, 0.8249]
+MAE: 0.6109  [0.5983, 0.6247]
+R2: 0.0330  [0.0121, 0.0569]
+
+★ Using fold 1 model for test inference
+RMSE: 0.7584, MAE: 0.6182, R2: 0.0631
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7584492083110622, 'mae': 0.6182253956794739, 'r2': 0.06311357021331787}
+Test RMSE: 0.7569  (95 % CI: 0.6983–0.8222)
+
+Test MAE : 0.6190  (95 % CI: 0.5754–0.6647)
+
+Test R²  : 0.0584  (95 % CI: -0.0024–0.1092)
+

@@ -1,0 +1,38 @@
+Experiment: gcn+smiles on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.9722
+RMSE: 0.7035, MAE: 0.5809, R2: 0.0694
+
+FOLD 2/5
+GNN Train Loss: 0.9519
+RMSE: 0.7803, MAE: 0.6139, R2: 0.0126
+
+FOLD 3/5
+GNN Train Loss: 0.9645
+RMSE: 0.7892, MAE: 0.6010, R2: 0.0060
+
+FOLD 4/5
+GNN Train Loss: 0.9766
+RMSE: 0.8140, MAE: 0.6242, R2: 0.0580
+
+FOLD 5/5
+GNN Train Loss: 0.9479
+RMSE: 0.8542, MAE: 0.6344, R2: 0.0455
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7883  [0.7427, 0.8265]
+MAE: 0.6109  [0.5941, 0.6262]
+R2: 0.0382  [0.0165, 0.0600]
+
+★ Using fold 1 model for test inference
+RMSE: 0.7463, MAE: 0.5866, R2: 0.0929
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7462877750260829, 'mae': 0.5866196155548096, 'r2': 0.09291791915893555}
+Test RMSE: 0.7451  (95 % CI: 0.6744–0.8239)
+
+Test MAE : 0.5863  (95 % CI: 0.5418–0.6358)
+
+Test R²  : 0.0908  (95 % CI: 0.0492–0.1337)
+

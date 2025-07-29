@@ -1,0 +1,38 @@
+Experiment: gin+ecfp on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.0207
+RMSE: 0.8474, MAE: 0.6717, R2: -0.3506
+
+FOLD 2/5
+GNN Train Loss: 0.0176
+RMSE: 0.9393, MAE: 0.7124, R2: -0.4306
+
+FOLD 3/5
+GNN Train Loss: 0.0187
+RMSE: 0.8540, MAE: 0.6558, R2: -0.1639
+
+FOLD 4/5
+GNN Train Loss: 0.0240
+RMSE: 0.9306, MAE: 0.6883, R2: -0.2310
+
+FOLD 5/5
+GNN Train Loss: 0.0195
+RMSE: 0.9074, MAE: 0.6872, R2: -0.0770
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.8961  [0.8620, 0.9312]
+MAE: 0.6828  [0.6655, 0.6992]
+R2: -0.2500  [-0.3599, -0.1426]
+
+★ Using fold 1 model for test inference
+RMSE: 0.9368, MAE: 0.7072, R2: -0.4293
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.9368081082823856, 'mae': 0.7072325348854065, 'r2': -0.4293389320373535}
+Test RMSE: 0.9375  (95 % CI: 0.8596–1.0233)
+
+Test MAE : 0.7075  (95 % CI: 0.6435–0.7702)
+
+Test R²  : -0.4352  (95 % CI: -0.6594–-0.2330)
+

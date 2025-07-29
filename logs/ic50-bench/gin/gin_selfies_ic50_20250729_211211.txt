@@ -1,0 +1,38 @@
+Experiment: gin+selfies on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.9588
+RMSE: 0.7039, MAE: 0.5803, R2: 0.0683
+
+FOLD 2/5
+GNN Train Loss: 0.9544
+RMSE: 0.7884, MAE: 0.6322, R2: -0.0080
+
+FOLD 3/5
+GNN Train Loss: 0.9429
+RMSE: 0.8008, MAE: 0.6394, R2: -0.0234
+
+FOLD 4/5
+GNN Train Loss: 0.9597
+RMSE: 0.8141, MAE: 0.6190, R2: 0.0579
+
+FOLD 5/5
+GNN Train Loss: 0.9530
+RMSE: 0.8583, MAE: 0.6357, R2: 0.0364
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7930  [0.7479, 0.8328]
+MAE: 0.6212  [0.5999, 0.6365]
+R2: 0.0270  [-0.0053, 0.0577]
+
+★ Using fold 1 model for test inference
+RMSE: 0.7510, MAE: 0.5883, R2: 0.0815
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.750959180375275, 'mae': 0.588279128074646, 'r2': 0.08152657747268677}
+Test RMSE: 0.7501  (95 % CI: 0.6817–0.8203)
+
+Test MAE : 0.5891  (95 % CI: 0.5440–0.6341)
+
+Test R²  : 0.0790  (95 % CI: 0.0399–0.1154)
+

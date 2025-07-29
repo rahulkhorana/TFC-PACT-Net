@@ -59,6 +59,26 @@ sage          ecfp     2.5430 ± 0.6463     1.7124 ± 0.3320
 sage          selfies  3.8307 ± 0.8413     2.7317 ± 0.4656
 sage          smiles   3.7483 ± 0.8613     2.6734 ± 0.4676
 
+IC50 Benchmark Summary:
+
+Model         Encoding RMSE ±               MAE ±               
+-----------------------------------------------------------------
+gat           ecfp     1.1000 ± 0.0907     0.8420 ± 0.0685
+gat           selfies  0.7474 ± 0.0619     0.6026 ± 0.0412
+gat           smiles   0.7569 ± 0.0620     0.6190 ± 0.0446
+gcn           ecfp     1.0079 ± 0.0862     0.7721 ± 0.0615
+gcn           selfies  0.7475 ± 0.0764     0.5828 ± 0.0459
+gcn           smiles   0.7451 ± 0.0747     0.5863 ± 0.0470
+gin           ecfp     0.9375 ± 0.0819     0.7075 ± 0.0634
+gin           selfies  0.7501 ± 0.0693     0.5891 ± 0.0450
+gin           smiles   0.7487 ± 0.0718     0.5905 ± 0.0436
+gp+tanimoto   ecfp     0.7660 ± 0.0707     0.5961 ± 0.0485
+gp+tanimoto   selfies  0.7833 ± 0.0769     0.6129 ± 0.0476
+gp+tanimoto   smiles   0.7647 ± 0.0698     0.5965 ± 0.0480
+sage          ecfp     1.0252 ± 0.0872     0.7877 ± 0.0658
+sage          selfies  0.7415 ± 0.0736     0.5863 ± 0.0426
+sage          smiles   0.7418 ± 0.0683     0.5868 ± 0.0440
+
 LIPOPHIL Benchmark Summary:
 
 Model         Encoding RMSE ±               MAE ±               

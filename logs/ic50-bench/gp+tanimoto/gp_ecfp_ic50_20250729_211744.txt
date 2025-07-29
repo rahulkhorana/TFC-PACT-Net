@@ -1,0 +1,44 @@
+Experiment: gp+ecfp on ic50
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7014, MAE: 0.5693, R2: 0.0747
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7477, MAE: 0.5876, R2: 0.0935
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7350, MAE: 0.5783, R2: 0.1378
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7867, MAE: 0.5887, R2: 0.1202
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 0.7671, MAE: 0.5831, R2: 0.2303
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7478  [0.7241, 0.7710]
+MAE: 0.5816  [0.5750, 0.5871]
+R2: 0.1311  [0.0913, 0.1807]
+
+★ Using fold 1 model for test inference
+Evaluating GP model...
+RMSE: 0.7658, MAE: 0.5963, R2: 0.0448
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7658389939698179, 'mae': 0.5962968676225696, 'r2': 0.044767875429670534}
+Test RMSE: 0.7660  (95 % CI: 0.6981–0.8395)
+
+Test MAE : 0.5961  (95 % CI: 0.5495–0.6466)
+
+Test R²  : 0.0424  (95 % CI: -0.0505–0.1508)
+

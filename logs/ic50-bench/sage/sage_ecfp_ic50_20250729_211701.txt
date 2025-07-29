@@ -1,0 +1,38 @@
+Experiment: sage+ecfp on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.0510
+RMSE: 0.9489, MAE: 0.7523, R2: -0.6935
+
+FOLD 2/5
+GNN Train Loss: 0.0427
+RMSE: 1.0528, MAE: 0.7952, R2: -0.7973
+
+FOLD 3/5
+GNN Train Loss: 0.0492
+RMSE: 0.9462, MAE: 0.7342, R2: -0.4290
+
+FOLD 4/5
+GNN Train Loss: 0.0451
+RMSE: 1.0330, MAE: 0.7819, R2: -0.5171
+
+FOLD 5/5
+GNN Train Loss: 0.0329
+RMSE: 0.9770, MAE: 0.7392, R2: -0.2486
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.9913  [0.9535, 1.0315]
+MAE: 0.7613  [0.7408, 0.7830]
+R2: -0.5398  [-0.6997, -0.3913]
+
+★ Using fold 3 model for test inference
+RMSE: 1.0255, MAE: 0.7877, R2: -0.7128
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.02549298456732, 'mae': 0.7876872420310974, 'r2': -0.7127711772918701}
+Test RMSE: 1.0252  (95 % CI: 0.9381–1.1124)
+
+Test MAE : 0.7877  (95 % CI: 0.7225–0.8542)
+
+Test R²  : -0.7225  (95 % CI: -1.0383–-0.4411)
+

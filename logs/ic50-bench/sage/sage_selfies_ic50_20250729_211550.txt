@@ -1,0 +1,38 @@
+Experiment: sage+selfies on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.9577
+RMSE: 0.6977, MAE: 0.5781, R2: 0.0844
+
+FOLD 2/5
+GNN Train Loss: 0.9350
+RMSE: 0.7821, MAE: 0.6234, R2: 0.0080
+
+FOLD 3/5
+GNN Train Loss: 0.9495
+RMSE: 0.7856, MAE: 0.6087, R2: 0.0149
+
+FOLD 4/5
+GNN Train Loss: 0.9579
+RMSE: 0.8086, MAE: 0.6277, R2: 0.0704
+
+FOLD 5/5
+GNN Train Loss: 0.9546
+RMSE: 0.8536, MAE: 0.6359, R2: 0.0470
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7851  [0.7375, 0.8257]
+MAE: 0.6149  [0.5942, 0.6309]
+R2: 0.0454  [0.0199, 0.0714]
+
+★ Using fold 1 model for test inference
+RMSE: 0.7417, MAE: 0.5873, R2: 0.1039
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7417450238386533, 'mae': 0.5873402953147888, 'r2': 0.10392731428146362}
+Test RMSE: 0.7415  (95 % CI: 0.6707–0.8179)
+
+Test MAE : 0.5863  (95 % CI: 0.5470–0.6322)
+
+Test R²  : 0.1009  (95 % CI: 0.0581–0.1476)
+

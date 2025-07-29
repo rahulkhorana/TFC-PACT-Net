@@ -288,7 +288,7 @@ def main():
     parser.add_argument("--rep", choices=list(REPRESENTATIONS.keys()), required=True)
     parser.add_argument(
         "--dataset",
-        choices=["esol", "freesolv", "lipophil", "boilingpoint", "qm9"],
+        choices=["esol", "freesolv", "lipophil", "boilingpoint", "qm9", "ic50"],
         required=True,
     )
     args = parser.parse_args()

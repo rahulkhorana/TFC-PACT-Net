@@ -1,0 +1,38 @@
+Experiment: gcn+selfies on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.9608
+RMSE: 0.7043, MAE: 0.5787, R2: 0.0672
+
+FOLD 2/5
+GNN Train Loss: 0.9500
+RMSE: 0.7905, MAE: 0.6343, R2: -0.0134
+
+FOLD 3/5
+GNN Train Loss: 0.9429
+RMSE: 0.7808, MAE: 0.6116, R2: 0.0270
+
+FOLD 4/5
+GNN Train Loss: 0.9591
+RMSE: 0.8115, MAE: 0.6210, R2: 0.0639
+
+FOLD 5/5
+GNN Train Loss: 0.9485
+RMSE: 0.8684, MAE: 0.6329, R2: 0.0136
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7909  [0.7410, 0.8353]
+MAE: 0.6158  [0.5961, 0.6311]
+R2: 0.0317  [0.0028, 0.0578]
+
+★ Using fold 1 model for test inference
+RMSE: 0.7497, MAE: 0.5826, R2: 0.0846
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7497137636113717, 'mae': 0.5825851559638977, 'r2': 0.08457046747207642}
+Test RMSE: 0.7475  (95 % CI: 0.6710–0.8238)
+
+Test MAE : 0.5828  (95 % CI: 0.5379–0.6297)
+
+Test R²  : 0.0823  (95 % CI: 0.0324–0.1312)
+

@@ -1,0 +1,38 @@
+Experiment: gcn+ecfp on ic50
+
+FOLD 1/5
+GNN Train Loss: 0.0800
+RMSE: 0.9218, MAE: 0.7355, R2: -0.5980
+
+FOLD 2/5
+GNN Train Loss: 0.0714
+RMSE: 1.0056, MAE: 0.7682, R2: -0.6397
+
+FOLD 3/5
+GNN Train Loss: 0.0893
+RMSE: 0.9281, MAE: 0.7121, R2: -0.3749
+
+FOLD 4/5
+GNN Train Loss: 0.0696
+RMSE: 1.0180, MAE: 0.7730, R2: -0.4732
+
+FOLD 5/5
+GNN Train Loss: 0.0613
+RMSE: 0.9692, MAE: 0.7437, R2: -0.2287
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.9690  [0.9351, 1.0033]
+MAE: 0.7462  [0.7278, 0.7643]
+R2: -0.4629  [-0.5815, -0.3318]
+
+★ Using fold 1 model for test inference
+RMSE: 1.0097, MAE: 0.7723, R2: -0.6605
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.009732037396995, 'mae': 0.7722691893577576, 'r2': -0.6605280637741089}
+Test RMSE: 1.0079  (95 % CI: 0.9229–1.0953)
+
+Test MAE : 0.7721  (95 % CI: 0.7131–0.8361)
+
+Test R²  : -0.6738  (95 % CI: -1.0152–-0.4012)
+
