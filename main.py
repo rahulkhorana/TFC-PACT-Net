@@ -1,3 +1,4 @@
+import os
 import argparse
 import wandb
 import numpy as np
@@ -27,6 +28,13 @@ from training.train_eval import (
 import torch
 from torch_geometric.data import DataLoader
 from torch.amp.grad_scaler import GradScaler
+
+import multiprocessing
+
+try:
+    multiprocessing.set_start_method("fork")
+except RuntimeError:
+    pass  # start method already set — safe to ignore
 
 # Representation functions for GNN
 REPRESENTATIONS = {
@@ -70,7 +78,7 @@ def featurize_dataset_parallel(X, y, featurizer, n_jobs=None):
 
     if n_jobs is None:
         n_jobs = max(1, multiprocessing.cpu_count() - 2)
-    results = Parallel(n_jobs=n_jobs)(
+    results = Parallel(n_jobs=n_jobs, backend="loky", verbose=10)(
         delayed(featurizer)(smiles, y) for smiles, y in zip(X, y)
     )
     return [g for g in results if g is not None]
@@ -163,11 +171,27 @@ def run_polyatomic(args):
     featurizer = REPRESENTATIONS[args.rep]
 
     def train_fn(X_tr, y_tr, log_file):
-        data_list = featurize_dataset_parallel(X_tr, y_tr, featurizer)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        datasets_dir = os.path.join(script_dir, "datasets")
+        os.makedirs(datasets_dir, exist_ok=True)
+        dataset_cache_path = os.path.join(
+            datasets_dir, f"polyatomic_data_{args.dataset}.pt"
+        )
+        if os.path.exists(dataset_cache_path):
+            print(f"Loading cached dataset from {dataset_cache_path}")
+            data_list = torch.load(dataset_cache_path, weights_only=False)
+        else:
+            assert os.path.exists(
+                datasets_dir
+            ), "Datasets directory still missing before featurizing."
+            data_list = featurize_dataset_parallel(X_tr, y_tr, featurizer)
+            torch.save(data_list, dataset_cache_path)
+
         model_cls = GNN_MODELS[args.model]
         loader = DataLoader(
             data_list, batch_size=128, shuffle=True, num_workers=8, pin_memory=True
         )
+
         node_feat_dim = data_list[0].x.shape[1]
         edge_feat_dim = data_list[0].edge_attr.shape[1]
         graph_feat_dim = data_list[0].graph_feats.shape[0]
@@ -209,7 +233,22 @@ def run_polyatomic(args):
         return model
 
     def eval_fn(model, X_te, y_te, log_file, scaler, return_preds=False):
-        data_list = featurize_dataset_parallel(X_te, y_te, featurizer)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        datasets_dir = os.path.join(script_dir, "datasets")
+        os.makedirs(datasets_dir, exist_ok=True)
+        dataset_cache_path = os.path.join(
+            datasets_dir, f"polyatomic_test_data_{args.dataset}.pt"
+        )
+        if os.path.exists(dataset_cache_path):
+            print(f"Loading cached dataset from {dataset_cache_path}")
+            data_list = torch.load(dataset_cache_path, weights_only=False)
+        else:
+            assert os.path.exists(
+                datasets_dir
+            ), "Datasets directory still missing before featurizing."
+            data_list = featurize_dataset_parallel(X_te, y_te, featurizer)
+            torch.save(data_list, dataset_cache_path)
+
         loader = DataLoader(data_list, batch_size=128)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         return evaluate_polyatomic(

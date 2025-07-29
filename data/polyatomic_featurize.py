@@ -9,7 +9,7 @@ from polyatomic_complexes.src.complexes import PolyatomicGeometrySMILE
 
 
 def compressed_topsignal_graph_from_smiles(
-    smile: str, topk_lap: int = 5
+    smile: str, y_val: int, topk_lap: int = 5
 ) -> Data | None:
     try:
         # 1) Abstract complex
@@ -148,6 +148,7 @@ def compressed_topsignal_graph_from_smiles(
 
         data = Data(x=x, edge_index=edge_index, edge_attr=edge_attr)
         data.graph_feats = graph_feats
+        data.y = torch.tensor([y_val], dtype=torch.float)
         # print(f"SUCCESS for : {smile}")
         return data
     except Exception as e:
