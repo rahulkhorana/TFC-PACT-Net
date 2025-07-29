@@ -1,0 +1,38 @@
+Experiment: gcn+selfies on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.5622
+RMSE: 3.2195, MAE: 2.6335, R2: 0.4394
+
+FOLD 2/5
+GNN Train Loss: 0.5517
+RMSE: 3.0470, MAE: 2.4250, R2: 0.4648
+
+FOLD 3/5
+GNN Train Loss: 0.5529
+RMSE: 3.0739, MAE: 2.4017, R2: 0.4054
+
+FOLD 4/5
+GNN Train Loss: 0.5481
+RMSE: 2.8668, MAE: 2.3676, R2: 0.4635
+
+FOLD 5/5
+GNN Train Loss: 0.5785
+RMSE: 3.0099, MAE: 2.4172, R2: 0.4863
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.0449  [2.9389, 3.1505]
+MAE: 2.4483  [2.3859, 2.5455]
+R2: 0.4524  [0.4284, 0.4734]
+
+★ Using fold 4 model for test inference
+RMSE: 2.8881, MAE: 2.3135, R2: 0.4672
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.8881001761120233, 'mae': 2.3134849071502686, 'r2': 0.4671661853790283}
+Test RMSE: 2.8783  (95 % CI: 2.6781–3.0741)
+
+Test MAE : 2.3116  (95 % CI: 2.1404–2.4802)
+
+Test R²  : 0.4645  (95 % CI: 0.3865–0.5357)
+

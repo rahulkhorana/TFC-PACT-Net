@@ -1,0 +1,44 @@
+Experiment: gp+ecfp on qm9
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.4946, MAE: 1.7582, R2: 0.6634
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.3520, MAE: 1.6626, R2: 0.6811
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.2294, MAE: 1.6499, R2: 0.6872
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.1215, MAE: 1.5877, R2: 0.7062
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.4429, MAE: 1.7087, R2: 0.6616
+
+====== K-FOLD SUMMARY ======
+RMSE: 2.3257  [2.1892, 2.4454]
+MAE: 1.6735  [1.6269, 1.7266]
+R2: 0.6798  [0.6671, 0.6939]
+
+★ Using fold 4 model for test inference
+Evaluating GP model...
+RMSE: 2.2501, MAE: 1.6984, R2: 0.6766
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.2500902017685833, 'mae': 1.6984001519775394, 'r2': 0.6765798302070667}
+Test RMSE: 2.2497  (95 % CI: 2.0322–2.4699)
+
+Test MAE : 1.6977  (95 % CI: 1.5522–1.8385)
+
+Test R²  : 0.6751  (95 % CI: 0.6084–0.7329)
+

@@ -1,0 +1,38 @@
+Experiment: gcn+smiles on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.5447
+RMSE: 3.1920, MAE: 2.5963, R2: 0.4489
+
+FOLD 2/5
+GNN Train Loss: 0.5482
+RMSE: 3.0516, MAE: 2.4293, R2: 0.4632
+
+FOLD 3/5
+GNN Train Loss: 0.5535
+RMSE: 3.1099, MAE: 2.4444, R2: 0.3914
+
+FOLD 4/5
+GNN Train Loss: 0.5527
+RMSE: 2.8635, MAE: 2.3650, R2: 0.4648
+
+FOLD 5/5
+GNN Train Loss: 0.5598
+RMSE: 3.0072, MAE: 2.4244, R2: 0.4873
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.0438  [2.9415, 3.1311]
+MAE: 2.4510  [2.3937, 2.5285]
+R2: 0.4506  [0.4201, 0.4735]
+
+★ Using fold 4 model for test inference
+RMSE: 2.8863, MAE: 2.3104, R2: 0.4678
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.886309727661628, 'mae': 2.310394048690796, 'r2': 0.46782660484313965}
+Test RMSE: 2.8837  (95 % CI: 2.6715–3.0981)
+
+Test MAE : 2.3072  (95 % CI: 2.1428–2.4815)
+
+Test R²  : 0.4680  (95 % CI: 0.3945–0.5370)
+

@@ -1,0 +1,38 @@
+Experiment: gin+selfies on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.6156
+RMSE: 3.5032, MAE: 2.8585, R2: 0.3363
+
+FOLD 2/5
+GNN Train Loss: 0.6698
+RMSE: 3.4555, MAE: 2.7458, R2: 0.3117
+
+FOLD 3/5
+GNN Train Loss: 0.6770
+RMSE: 3.3339, MAE: 2.6352, R2: 0.3006
+
+FOLD 4/5
+GNN Train Loss: 0.5653
+RMSE: 2.8604, MAE: 2.3347, R2: 0.4659
+
+FOLD 5/5
+GNN Train Loss: 0.6825
+RMSE: 3.3380, MAE: 2.7048, R2: 0.3682
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.3007  [3.0750, 3.4598]
+MAE: 2.6530  [2.4908, 2.7913]
+R2: 0.3560  [0.3122, 0.4133]
+
+★ Using fold 4 model for test inference
+RMSE: 2.8455, MAE: 2.2142, R2: 0.4828
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.8455333776907707, 'mae': 2.214185953140259, 'r2': 0.482757031917572}
+Test RMSE: 2.8427  (95 % CI: 2.6353–3.0429)
+
+Test MAE : 2.2164  (95 % CI: 2.0508–2.3906)
+
+Test R²  : 0.4800  (95 % CI: 0.4168–0.5372)
+

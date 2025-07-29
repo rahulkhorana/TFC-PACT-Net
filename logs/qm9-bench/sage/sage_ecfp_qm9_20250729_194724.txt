@@ -1,0 +1,38 @@
+Experiment: sage+ecfp on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.0082
+RMSE: 3.4585, MAE: 2.7464, R2: 0.3531
+
+FOLD 2/5
+GNN Train Loss: 0.0083
+RMSE: 3.4747, MAE: 2.6598, R2: 0.3040
+
+FOLD 3/5
+GNN Train Loss: 0.0063
+RMSE: 3.4931, MAE: 2.8059, R2: 0.2322
+
+FOLD 4/5
+GNN Train Loss: 0.0054
+RMSE: 3.2948, MAE: 2.5736, R2: 0.2914
+
+FOLD 5/5
+GNN Train Loss: 0.0082
+RMSE: 3.5366, MAE: 2.6402, R2: 0.2908
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.4519  [3.3704, 3.5105]
+MAE: 2.6860  [2.6200, 2.7583]
+R2: 0.2945  [0.2584, 0.3283]
+
+★ Using fold 4 model for test inference
+RMSE: 3.2710, MAE: 2.5969, R2: 0.3165
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.2710478078578284, 'mae': 2.596869468688965, 'r2': 0.3164960741996765}
+Test RMSE: 3.2668  (95 % CI: 3.0253–3.5025)
+
+Test MAE : 2.6014  (95 % CI: 2.4126–2.7905)
+
+Test R²  : 0.3113  (95 % CI: 0.1619–0.4291)
+

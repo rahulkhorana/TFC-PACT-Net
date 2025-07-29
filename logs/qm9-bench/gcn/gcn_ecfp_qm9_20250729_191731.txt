@@ -1,0 +1,38 @@
+Experiment: gcn+ecfp on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.0109
+RMSE: 3.3349, MAE: 2.6179, R2: 0.3985
+
+FOLD 2/5
+GNN Train Loss: 0.0109
+RMSE: 3.2271, MAE: 2.4627, R2: 0.3997
+
+FOLD 3/5
+GNN Train Loss: 0.0079
+RMSE: 3.3010, MAE: 2.6413, R2: 0.3143
+
+FOLD 4/5
+GNN Train Loss: 0.0082
+RMSE: 3.0394, MAE: 2.3730, R2: 0.3970
+
+FOLD 5/5
+GNN Train Loss: 0.0161
+RMSE: 3.4245, MAE: 2.5344, R2: 0.3351
+
+====== K-FOLD SUMMARY ======
+RMSE: 3.2647  [3.1440, 3.3671]
+MAE: 2.5279  [2.4411, 2.6106]
+R2: 0.3691  [0.3355, 0.3984]
+
+★ Using fold 4 model for test inference
+RMSE: 3.0253, MAE: 2.3681, R2: 0.4153
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 3.025347281453962, 'mae': 2.36812162399292, 'r2': 0.4153206944465637}
+Test RMSE: 3.0271  (95 % CI: 2.8036–3.2582)
+
+Test MAE : 2.3643  (95 % CI: 2.1796–2.5548)
+
+Test R²  : 0.4078  (95 % CI: 0.2733–0.5225)
+

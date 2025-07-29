@@ -4,6 +4,7 @@ import importlib.resources as pkg_resources
 import polyatomic_complexes
 import numpy as np
 from typing import Tuple
+from pathlib import Path
 
 
 def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -27,6 +28,18 @@ def load_dataset(name) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         )
         df = pd.read_csv(str(data_path))
         target_col = "exp"
+    elif name.lower() == "qm8":
+        data_path = (
+            Path(__file__).parent.parent / "benchmark_csv/qm8_subset.csv".__str__()
+        )
+        df = pd.read_csv(data_path)
+        target_col = "f1-CAM"
+    elif name.lower() == "qm9":
+        data_path = (
+            Path(__file__).parent.parent / "benchmark_csv/qm9_subset.csv".__str__()
+        )
+        df = pd.read_csv(data_path)
+        target_col = "cv"
     else:
         raise ValueError(f"Unknown dataset: {name}")
 

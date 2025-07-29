@@ -1,0 +1,38 @@
+Experiment: gat+selfies on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.2854
+RMSE: 2.1931, MAE: 1.7215, R2: 0.7399
+
+FOLD 2/5
+GNN Train Loss: 0.2718
+RMSE: 2.1731, MAE: 1.7300, R2: 0.7278
+
+FOLD 3/5
+GNN Train Loss: 0.2742
+RMSE: 2.2739, MAE: 1.7726, R2: 0.6746
+
+FOLD 4/5
+GNN Train Loss: 0.3050
+RMSE: 2.3055, MAE: 1.8609, R2: 0.6531
+
+FOLD 5/5
+GNN Train Loss: 0.2741
+RMSE: 2.0128, MAE: 1.5978, R2: 0.7703
+
+====== K-FOLD SUMMARY ======
+RMSE: 2.1908  [2.0971, 2.2727]
+MAE: 1.7359  [1.6592, 1.8083]
+R2: 0.7147  [0.6766, 0.7520]
+
+★ Using fold 5 model for test inference
+RMSE: 2.0538, MAE: 1.6322, R2: 0.7306
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.0537570253462154, 'mae': 1.6322085857391357, 'r2': 0.730557918548584}
+Test RMSE: 2.0540  (95 % CI: 1.8996–2.2088)
+
+Test MAE : 1.6340  (95 % CI: 1.5147–1.7579)
+
+Test R²  : 0.7285  (95 % CI: 0.6688–0.7808)
+

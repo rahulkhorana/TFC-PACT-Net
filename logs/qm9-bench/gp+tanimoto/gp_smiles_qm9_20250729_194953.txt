@@ -1,0 +1,44 @@
+Experiment: gp+smiles on qm9
+
+FOLD 1/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.4946, MAE: 1.7582, R2: 0.6634
+
+FOLD 2/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.3520, MAE: 1.6626, R2: 0.6811
+
+FOLD 3/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.2294, MAE: 1.6499, R2: 0.6872
+
+FOLD 4/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.1215, MAE: 1.5877, R2: 0.7062
+
+FOLD 5/5
+Training GP model...
+Evaluating GP model...
+RMSE: 2.4429, MAE: 1.7087, R2: 0.6616
+
+====== K-FOLD SUMMARY ======
+RMSE: 2.3280  [2.2107, 2.4454]
+MAE: 1.6736  [1.6243, 1.7193]
+R2: 0.6804  [0.6668, 0.6962]
+
+★ Using fold 4 model for test inference
+Evaluating GP model...
+RMSE: 2.2501, MAE: 1.6984, R2: 0.6766
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 2.2500902017685833, 'mae': 1.6984001519775394, 'r2': 0.6765798302070667}
+Test RMSE: 2.2494  (95 % CI: 2.0552–2.4700)
+
+Test MAE : 1.7009  (95 % CI: 1.5588–1.8477)
+
+Test R²  : 0.6737  (95 % CI: 0.6025–0.7322)
+
