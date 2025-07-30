@@ -1,0 +1,33 @@
+Experiment: polyatomic+polyatomic on freesolv
+
+FOLD 1/5
+RMSE: 1.8681, MAE: 1.3170, R2: 0.7248
+
+FOLD 2/5
+RMSE: 1.4955, MAE: 1.0240, R2: 0.8121
+
+FOLD 3/5
+RMSE: 1.5607, MAE: 1.0552, R2: 0.7994
+
+FOLD 4/5
+RMSE: 1.7659, MAE: 1.2820, R2: 0.7592
+
+FOLD 5/5
+RMSE: 1.7600, MAE: 1.2360, R2: 0.7477
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.6886  [1.5745, 1.8045]
+MAE: 1.1827  [1.0789, 1.2868]
+R2: 0.7683  [0.7409, 0.7964]
+
+★ Using fold 2 model for test inference
+RMSE: 1.5264, MAE: 1.0450, R2: 0.8121
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.5264313062598338, 'mae': 1.0450139045715332, 'r2': 0.8120720386505127}
+Test RMSE: 1.5153  (95 % CI: 1.1836–1.8625)
+
+Test MAE : 1.0409  (95 % CI: 0.8381–1.2742)
+
+Test R²  : 0.8100  (95 % CI: 0.7173–0.8866)
+

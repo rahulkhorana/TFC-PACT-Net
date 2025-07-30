@@ -119,6 +119,18 @@ sage          ecfp     0.9368 ± 0.0571     0.7010 ± 0.0418
 sage          selfies  1.1439 ± 0.0534     0.9102 ± 0.0435
 sage          smiles   1.1332 ± 0.0455     0.9405 ± 0.0445
 
+POLYATOMIC Benchmark Summary:
+
+Model         Encoding RMSE ±               MAE ±               
+-----------------------------------------------------------------
+polyatomic    unknown  1.5655 ± 0.1263     1.2717 ± 0.0984
+polyatomic    unknown  1.0860 ± 0.1354     0.8171 ± 0.0812
+polyatomic    unknown  1.5153 ± 0.3395     1.0409 ± 0.2181
+polyatomic    unknown  0.6975 ± 0.0551     0.5724 ± 0.0436
+polyatomic    unknown  0.7913 ± 0.0575     0.5953 ± 0.0382
+polyatomic    unknown  0.7043 ± 0.1095     0.5150 ± 0.0722
+polyatomic    unknown  48.1815 ± 5.4987     33.3759 ± 3.7307
+
 QM9 Benchmark Summary:
 
 Model         Encoding RMSE ±               MAE ±               

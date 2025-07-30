@@ -1,0 +1,33 @@
+Experiment: polyatomic+polyatomic on ic50
+
+FOLD 1/5
+RMSE: 0.7340, MAE: 0.5997, R2: -0.0132
+
+FOLD 2/5
+RMSE: 0.7114, MAE: 0.5753, R2: 0.0150
+
+FOLD 3/5
+RMSE: 0.7676, MAE: 0.6365, R2: -0.1480
+
+FOLD 4/5
+RMSE: 0.6961, MAE: 0.5682, R2: 0.0256
+
+FOLD 5/5
+RMSE: 0.6831, MAE: 0.5598, R2: 0.0402
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.7177  [0.6939, 0.7429]
+MAE: 0.5879  [0.5677, 0.6144]
+R2: -0.0159  [-0.0863, 0.0293]
+
+★ Using fold 5 model for test inference
+RMSE: 0.6984, MAE: 0.5724, R2: 0.0410
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.6983667435957716, 'mae': 0.5723831653594971, 'r2': 0.04096406698226929}
+Test RMSE: 0.6975  (95 % CI: 0.6406–0.7508)
+
+Test MAE : 0.5724  (95 % CI: 0.5299–0.6172)
+
+Test R²  : 0.0375  (95 % CI: -0.0229–0.0971)
+

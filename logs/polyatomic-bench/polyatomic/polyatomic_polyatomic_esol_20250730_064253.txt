@@ -1,0 +1,33 @@
+Experiment: polyatomic+polyatomic on esol
+
+FOLD 1/5
+RMSE: 0.9593, MAE: 0.7000, R2: 0.7531
+
+FOLD 2/5
+RMSE: 0.6840, MAE: 0.4976, R2: 0.8612
+
+FOLD 3/5
+RMSE: 0.7321, MAE: 0.5618, R2: 0.8531
+
+FOLD 4/5
+RMSE: 0.7950, MAE: 0.5903, R2: 0.8246
+
+FOLD 5/5
+RMSE: 0.8642, MAE: 0.6658, R2: 0.7967
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.8065  [0.7255, 0.8936]
+MAE: 0.6036  [0.5347, 0.6644]
+R2: 0.8184  [0.7835, 0.8490]
+
+★ Using fold 2 model for test inference
+RMSE: 0.7075, MAE: 0.5147, R2: 0.8612
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.7074806092102082, 'mae': 0.5146545767784119, 'r2': 0.8611921668052673}
+Test RMSE: 0.7043  (95 % CI: 0.5948–0.8139)
+
+Test MAE : 0.5150  (95 % CI: 0.4441–0.5884)
+
+Test R²  : 0.8595  (95 % CI: 0.8011–0.9025)
+

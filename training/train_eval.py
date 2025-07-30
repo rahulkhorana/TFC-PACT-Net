@@ -174,7 +174,7 @@ def train_polyatomic(
     return model
 
 
-def evaluate_polyatomic(model, loader, device, log_file, return_preds=False):
+def evaluate_polyatomic(model, loader, device, log_file, scaler, return_preds=False):
     """
     uses autocast for mixed precision evaluation
     this was designed for GPU training, but here is in CPU mode
@@ -191,6 +191,8 @@ def evaluate_polyatomic(model, loader, device, log_file, return_preds=False):
             trues.append(batch.y.view(-1))
     y_pred = torch.cat(preds)
     y_test = torch.cat(trues)
+    y_pred = scaler.inverse_transform(y_pred.numpy().reshape(-1, 1)).ravel()
+    y_test = scaler.inverse_transform(y_test.numpy().reshape(-1, 1)).ravel()
     metrics = report_metrics(y_test, y_pred, log_file)
     if return_preds:
         return metrics, y_test, y_pred

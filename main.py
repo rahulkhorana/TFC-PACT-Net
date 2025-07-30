@@ -253,7 +253,12 @@ def run_polyatomic(args):
         loader = DataLoader(data_list, batch_size=128)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         return evaluate_polyatomic(
-            model, loader, device, log_file, return_preds=return_preds
+            model=model,
+            loader=loader,
+            device=device,
+            log_file=log_file,
+            scaler=scaler,
+            return_preds=return_preds,
         )
 
     wandb.init(

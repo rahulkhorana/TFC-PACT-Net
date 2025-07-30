@@ -1,0 +1,33 @@
+Experiment: polyatomic+polyatomic on bindingdb
+
+FOLD 1/5
+RMSE: 1.5744, MAE: 1.2909, R2: 0.0316
+
+FOLD 2/5
+RMSE: 1.6103, MAE: 1.3237, R2: 0.0171
+
+FOLD 3/5
+RMSE: 1.6149, MAE: 1.3295, R2: 0.0158
+
+FOLD 4/5
+RMSE: 1.5555, MAE: 1.2655, R2: 0.0634
+
+FOLD 5/5
+RMSE: 1.5907, MAE: 1.2956, R2: 0.0400
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.5889  [1.5701, 1.6073]
+MAE: 1.3003  [1.2775, 1.3204]
+R2: 0.0338  [0.0195, 0.0494]
+
+★ Using fold 4 model for test inference
+RMSE: 1.5648, MAE: 1.2730, R2: 0.0633
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.5647968957507463, 'mae': 1.2729694843292236, 'r2': 0.06330239772796631}
+Test RMSE: 1.5655  (95 % CI: 1.4428–1.6954)
+
+Test MAE : 1.2717  (95 % CI: 1.1765–1.3733)
+
+Test R²  : 0.0597  (95 % CI: -0.0280–0.1509)
+

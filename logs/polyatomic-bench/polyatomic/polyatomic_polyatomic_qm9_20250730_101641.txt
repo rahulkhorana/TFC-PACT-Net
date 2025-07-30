@@ -1,0 +1,33 @@
+Experiment: polyatomic+polyatomic on qm9
+
+FOLD 1/5
+RMSE: 1.6468, MAE: 1.4297, R2: 0.8533
+
+FOLD 2/5
+RMSE: 2.9690, MAE: 2.7931, R2: 0.5317
+
+FOLD 3/5
+RMSE: 1.5836, MAE: 1.3249, R2: 0.8696
+
+FOLD 4/5
+RMSE: 1.0997, MAE: 0.8261, R2: 0.9376
+
+FOLD 5/5
+RMSE: 1.2515, MAE: 0.9500, R2: 0.9164
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.7117  [1.2572, 2.3484]
+MAE: 1.4661  [0.9753, 2.1518]
+R2: 0.8179  [0.6729, 0.9155]
+
+★ Using fold 4 model for test inference
+RMSE: 1.0867, MAE: 0.8167, R2: 0.9376
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.0866557428672936, 'mae': 0.8167256116867065, 'r2': 0.9376417994499207}
+Test RMSE: 1.0860  (95 % CI: 0.9564–1.2272)
+
+Test MAE : 0.8171  (95 % CI: 0.7381–0.9006)
+
+Test R²  : 0.9367  (95 % CI: 0.9147–0.9544)
+
