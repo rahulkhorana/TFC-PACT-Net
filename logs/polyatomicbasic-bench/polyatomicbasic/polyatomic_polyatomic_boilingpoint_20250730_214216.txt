@@ -1,0 +1,38 @@
+Experiment: polyatomic+polyatomic on boilingpoint
+
+FOLD 1/5
+GNN Train Loss: 0.4130
+RMSE: 50.0972, MAE: 37.4559, R2: 0.6537
+
+FOLD 2/5
+GNN Train Loss: 0.3834
+RMSE: 48.2395, MAE: 34.7289, R2: 0.6893
+
+FOLD 3/5
+GNN Train Loss: 0.3783
+RMSE: 48.5302, MAE: 36.6299, R2: 0.6869
+
+FOLD 4/5
+GNN Train Loss: 0.3835
+RMSE: 48.6366, MAE: 36.8569, R2: 0.6743
+
+FOLD 5/5
+GNN Train Loss: 0.4080
+RMSE: 52.3786, MAE: 39.1581, R2: 0.6332
+
+====== K-FOLD SUMMARY ======
+RMSE: 49.5443  [48.4352, 51.0945]
+MAE: 36.9712  [35.6535, 38.1368]
+R2: 0.6678  [0.6496, 0.6853]
+
+★ Using fold 2 model for test inference
+RMSE: 47.9525, MAE: 34.5223, R2: 0.6893
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 47.95245549793305, 'mae': 34.52228546142578, 'r2': 0.6892871856689453}
+Test RMSE: 48.0145  (95 % CI: 42.8203–53.0284)
+
+Test MAE : 34.3959  (95 % CI: 30.7221–38.1095)
+
+Test R²  : 0.6854  (95 % CI: 0.5992–0.7578)
+

@@ -1,0 +1,38 @@
+Experiment: polyatomic+polyatomic on bindingdb
+
+FOLD 1/5
+GNN Train Loss: 0.8965
+RMSE: 1.5462, MAE: 1.2688, R2: 0.0660
+
+FOLD 2/5
+GNN Train Loss: 0.9111
+RMSE: 1.5596, MAE: 1.2989, R2: 0.0780
+
+FOLD 3/5
+GNN Train Loss: 0.8896
+RMSE: 1.6106, MAE: 1.3290, R2: 0.0211
+
+FOLD 4/5
+GNN Train Loss: 0.9180
+RMSE: 1.6593, MAE: 1.3322, R2: -0.0659
+
+FOLD 5/5
+GNN Train Loss: 0.9116
+RMSE: 1.5981, MAE: 1.3265, R2: 0.0310
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.5943  [1.5619, 1.6296]
+MAE: 1.3110  [1.2869, 1.3298]
+R2: 0.0261  [-0.0201, 0.0638]
+
+★ Using fold 1 model for test inference
+RMSE: 1.5625, MAE: 1.2823, R2: 0.0660
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.5625251767991144, 'mae': 1.2822535037994385, 'r2': 0.0660201907157898}
+Test RMSE: 1.5608  (95 % CI: 1.4350–1.6923)
+
+Test MAE : 1.2846  (95 % CI: 1.1873–1.3814)
+
+Test R²  : 0.0614  (95 % CI: -0.0021–0.1309)
+

@@ -1,0 +1,38 @@
+Experiment: polyatomic+polyatomic on qm9
+
+FOLD 1/5
+GNN Train Loss: 0.1272
+RMSE: 1.3036, MAE: 0.9929, R2: 0.9081
+
+FOLD 2/5
+GNN Train Loss: 0.1336
+RMSE: 1.2810, MAE: 0.9819, R2: 0.9128
+
+FOLD 3/5
+GNN Train Loss: 0.1297
+RMSE: 1.4949, MAE: 1.2115, R2: 0.8838
+
+FOLD 4/5
+GNN Train Loss: 0.1260
+RMSE: 1.8907, MAE: 1.6264, R2: 0.8157
+
+FOLD 5/5
+GNN Train Loss: 0.1265
+RMSE: 1.4262, MAE: 1.1400, R2: 0.8914
+
+====== K-FOLD SUMMARY ======
+RMSE: 1.4814  [1.3191, 1.6941]
+MAE: 1.1924  [1.0201, 1.4145]
+R2: 0.8822  [0.8478, 0.9067]
+
+★ Using fold 2 model for test inference
+RMSE: 1.2848, MAE: 0.9849, R2: 0.9128
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 1.2848398114709658, 'mae': 0.9848641157150269, 'r2': 0.912821888923645}
+Test RMSE: 1.2799  (95 % CI: 1.1559–1.3954)
+
+Test MAE : 0.9838  (95 % CI: 0.8926–1.0708)
+
+Test R²  : 0.9126  (95 % CI: 0.8916–0.9307)
+

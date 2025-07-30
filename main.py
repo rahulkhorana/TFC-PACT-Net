@@ -214,23 +214,8 @@ def run_polyatomic(args):
             graph_feat_dim=graph_feat_dim,
             deg=deg,
         )
-        optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            optimizer, mode="min", patience=10, factor=0.5
-        )
-        loss_fn = nn.SmoothL1Loss(beta=0.5)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model = model.to(dtype=torch.float32, device=device)
-        scaler_grad = GradScaler()
-        train_polyatomic(
-            model,
-            loader=loader,
-            optimizer=optimizer,
-            loss_fn=loss_fn,
-            device=device,
-            scaler_grad=scaler_grad,
-            scheduler=scheduler,
-        )
+        optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+        train_gnn_model(model, loader, optimizer, log_file)
         return model
 
     def eval_fn(model, X_te, y_te, log_file, scaler, return_preds=False):
@@ -250,15 +235,9 @@ def run_polyatomic(args):
             data_list = featurize_dataset_parallel(X_te, y_te, featurizer)
             torch.save(data_list, dataset_cache_path)
 
-        loader = DataLoader(data_list, batch_size=128)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        return evaluate_polyatomic(
-            model=model,
-            loader=loader,
-            device=device,
-            log_file=log_file,
-            scaler=scaler,
-            return_preds=return_preds,
+        loader = DataLoader(data_list, batch_size=32)
+        return eval_gnn_model(
+            model, loader, log_file, scaler, return_preds=return_preds
         )
 
     wandb.init(

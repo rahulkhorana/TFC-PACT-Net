@@ -1,0 +1,38 @@
+Experiment: polyatomic+polyatomic on esol
+
+FOLD 1/5
+GNN Train Loss: 0.1418
+RMSE: 0.8246, MAE: 0.5939, R2: 0.8176
+
+FOLD 2/5
+GNN Train Loss: 0.1645
+RMSE: 0.8813, MAE: 0.6720, R2: 0.7696
+
+FOLD 3/5
+GNN Train Loss: 0.1537
+RMSE: 0.7004, MAE: 0.5182, R2: 0.8655
+
+FOLD 4/5
+GNN Train Loss: 0.1721
+RMSE: 0.7796, MAE: 0.6028, R2: 0.8314
+
+FOLD 5/5
+GNN Train Loss: 0.1769
+RMSE: 0.8983, MAE: 0.7115, R2: 0.7803
+
+====== K-FOLD SUMMARY ======
+RMSE: 0.8169  [0.7524, 0.8767]
+MAE: 0.6196  [0.5641, 0.6799]
+R2: 0.8133  [0.7835, 0.8423]
+
+★ Using fold 3 model for test inference
+RMSE: 0.6963, MAE: 0.5152, R2: 0.8655
+
+====== HELD-OUT TEST METRICS ======
+{'rmse': 0.6963055623414837, 'mae': 0.5152462720870972, 'r2': 0.8655426502227783}
+Test RMSE: 0.6955  (95 % CI: 0.5947–0.8033)
+
+Test MAE : 0.5174  (95 % CI: 0.4523–0.5936)
+
+Test R²  : 0.8647  (95 % CI: 0.8202–0.9010)
+
