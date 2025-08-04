@@ -79,8 +79,10 @@ def prepare_and_load_data(args):
     Performs the expensive featurization ONCE and caches the result.
     Subsequent runs will load the cached file instantly.
     """
-    cache_dir = Path("precomputed_features")
-    cache_dir.mkdir(exist_ok=True)
+    root_dir = Path(__file__).parent.parent.resolve().__str__()
+    datasets_dir = root_dir + "/" + "datasets"
+    cache_dir = Path(datasets_dir)
+    cache_dir.mkdir(exist_ok=False)
     train_cache_file = cache_dir / f"{args.dataset}_{args.rep}_train.pt"
     test_cache_file = cache_dir / f"{args.dataset}_{args.rep}_test.pt"
 
@@ -88,8 +90,8 @@ def prepare_and_load_data(args):
         print(
             f"INFO: Loading pre-featurized data from cache for dataset '{args.dataset}'..."
         )
-        train_graphs = torch.load(train_cache_file)
-        test_graphs = torch.load(test_cache_file)
+        train_graphs = torch.load(train_cache_file, weights_only=False)
+        test_graphs = torch.load(test_cache_file, weights_only=False)
         return train_graphs, test_graphs
 
     print("INFO: No cached data found. Starting one-time featurization process...")

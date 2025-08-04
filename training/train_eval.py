@@ -6,12 +6,14 @@ from tqdm import tqdm
 import numpy as np
 import os
 from datetime import datetime
+from pathlib import Path
 
 # polyatomic
 from torch.amp.autocast_mode import autocast
 
-LOG_ROOT = "logs"
-os.makedirs(LOG_ROOT, exist_ok=True)
+ROOT = Path(__file__).parent.parent.resolve().__str__()
+LOG_ROOT = Path(ROOT + "/" + "logs_hyperparameter")
+os.makedirs(LOG_ROOT, exist_ok=False)
 
 
 def setup_log_file(model_name, rep_name, dataset_name):
