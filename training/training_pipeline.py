@@ -15,17 +15,26 @@ from torch_geometric.loader import DataLoader
 from data.data_handling import get_model_instance
 from plotting import plot_parity
 
+ROOT = Path(__file__).parent.parent.resolve().__str__()
+LOG_ROOT = Path(ROOT + "/" + "logs_hyperparameter")
+if not os.path.exists(LOG_ROOT):
+    os.makedirs(LOG_ROOT, exist_ok=False)
+
 
 def setup_log_file(args):
-    """Sets up a unique log file for an experiment run."""
+    from pathlib import Path
+    from datetime import datetime
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    fname = f"TUNED_{args.model}_{args.rep}_{args.dataset}_{timestamp}.txt"
-    log_dir = Path("logs")
-    log_dir.mkdir(parents=True, exist_ok=True)
+    model_name, rep_name, dataset_name = args.model, args.rep, args.dataset
+    fname = f"{model_name}_{rep_name}_{dataset_name}_{timestamp}.txt"
+    parent = Path(__file__).parent.parent.resolve().__str__()
+    log_dir = Path(parent + "/" + "logs_hyperparameter")
+    if not os.path.exists(log_dir):
+        os.makedirs(LOG_ROOT, exist_ok=False)
+
     log_path = log_dir / fname
     print(f"[Logging] Writing to: {log_path}")
-    with open(log_path, "w") as f:
-        f.write(f"Experiment Config: {vars(args)}\n\n")
     return log_path
 
 

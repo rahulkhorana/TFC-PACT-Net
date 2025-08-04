@@ -1,3 +1,4 @@
+import os
 import torch
 from torch_geometric.loader import DataLoader
 from pathlib import Path
@@ -82,11 +83,16 @@ def prepare_and_load_data(args):
     root_dir = Path(__file__).parent.parent.resolve().__str__()
     datasets_dir = root_dir + "/" + "datasets"
     cache_dir = Path(datasets_dir)
-    cache_dir.mkdir(exist_ok=False)
-    train_cache_file = cache_dir / f"{args.dataset}_{args.rep}_train.pt"
-    test_cache_file = cache_dir / f"{args.dataset}_{args.rep}_test.pt"
+    if not os.path.exists(cache_dir):
+        cache_dir.mkdir(exist_ok=False)
+    train_cache_file = cache_dir / f"polyatomic_data_{args.dataset}.pt"
+    test_cache_file = cache_dir / f"polyatomic_test_data_{args.dataset}.pt"
 
-    if train_cache_file.exists() and test_cache_file.exists():
+    if (
+        train_cache_file.exists()
+        and test_cache_file.exists()
+        and args.rep == "polyatomic"
+    ):
         print(
             f"INFO: Loading pre-featurized data from cache for dataset '{args.dataset}'..."
         )
