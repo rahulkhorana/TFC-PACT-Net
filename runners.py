@@ -27,17 +27,9 @@ def run_gnn_experiment(args):
     train_graphs, test_graphs = prepare_and_load_data(args)
 
     # 2. Run the rigorous evaluation pipeline with the pre-featurized data.
-    results_df = k_fold_tuned_eval(args, train_graphs, test_graphs)
+    k_fold_tuned_eval(args, train_graphs, test_graphs)
 
-    # 3. Save detailed results to a CSV file
-    results_dir = Path("results")
-    results_dir.mkdir(exist_ok=True)
-    results_filename = f"{args.model}_{args.rep}_{args.dataset}_results.csv"
-    results_df.to_csv(results_dir / results_filename, index=False)
-
-    print(
-        f"--- GNN Experiment Finished. Results saved to {results_dir / results_filename} ---"
-    )
+    print(f"---GNN Experiment Finished. Results saved---")
 
 
 def run_gp_experiment(args):

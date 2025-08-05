@@ -41,7 +41,7 @@ def main():
     parser.add_argument(
         "--n-trials",
         type=int,
-        default=25,
+        default=2,
         help="Number of Optuna trials to run for hyperparameter search in each fold.",
     )
 

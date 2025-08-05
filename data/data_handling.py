@@ -85,8 +85,8 @@ def prepare_and_load_data(args):
     cache_dir = Path(datasets_dir)
     if not os.path.exists(cache_dir):
         cache_dir.mkdir(exist_ok=False)
-    train_cache_file = cache_dir / f"polyatomic_data_{args.dataset}.pt"
-    test_cache_file = cache_dir / f"polyatomic_test_data_{args.dataset}.pt"
+    train_cache_file = cache_dir / f"{args.rep}_data_{args.dataset}.pt"
+    test_cache_file = cache_dir / f"{args.rep}_test_data_{args.dataset}.pt"
 
     if (
         train_cache_file.exists()
