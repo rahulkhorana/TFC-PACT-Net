@@ -65,6 +65,8 @@ def train_gnn_model(
         model.train()
         for batch in train_loader:
             batch = batch.to(device)
+            if batch.num_edges == 0:
+                continue
             optimizer.zero_grad()
             out = model(batch).view(-1)
             loss = loss_fn(out, batch.y)
@@ -98,7 +100,7 @@ def train_gnn_model(
 def objective(trial, args, train_graphs, val_graphs, device):
     """Optuna objective function. Now very fast as it uses pre-featurized data."""
     params = {
-        "lr": trial.suggest_float("lr", 5e-4, 5e-3, log=True),
+        "lr": trial.suggest_float("lr", 5e-4, 1e-3, log=True),
         "hidden_dim": trial.suggest_categorical("hidden_dim", [64, 128, 256]),
         "batch_size": trial.suggest_categorical("batch_size", [32, 64]),
     }
