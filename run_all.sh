@@ -1,18 +1,38 @@
 #!/bin/bash
 
 # --- 1. Define your parameters here ---
-MODELS=("gcn" "gin" "gat" "sage" "polyatomic")
-REPS=("smiles" "selfies" "ecfp" "polyatomic")
+# Special case for your model
+PACTNET_MODEL="polyatomic"
+PACTNET_REP="polyatomic"
+
+# Baseline models and representations
+BASELINE_MODELS=("gcn" "gin" "gat" "sage")
+BASELINE_REPS=("smiles" "selfies" "ecfp")
+
+# Datasets for all experiments
 DATASETS=("esol" "freesolv" "lipophil" "boilingpoint" "qm9" "ic50" "bindingdb")
 
-# --- 2. Use GNU Parallel to run all combinations ---
-#    This command keeps your Mac awake, runs 10 jobs in parallel,
-#    shows a progress bar, and builds the commands for you.
+# --- 2. Generate all valid commands ---
+#    We use a subshell `( ... )` to group the output of two separate loops.
+#    This combined output is then piped to GNU Parallel.
 
-caffeinate -s parallel -j 10 --bar --eta \
-    'echo "Starting job: model={1}, rep={2}, dataset={3}"; python3 main.py --model {1} --rep {2} --dataset {3}' \
-    ::: "${MODELS[@]}" \
-    ::: "${REPS[@]}" \
-    ::: "${DATASETS[@]}"
+(
+  # Loop 1: Generate commands for your PACTNet model
+  echo "--- Generating PACTNet Jobs ---" >&2
+  for dataset in "${DATASETS[@]}"; do
+    echo "python3 main.py --model $PACTNET_MODEL --rep $PACTNET_REP --dataset $dataset"
+  done
+
+  # Loop 2: Generate commands for all baseline combinations
+  echo "--- Generating Baseline GNN Jobs ---" >&2
+  for model in "${BASELINE_MODELS[@]}"; do
+    for rep in "${BASELINE_REPS[@]}"; do
+      for dataset in "${DATASETS[@]}"; do
+        echo "python3 main.py --model $model --rep $rep --dataset $dataset"
+      done
+    done
+  done
+) | \
+caffeinate -s parallel -j 10 --bar --eta
 
 echo "All jobs complete."

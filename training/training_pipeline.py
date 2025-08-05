@@ -31,7 +31,7 @@ def setup_log_file(args):
     parent = Path(__file__).parent.parent.resolve().__str__()
     log_dir = Path(parent + "/" + "logs_hyperparameter" + "/" + f"{args.dataset}")
     if not os.path.exists(log_dir):
-        os.makedirs(LOG_ROOT, exist_ok=False)
+        os.makedirs(log_dir, exist_ok=False)
 
     log_path = log_dir / fname
     print(f"[Logging] Writing to: {log_path}")
