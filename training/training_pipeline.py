@@ -98,7 +98,7 @@ def train_gnn_model(
 def objective(trial, args, train_graphs, val_graphs, device):
     """Optuna objective function. Now very fast as it uses pre-featurized data."""
     params = {
-        "lr": trial.suggest_float("lr", 1e-5, 1e-2, log=True),
+        "lr": trial.suggest_float("lr", 5e-4, 5e-3, log=True),
         "hidden_dim": trial.suggest_categorical("hidden_dim", [64, 128, 256]),
         "batch_size": trial.suggest_categorical("batch_size", [32, 64]),
     }
