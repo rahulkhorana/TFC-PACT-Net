@@ -10,10 +10,9 @@ from datetime import datetime
 import optuna
 import pandas as pd
 from torch_geometric.loader import DataLoader
+import copy
 
-# Import project modules
 from data.data_handling import get_model_instance
-from plotting import plot_parity
 
 ROOT = Path(__file__).parent.parent.resolve().__str__()
 LOG_ROOT = Path(ROOT + "/" + "logs_hyperparameter")
@@ -51,7 +50,7 @@ def train_gnn_model(
     val_loader,
     optimizer,
     device,
-    loss_fn=nn.L1Loss(),
+    loss_fn,
     max_epochs=200,
     patience=20,
 ):
@@ -61,7 +60,7 @@ def train_gnn_model(
     temp_dir = tempfile.gettempdir()
     best_model_path = os.path.join(temp_dir, f"best_model_{os.getpid()}.pt")
 
-    for epoch in range(max_epochs):
+    for _ in range(max_epochs):
         model.train()
         for batch in train_loader:
             batch = batch.to(device)
@@ -69,7 +68,7 @@ def train_gnn_model(
                 continue
             optimizer.zero_grad()
             out = model(batch).view(-1)
-            loss = loss_fn(out, batch.y)
+            loss = loss_fn(out, batch.y.view(-1))
             loss.backward()
             optimizer.step()
 
@@ -78,8 +77,12 @@ def train_gnn_model(
         with torch.no_grad():
             for batch in val_loader:
                 batch = batch.to(device)
-                val_loss += loss_fn(model(batch).view(-1), batch.y).item()
-        avg_val_loss = val_loss / len(val_loader)
+                val_loss += loss_fn(model(batch).view(-1), batch.y.view(-1)).item()
+
+        if len(val_loader) > 0:
+            avg_val_loss = val_loss / len(val_loader)
+        else:
+            avg_val_loss = float("inf")
 
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
@@ -97,29 +100,23 @@ def train_gnn_model(
     return model
 
 
-def objective(trial, args, train_graphs, val_graphs, device):
-    """Optuna objective function. Now very fast as it uses pre-featurized data."""
+def objective(trial, args, train_graphs, val_graphs, device, scaler):
+    """Optuna objective function. Uses a pre-fitted scaler for consistency."""
+
+    train_graphs = copy.deepcopy(train_graphs)
+    val_graphs = copy.deepcopy(val_graphs)
+
     params = {
         "lr": trial.suggest_float("lr", 5e-4, 1e-3, log=True),
         "hidden_dim": trial.suggest_categorical("hidden_dim", [64, 128, 256]),
         "batch_size": trial.suggest_categorical("batch_size", [32, 64]),
     }
 
-    y_for_scaler = np.array([g.y.item() for g in train_graphs])
-    scaler = StandardScaler().fit(y_for_scaler.reshape(-1, 1))
-
-    # Scale y-values in graph objects for this trial
-    y_train_s = scaler.transform(
-        np.array([g.y.item() for g in train_graphs]).reshape(-1, 1)
-    ).ravel()
-    for g, y_s in zip(train_graphs, y_train_s):
-        g.y = torch.tensor([y_s], dtype=torch.float)
-
-    y_val_s = scaler.transform(
-        np.array([g.y.item() for g in val_graphs]).reshape(-1, 1)
-    ).ravel()
-    for g, y_s in zip(val_graphs, y_val_s):
-        g.y = torch.tensor([y_s], dtype=torch.float)
+    # Use the provided scaler, do not re-fit
+    for g in train_graphs:
+        g.y = torch.tensor(scaler.transform(g.y.reshape(1, -1)), dtype=torch.float)
+    for g in val_graphs:
+        g.y = torch.tensor(scaler.transform(g.y.reshape(1, -1)), dtype=torch.float)
 
     train_loader = DataLoader(
         train_graphs, batch_size=params["batch_size"], shuffle=True
@@ -128,9 +125,8 @@ def objective(trial, args, train_graphs, val_graphs, device):
 
     model = get_model_instance(args, params, train_graphs).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=params["lr"])
-
     train_gnn_model(
-        model, train_loader, val_loader, optimizer, device, loss_fn=nn.L1Loss()
+        model, train_loader, val_loader, optimizer, device, loss_fn=nn.MSELoss()
     )
 
     model.eval()
@@ -138,13 +134,15 @@ def objective(trial, args, train_graphs, val_graphs, device):
     with torch.no_grad():
         for batch in val_loader:
             batch = batch.to(device)
-            val_loss += nn.L1Loss()(model(batch).view(-1), batch.y).item()
+            val_loss += nn.MSELoss()(model(batch).view(-1), batch.y.view(-1)).item()
 
-    return val_loss / len(val_loader)
+    return val_loss / len(val_loader) if len(val_loader) > 0 else float("inf")
 
 
-def find_best_hyperparameters(args, train_val_graphs, device):
-    """Runs an Optuna study on a given list of pre-featurized graphs."""
+def find_best_hyperparameters(args, train_val_graphs, device, scaler):
+    """
+    Runs an Optuna study.
+    """
     train_graphs, val_graphs = train_test_split(
         train_val_graphs, test_size=0.2, random_state=42
     )
@@ -152,8 +150,9 @@ def find_best_hyperparameters(args, train_val_graphs, device):
     study = optuna.create_study(
         direction="minimize", sampler=optuna.samplers.TPESampler(seed=42)
     )
+
     study.optimize(
-        lambda trial: objective(trial, args, train_graphs, val_graphs, device),
+        lambda trial: objective(trial, args, train_graphs, val_graphs, device, scaler),
         n_trials=args.n_trials,
         show_progress_bar=True,
     )
@@ -187,55 +186,35 @@ def mae_func(y_true, y_pred):
 def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
     """
     Orchestrates a rigorous NESTED cross-validation workflow.
-    1. Outer Loop (Evaluation): Splits data to get an unbiased performance estimate.
-    2. Inner Loop (Tuning): Finds the best hyperparameters for each outer fold's training set.
-    3. Final Model: After getting the performance estimate, finds the best params on the full
-       training set and evaluates on the held-out test set.
     """
     log_file_path = setup_log_file(args)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # --- Step 1: Nested Cross-Validation for Unbiased Performance Estimate ---
-    write_log(
-        log_file_path,
-        "\n===== STEP 1: Nested Cross-Validation Performance Estimation =====",
-    )
     outer_kf = KFold(n_splits=5, shuffle=True, random_state=42)
     val_fold_rmses = []
     val_fold_maes = []
 
-    # Use indices for splitting
     train_indices = np.arange(len(train_graphs_full))
 
     for fold, (train_idx, val_idx) in enumerate(outer_kf.split(train_indices)):
         write_log(log_file_path, f"\n--- OUTER FOLD {fold + 1}/5 ---")
 
-        # Create data subsets for this outer fold
         train_fold_graphs = [train_graphs_full[i] for i in train_idx]
         val_fold_graphs = [train_graphs_full[i] for i in val_idx]
 
-        # --- Inner Loop: Hyperparameter Tuning on this fold's training data ---
-        write_log(
-            log_file_path,
-            "INFO: Finding best hyperparameters for this fold (Inner Loop)...",
+        y_train_fold_raw = np.array([g.y.item() for g in train_fold_graphs]).reshape(
+            -1, 1
         )
-        # The HPO function is now called on the training subset of the outer fold
+        scaler = StandardScaler().fit(y_train_fold_raw)
+
         best_params_for_fold = find_best_hyperparameters(
-            args, train_fold_graphs, device
+            args, train_fold_graphs, device, scaler
         )
         write_log(
             log_file_path,
             f"INFO: Best params for fold {fold + 1}: {best_params_for_fold}",
         )
 
-        # --- Train and Evaluate this fold's model ---
-        # Fit scaler ONLY on the training data for this fold
-        y_train_fold_raw = np.array([g.y.item() for g in train_fold_graphs]).reshape(
-            -1, 1
-        )
-        scaler = StandardScaler().fit(y_train_fold_raw)
-
-        # Apply scaling (on copies to not affect other folds)
         train_fold_graphs_scaled = [g.clone() for g in train_fold_graphs]
         val_fold_graphs_scaled = [g.clone() for g in val_fold_graphs]
         for g in train_fold_graphs_scaled:
@@ -243,7 +222,6 @@ def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
         for g in val_fold_graphs_scaled:
             g.y = torch.tensor(scaler.transform(g.y.reshape(1, -1)), dtype=torch.float)
 
-        # Create DataLoaders
         train_loader = DataLoader(
             train_fold_graphs_scaled,
             batch_size=best_params_for_fold["batch_size"],
@@ -253,14 +231,14 @@ def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
             val_fold_graphs_scaled, batch_size=best_params_for_fold["batch_size"]
         )
 
-        # Train model for this fold
         model = get_model_instance(args, best_params_for_fold, train_fold_graphs).to(
             device
         )
         optimizer = torch.optim.Adam(model.parameters(), lr=best_params_for_fold["lr"])
-        train_gnn_model(model, train_loader, val_loader, optimizer, device)
+        train_gnn_model(
+            model, train_loader, val_loader, optimizer, device, loss_fn=nn.MSELoss()
+        )
 
-        # Evaluate on the validation set for this fold
         y_true_val, y_pred_val = [], []
         model.eval()
         with torch.no_grad():
@@ -285,7 +263,6 @@ def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
             f"INFO: Fold {fold + 1} Val RMSE: {fold_rmse:.4f}, MAE: {fold_mae:.4f}",
         )
 
-    # --- Step 2: Report overall validation performance from Nested CV ---
     mean_val_rmse = np.mean(val_fold_rmses)
     std_val_rmse = np.std(val_fold_rmses)
     mean_val_mae = np.mean(val_fold_maes)
@@ -302,13 +279,20 @@ def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
     write_log(log_file_path, f"VAL FOLD RMSEs: {val_fold_rmses}")
     write_log(log_file_path, f"VAL FOLD MAEs: {val_fold_maes}")
 
-    # --- Step 3: Train the final model for deployment/testing ---
     write_log(log_file_path, "\n===== STEP 2: Final Model Training & Testing =====")
     write_log(
         log_file_path,
         "INFO: Finding best hyperparameters on the FULL train/val set for final model...",
     )
-    final_best_params = find_best_hyperparameters(args, train_graphs_full, device)
+
+    final_y_train_full_raw = np.array([g.y.item() for g in train_graphs_full]).reshape(
+        -1, 1
+    )
+    final_hpo_scaler = StandardScaler().fit(final_y_train_full_raw)
+    final_best_params = find_best_hyperparameters(
+        args, train_graphs_full, device, final_hpo_scaler
+    )
+
     write_log(
         log_file_path,
         f"INFO: Optimal hyperparameters for final model: {final_best_params}",
@@ -341,10 +325,14 @@ def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
         final_model.parameters(), lr=final_best_params["lr"]
     )
     train_gnn_model(
-        final_model, final_train_loader, final_val_loader, final_optimizer, device
+        final_model,
+        final_train_loader,
+        final_val_loader,
+        final_optimizer,
+        device,
+        loss_fn=nn.MSELoss(),
     )
 
-    # --- Step 4: Evaluate the final model on the held-out test set ---
     write_log(log_file_path, "\n===== STEP 3: Final Held-Out Test Evaluation =====")
     final_test_graphs = [g.clone() for g in test_graphs]
     for g in final_test_graphs:
@@ -405,4 +393,4 @@ def k_fold_tuned_eval(args, train_graphs_full, test_graphs):
     data_res_path = (
         log_dir + "/" + f"{args.model}_{args.rep}_{args.dataset}_final_results.csv"
     )
-    return pd.DataFrame(results_data).to_csv(data_res_path)
+    pd.DataFrame(results_data).to_csv(data_res_path, index=False)
