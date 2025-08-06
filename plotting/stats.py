@@ -5,57 +5,81 @@ import numpy as np
 import pandas as pd
 from scipy.stats import wilcoxon
 from statsmodels.stats.multitest import multipletests
+import os
 
 
 def parse_log_file(log_path):
-    """Parses a log file to extract the 5-fold validation RMSE scores."""
+    """Parses a log file to extract the 5-fold validation RMSE and MAE scores."""
     try:
         with open(log_path, "r") as f:
             content = f.read()
-            # Regex to find the list of RMSE scores
-            match = re.search(r"VAL FOLD RMSEs: \[(.*?)\]", content)
-            if match:
-                # Extract the string of numbers, split by comma, and convert to float
-                scores_str = match.group(1)
-                scores = [float(s.strip()) for s in scores_str.split(",")]
-                if len(scores) == 5:
-                    return scores
+            # Regex to find the list of RMSE and MAE scores
+            rmse_match = re.search(r"VAL FOLD RMSEs: \[(.*?)\]", content)
+            mae_match = re.search(r"VAL FOLD MAEs: \[(.*?)\]", content)
+
+            if rmse_match and mae_match:
+                rmse_scores_str = rmse_match.group(1)
+                mae_scores_str = mae_match.group(1)
+
+                rmse_scores = [float(s.strip()) for s in rmse_scores_str.split(",")]
+                mae_scores = [float(s.strip()) for s in mae_scores_str.split(",")]
+
+                if len(rmse_scores) == 5 and len(mae_scores) == 5:
+                    return rmse_scores, mae_scores
     except FileNotFoundError:
         print(f"Warning: Log file not found at {log_path}")
     except Exception as e:
         print(f"Warning: Could not parse log file {log_path}. Error: {e}")
-    return None
+    return None, None
 
 
 def parse_csv_file(csv_path):
-    """Parses the final results CSV to get mean and std dev of validation RMSE."""
+    """Parses the final results CSV to get all summary statistics."""
     try:
         df = pd.read_csv(csv_path)
-        # Assumes columns are named 'val_rmse_mean' and 'val_rmse_std'
-        mean_rmse = df["val_rmse_mean"].iloc[0]
-        std_rmse = df["val_rmse_std"].iloc[0]
-        return mean_rmse, std_rmse
+        # Extract all relevant columns
+        val_rmse_mean = df["val_rmse_mean"].iloc[0]
+        val_rmse_std = df["val_rmse_std"].iloc[0]
+        val_mae_mean = df["val_mae_mean"].iloc[0]
+        val_mae_std = df["val_mae_std"].iloc[0]
+
+        test_rmse_mean = df["test_rmse_mean"].iloc[0]
+        test_rmse_ci_low = df["test_rmse_ci_low"].iloc[0]
+        test_rmse_ci_high = df["test_rmse_ci_high"].iloc[0]
+
+        test_mae_mean = df["test_mae_mean"].iloc[0]
+        test_mae_ci_low = df["test_mae_ci_low"].iloc[0]
+        test_mae_ci_high = df["test_mae_ci_high"].iloc[0]
+
+        return {
+            "val_rmse_mean": val_rmse_mean,
+            "val_rmse_std": val_rmse_std,
+            "val_mae_mean": val_mae_mean,
+            "val_mae_std": val_mae_std,
+            "test_rmse_mean": test_rmse_mean,
+            "test_rmse_ci_low": test_rmse_ci_low,
+            "test_rmse_ci_high": test_rmse_ci_high,
+            "test_mae_mean": test_mae_mean,
+            "test_mae_ci_low": test_mae_ci_low,
+            "test_mae_ci_high": test_mae_ci_high,
+        }
     except FileNotFoundError:
         print(f"Warning: CSV file not found at {csv_path}")
     except Exception as e:
         print(f"Warning: Could not parse CSV file {csv_path}. Error: {e}")
-    return None, None
+    return None
 
 
 def calculate_stats(main_scores, baseline_scores):
-    """Calculates Wilcoxon p-value and Cohen's d."""
+    """Calculates Wilcoxon p-value and Cohen's d for a given metric."""
     if main_scores is None or baseline_scores is None:
         return None, None
 
-    # Wilcoxon signed-rank test (one-sided)
-    # We test if the main model's scores are significantly 'less' than the baseline's
     try:
         _, p_value = wilcoxon(main_scores, baseline_scores, alternative="less")
     except ValueError:
-        # This can happen if all differences are zero
         p_value = 1.0
 
-    # Cohen's d for paired samples
     differences = np.array(main_scores) - np.array(baseline_scores)
     mean_diff = np.mean(differences)
     std_diff = np.std(differences, ddof=1)
@@ -67,103 +91,155 @@ def calculate_stats(main_scores, baseline_scores):
 def main(args):
     results_dir = Path(args.results_dir)
     output_dir = Path(args.output_dir)
-    main_model_name = args.main_model
+
+    # --- FIX: Handle the main_model argument intelligently ---
+    main_model_name_base = args.main_model
+    if main_model_name_base == "polyatomic":
+        main_model_id = "polyatomic_polyatomic"
+    else:
+        # This part assumes a format like "gcn_smiles" if you ever change the main model
+        main_model_id = main_model_name_base
 
     output_dir.mkdir(exist_ok=True)
 
-    model_data = {}
+    # --- 1. Parse all experiment directories ---
+    all_data = {}
 
-    # --- 1. Parse all model directories ---
-    for model_dir in results_dir.iterdir():
-        if model_dir.is_dir():
-            model_name = model_dir.name
+    # --- FIX: Check if results_dir is a dataset dir or a parent of dataset dirs ---
+    # Heuristic: if it contains a 'gcn' or 'gat' folder, it's a dataset directory.
+    is_single_dataset = any(
+        p.name in ["gcn", "gat", "gin", "sage", "polyatomic"]
+        for p in results_dir.iterdir()
+    )
 
-            # Find the log and csv files within the model directory
-            try:
-                log_file = next(model_dir.glob("*.txt"))
-                csv_file = next(model_dir.glob("*.csv"))
-            except StopIteration:
-                print(f"Warning: Skipping {model_name}, couldn't find log or csv file.")
+    dataset_dirs = (
+        [results_dir]
+        if is_single_dataset
+        else [p for p in results_dir.iterdir() if p.is_dir()]
+    )
+
+    for dataset_dir in dataset_dirs:
+        dataset_name = dataset_dir.name
+        all_data[dataset_name] = {}
+
+        for model_dir in dataset_dir.iterdir():
+            if not model_dir.is_dir():
                 continue
 
-            fold_scores = parse_log_file(log_file)
-            mean_rmse, std_rmse = parse_csv_file(csv_file)
+            for log_file in model_dir.glob("*.txt"):
+                base_name = log_file.stem
+                clean_name = re.sub(r"_\d{8}_\d{6}$", "", base_name)
 
-            if fold_scores and mean_rmse is not None:
-                model_data[model_name] = {
-                    "fold_scores": fold_scores,
-                    "mean_rmse": mean_rmse,
-                    "std_rmse": std_rmse,
-                }
+                # Handle the special case of 'polyatomic_polyatomic'
+                if "polyatomic_polyatomic" in clean_name:
+                    exp_id = "polyatomic_polyatomic"
+                else:
+                    exp_id = "_".join(clean_name.split("_")[:2])
 
-    if main_model_name not in model_data:
-        raise ValueError(
-            f"Main model '{main_model_name}' not found in results directory."
-        )
+                csv_file_name = re.sub(
+                    r"_\d{8}_\d{6}$", "_final_results.csv", base_name
+                )
+                csv_file = log_file.with_name(csv_file_name)
 
-    main_model_scores = model_data[main_model_name]["fold_scores"]
+                rmse_scores, mae_scores = parse_log_file(log_file)
+                summary_stats = parse_csv_file(csv_file)
 
-    # --- 2. Calculate stats for each baseline ---
-    baselines = {
-        name: data for name, data in model_data.items() if name != main_model_name
-    }
-    p_values_uncorrected = []
-    baseline_names_ordered = []
+                if rmse_scores and mae_scores and summary_stats:
+                    all_data[dataset_name][exp_id] = {
+                        "rmse_folds": rmse_scores,
+                        "mae_folds": mae_scores,
+                        "summary": summary_stats,
+                    }
 
-    for name, data in baselines.items():
-        p_value, cohens_d = calculate_stats(main_model_scores, data["fold_scores"])
-        data["p_value_raw"] = p_value
-        data["cohens_d"] = cohens_d
-        if p_value is not None:
-            p_values_uncorrected.append(p_value)
-            baseline_names_ordered.append(name)
+    # --- 2. Perform statistical analysis for each dataset ---
+    for dataset_name, experiments in all_data.items():
+        if main_model_id not in experiments:
+            print(
+                f"Warning: Main model '{main_model_id}' not found for dataset '{dataset_name}'. Skipping stats."
+            )
+            continue
 
-    # --- 3. Apply Holm-Bonferroni correction ---
-    if p_values_uncorrected:
-        reject, p_values_corrected, _, _ = multipletests(
-            p_values_uncorrected, alpha=0.05, method="holm"
-        )
-        for i, name in enumerate(baseline_names_ordered):
-            baselines[name]["p_value_corrected"] = p_values_corrected[i]
+        main_model_rmse_folds = experiments[main_model_id]["rmse_folds"]
+        baselines = {
+            name: data for name, data in experiments.items() if name != main_model_id
+        }
 
-    # --- 4. Generate the report ---
-    report_path = output_dir / "statistical_analysis_report.txt"
+        p_values_uncorrected = []
+        baseline_names_ordered = []
+
+        for name, data in baselines.items():
+            p_value, cohens_d = calculate_stats(
+                main_model_rmse_folds, data["rmse_folds"]
+            )
+            data["p_value_raw"] = p_value
+            data["cohens_d"] = cohens_d
+            if p_value is not None:
+                p_values_uncorrected.append(p_value)
+                baseline_names_ordered.append(name)
+
+        if p_values_uncorrected:
+            _, p_values_corrected, _, _ = multipletests(
+                p_values_uncorrected, alpha=0.05, method="holm"
+            )
+            for i, name in enumerate(baseline_names_ordered):
+                baselines[name]["p_value_corrected"] = p_values_corrected[i]
+
+    # --- 3. Generate the final report ---
+    report_path = output_dir / "full_results_summary.txt"
     with open(report_path, "w") as f:
-        f.write("Comparative Performance Analysis\n")
-        f.write("=" * 80 + "\n")
-        header = f"{'Model':<25} | {'Mean RMSE (± Std. Dev.)':<28} | {'p-value':>10} | {'Corrected p-value':>18} | {'Effect Size (d)':>18}\n"
-        f.write(header)
-        f.write("-" * len(header) + "\n")
+        f.write("=" * 120 + "\n")
+        f.write("Comprehensive Performance Summary\n")
+        f.write("=" * 120 + "\n\n")
 
-        # Write baseline results
-        for name, data in sorted(baselines.items()):
-            mean_std_str = f"{data['mean_rmse']:.4f} (± {data['std_rmse']:.4f})"
-            p_raw_str = (
-                f"{data.get('p_value_raw', 'N/A'):.4f}"
-                if data.get("p_value_raw") is not None
-                else "N/A"
+        for dataset_name in sorted(all_data.keys()):
+            f.write(f"--- Dataset: {dataset_name.upper()} ---\n\n")
+            header = (
+                f"{'Model (Rep.)':<25} | {'Val RMSE':<20} | {'Val MAE':<20} | "
+                f"{'Test RMSE':<25} | {'Test MAE':<25}\n"
             )
-            p_corr_str = (
-                f"{data.get('p_value_corrected', 'N/A'):.4f}"
-                if data.get("p_value_corrected") is not None
-                else "N/A"
-            )
-            d_str = (
-                f"{data.get('cohens_d', 'N/A'):.2f}"
-                if data.get("cohens_d") is not None
-                else "N/A"
-            )
-            f.write(
-                f"{name:<25} | {mean_std_str:<28} | {p_raw_str:>10} | {p_corr_str:>18} | {d_str:>18}\n"
-            )
+            f.write(header)
+            f.write("-" * len(header) + "\n")
 
-        # Write main model result
-        main_data = model_data[main_model_name]
-        mean_std_str = f"{main_data['mean_rmse']:.4f} (± {main_data['std_rmse']:.4f})"
-        f.write("-" * len(header) + "\n")
-        f.write(
-            f"{main_model_name + ' (Main)':<25} | {mean_std_str:<28} | {'-':>10} | {'-':>18} | {'-':>18}\n"
-        )
+            experiments = all_data[dataset_name]
+            for exp_id in sorted(experiments.keys()):
+                summary = experiments[exp_id]["summary"]
+                val_rmse_str = (
+                    f"{summary['val_rmse_mean']:.3f} ± {summary['val_rmse_std']:.3f}"
+                )
+                val_mae_str = (
+                    f"{summary['val_mae_mean']:.3f} ± {summary['val_mae_std']:.3f}"
+                )
+                test_rmse_str = f"{summary['test_rmse_mean']:.3f} [{summary['test_rmse_ci_low']:.3f}, {summary['test_rmse_ci_high']:.3f}]"
+                test_mae_str = f"{summary['test_mae_mean']:.3f} [{summary['test_mae_ci_low']:.3f}, {summary['test_mae_ci_high']:.3f}]"
+
+                f.write(
+                    f"{exp_id:<25} | {val_rmse_str:<20} | {val_mae_str:<20} | "
+                    f"{test_rmse_str:<25} | {test_mae_str:<25}\n"
+                )
+
+            f.write("\n--- Statistical Comparison (vs. " + main_model_id + ") ---\n\n")
+            stat_header = f"{'Baseline Model':<25} | {'p-value (raw)':<15} | {'p-value (Holm)':<15} | {'Effect Size (d)':<15}\n"
+            f.write(stat_header)
+            f.write("-" * len(stat_header) + "\n")
+
+            baselines = {k: v for k, v in experiments.items() if k != main_model_id}
+            for exp_id in sorted(baselines.keys()):
+                data = baselines[exp_id]
+                p_raw = data.get("p_value_raw", "N/A")
+                p_corr = data.get("p_value_corrected", "N/A")
+                cohen_d = data.get("cohens_d", "N/A")
+
+                p_raw_str = f"{p_raw:.4f}" if isinstance(p_raw, float) else p_raw
+                p_corr_str = f"{p_corr:.4f}" if isinstance(p_corr, float) else p_corr
+                cohen_d_str = (
+                    f"{cohen_d:.2f}" if isinstance(cohen_d, float) else cohen_d
+                )
+
+                f.write(
+                    f"{exp_id:<25} | {p_raw_str:<15} | {p_corr_str:<15} | {cohen_d_str:<15}\n"
+                )
+
+            f.write("\n" + "=" * 120 + "\n\n")
 
     print(f"Report successfully generated at: {report_path}")
 
@@ -176,7 +252,7 @@ if __name__ == "__main__":
         "--results_dir",
         type=str,
         required=True,
-        help="Directory containing subdirectories for each model's results.",
+        help="Directory containing results. Can be a parent of dataset dirs, or a single dataset dir.",
     )
     parser.add_argument(
         "--output_dir",
@@ -188,7 +264,7 @@ if __name__ == "__main__":
         "--main_model",
         type=str,
         required=True,
-        help="Name of the main model directory to compare others against.",
+        help="Base name of the main model to compare against (e.g., 'polyatomic').",
     )
 
     args = parser.parse_args()
