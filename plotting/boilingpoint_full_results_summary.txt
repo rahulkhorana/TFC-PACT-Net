@@ -15,27 +15,29 @@ gcn_smiles                | 61.586 ± 1.292       | 47.662 ± 1.277       | 59.0
 gin_ecfp                  | 58.744 ± 1.789       | 45.098 ± 2.000       | 57.384 [52.248, 62.323]   | 43.221 [39.608, 46.966]  
 gin_selfies               | 58.629 ± 0.867       | 44.500 ± 0.975       | 57.880 [53.183, 62.897]   | 42.445 [38.635, 46.248]  
 gin_smiles                | 59.282 ± 2.271       | 45.235 ± 2.034       | 57.161 [52.040, 61.952]   | 42.193 [38.523, 46.085]  
-polyatomic_polyatomic     | 49.089 ± 2.425       | 33.893 ± 1.592       | 50.635 [44.479, 57.418]   | 33.260 [29.740, 37.119]  
+polyatomic                | 49.089 ± 2.425       | 33.893 ± 1.592       | 50.635 [44.479, 57.418]   | 33.260 [29.740, 37.119]  
 sage_ecfp                 | 57.161 ± 1.253       | 43.714 ± 0.873       | 55.245 [50.998, 59.851]   | 42.196 [38.854, 45.712]  
 sage_selfies              | 54.345 ± 2.264       | 40.948 ± 1.797       | 53.040 [47.651, 59.140]   | 37.458 [33.800, 40.981]  
 sage_smiles               | 54.284 ± 3.661       | 40.291 ± 3.086       | 53.011 [47.509, 58.687]   | 36.563 [32.828, 40.288]  
 
---- Statistical Comparison (vs. polyatomic_polyatomic) ---
+--- Statistical Analysis (Repeated Measures) ---
+Friedman Test: Chi-Square = 41.7495, p-value = 0.0000
+-> The overall performance of the models is statistically different.
 
-Baseline Model            | p-value (raw)   | p-value (Holm)  | Effect Size (d)
---------------------------------------------------------------------------------
-gat_ecfp                  | 0.0312          | 0.3750          | 2.96           
-gat_selfies               | 0.0312          | 0.3750          | 2.23           
-gat_smiles                | 0.0312          | 0.3750          | 1.89           
-gcn_ecfp                  | 0.0312          | 0.3750          | 3.17           
-gcn_selfies               | 0.0312          | 0.3750          | 4.92           
-gcn_smiles                | 0.0312          | 0.3750          | 4.14           
-gin_ecfp                  | 0.0312          | 0.3750          | 3.93           
-gin_selfies               | 0.0312          | 0.3750          | 2.91           
-gin_smiles                | 0.0312          | 0.3750          | 2.64           
-sage_ecfp                 | 0.0312          | 0.3750          | 3.45           
-sage_selfies              | 0.0312          | 0.3750          | 1.64           
-sage_smiles               | 0.0625          | 0.3750          | 1.05           
+--- Nemenyi Post-Hoc Test (Critical Difference = 8.1774) ---
+Comparison                    Mean Rank Diff  Result
+polyatomic vs gat_ecfp                   3.2  Not Significant
+polyatomic vs gat_selfies                0.2  Not Significant
+polyatomic vs gat_smiles                 0.8  Not Significant
+polyatomic vs gcn_ecfp                   0.8  Not Significant
+polyatomic vs gcn_selfies                1.2  Not Significant
+polyatomic vs gcn_smiles                 2.4  Not Significant
+polyatomic vs gin_ecfp                   1.4  Not Significant
+polyatomic vs gin_selfies                1    Not Significant
+polyatomic vs gin_smiles                 1.2  Not Significant
+polyatomic vs sage_ecfp                  1.4  Not Significant
+polyatomic vs sage_selfies               2    Not Significant
+polyatomic vs sage_smiles                0.8  Not Significant
 
 ========================================================================================================================
 

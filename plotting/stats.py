@@ -3,9 +3,14 @@ import re
 from pathlib import Path
 import numpy as np
 import pandas as pd
-from scipy.stats import wilcoxon
-from statsmodels.stats.multitest import multipletests
+from scipy.stats import friedmanchisquare
+from itertools import combinations
+from math import sqrt
+from tabulate import tabulate
 import os
+
+# Set a consistent random seed for reproducibility
+np.random.seed(42)
 
 
 def parse_log_file(log_path):
@@ -70,48 +75,17 @@ def parse_csv_file(csv_path):
     return None
 
 
-def calculate_stats(main_scores, baseline_scores):
-    """Calculates Wilcoxon p-value and Cohen's d for a given metric."""
-    if main_scores is None or baseline_scores is None:
-        return None, None
-
-    try:
-        _, p_value = wilcoxon(main_scores, baseline_scores, alternative="less")
-    except ValueError:
-        p_value = 1.0
-
-    differences = np.array(main_scores) - np.array(baseline_scores)
-    mean_diff = np.mean(differences)
-    std_diff = np.std(differences, ddof=1)
-    cohens_d = abs(mean_diff / std_diff) if std_diff != 0 else 0.0
-
-    return p_value, cohens_d
-
-
 def main(args):
     results_dir = Path(args.results_dir)
     output_dir = Path(args.output_dir)
-
-    # --- FIX: Handle the main_model argument intelligently ---
-    main_model_name_base = args.main_model
-    if main_model_name_base == "polyatomic":
-        main_model_id = "polyatomic_polyatomic"
-    else:
-        # This part assumes a format like "gcn_smiles" if you ever change the main model
-        main_model_id = main_model_name_base
-
     output_dir.mkdir(exist_ok=True)
 
     # --- 1. Parse all experiment directories ---
     all_data = {}
-
-    # --- FIX: Check if results_dir is a dataset dir or a parent of dataset dirs ---
-    # Heuristic: if it contains a 'gcn' or 'gat' folder, it's a dataset directory.
     is_single_dataset = any(
         p.name in ["gcn", "gat", "gin", "sage", "polyatomic"]
         for p in results_dir.iterdir()
     )
-
     dataset_dirs = (
         [results_dir]
         if is_single_dataset
@@ -130,9 +104,9 @@ def main(args):
                 base_name = log_file.stem
                 clean_name = re.sub(r"_\d{8}_\d{6}$", "", base_name)
 
-                # Handle the special case of 'polyatomic_polyatomic'
-                if "polyatomic_polyatomic" in clean_name:
-                    exp_id = "polyatomic_polyatomic"
+                # The logic for naming the main model
+                if args.main_model in clean_name:
+                    exp_id = args.main_model
                 else:
                     exp_id = "_".join(clean_name.split("_")[:2])
 
@@ -153,36 +127,86 @@ def main(args):
 
     # --- 2. Perform statistical analysis for each dataset ---
     for dataset_name, experiments in all_data.items():
+        main_model_id = args.main_model
         if main_model_id not in experiments:
             print(
                 f"Warning: Main model '{main_model_id}' not found for dataset '{dataset_name}'. Skipping stats."
             )
             continue
 
-        main_model_rmse_folds = experiments[main_model_id]["rmse_folds"]
-        baselines = {
-            name: data for name, data in experiments.items() if name != main_model_id
+        model_names = sorted(experiments.keys())
+        rmse_scores_by_model = [experiments[name]["rmse_folds"] for name in model_names]
+
+        if len(model_names) < 2 or not all(len(s) == 5 for s in rmse_scores_by_model):
+            continue
+
+        friedman_data = np.array(rmse_scores_by_model).T
+
+        try:
+            friedman_statistic, friedman_p_value = friedmanchisquare(*friedman_data.T)
+        except ValueError:
+            friedman_statistic, friedman_p_value = np.nan, 1.0
+
+        friedman_results = {
+            "statistic": friedman_statistic,
+            "p_value": friedman_p_value,
+            "post_hoc": {},
         }
 
-        p_values_uncorrected = []
-        baseline_names_ordered = []
+        if friedman_p_value < 0.05:
+            # Nemenyi post-hoc test
+            k = len(model_names)
+            n = 5  # Number of folds
 
-        for name, data in baselines.items():
-            p_value, cohens_d = calculate_stats(
-                main_model_rmse_folds, data["rmse_folds"]
-            )
-            data["p_value_raw"] = p_value
-            data["cohens_d"] = cohens_d
-            if p_value is not None:
-                p_values_uncorrected.append(p_value)
-                baseline_names_ordered.append(name)
+            # Rank the models for each fold
+            ranks = (
+                np.argsort(friedman_data, axis=1) + 1
+            )  # +1 because ranks are 1-based
+            mean_ranks = np.mean(ranks, axis=0)
 
-        if p_values_uncorrected:
-            _, p_values_corrected, _, _ = multipletests(
-                p_values_uncorrected, alpha=0.05, method="holm"
-            )
-            for i, name in enumerate(baseline_names_ordered):
-                baselines[name]["p_value_corrected"] = p_values_corrected[i]
+            # Get critical difference (CD) based on a table for q(alpha, k, n)
+            # This is a simplified, hardcoded version for alpha=0.05, k=number of models
+            # Real papers would use a table lookup or a more robust calculation
+            q_alpha = {
+                2: 1.96,
+                3: 2.34,
+                4: 2.57,
+                5: 2.80,
+                6: 2.85,
+                7: 3.01,
+                8: 3.08,
+                9: 3.16,
+                10: 3.20,
+                11: 3.24,
+                12: 3.29,
+                13: 3.32,
+                14: 3.37,
+                15: 3.39,
+            }.get(
+                k, 3.42
+            )  # A conservative value for k > 15
+
+            CD = q_alpha * sqrt(k * (k + 1) / (6 * n))
+
+            main_model_idx = model_names.index(main_model_id)
+            main_model_rank = mean_ranks[main_model_idx]
+
+            for i in range(k):
+                if i == main_model_idx:
+                    continue
+
+                diff = abs(main_model_rank - mean_ranks[i])
+                is_significant = diff > CD
+
+                baseline_name = model_names[i]
+
+                friedman_results["post_hoc"][f"{main_model_id} vs {baseline_name}"] = {
+                    "mean_rank_diff": diff,
+                    "critical_diff": CD,
+                    "significant": is_significant,
+                }
+
+        experiments["statistical_results"] = friedman_results
 
     # --- 3. Generate the final report ---
     report_path = output_dir / f"{args.exp_name}_full_results_summary.txt"
@@ -201,7 +225,9 @@ def main(args):
             f.write("-" * len(header) + "\n")
 
             experiments = all_data[dataset_name]
-            for exp_id in sorted(experiments.keys()):
+            for exp_id in sorted(
+                [k for k in experiments.keys() if k != "statistical_results"]
+            ):
                 summary = experiments[exp_id]["summary"]
                 val_rmse_str = (
                     f"{summary['val_rmse_mean']:.3f} ± {summary['val_rmse_std']:.3f}"
@@ -217,27 +243,63 @@ def main(args):
                     f"{test_rmse_str:<25} | {test_mae_str:<25}\n"
                 )
 
-            f.write("\n--- Statistical Comparison (vs. " + main_model_id + ") ---\n\n")
-            stat_header = f"{'Baseline Model':<25} | {'p-value (raw)':<15} | {'p-value (Holm)':<15} | {'Effect Size (d)':<15}\n"
-            f.write(stat_header)
-            f.write("-" * len(stat_header) + "\n")
-
-            baselines = {k: v for k, v in experiments.items() if k != main_model_id}
-            for exp_id in sorted(baselines.keys()):
-                data = baselines[exp_id]
-                p_raw = data.get("p_value_raw", "N/A")
-                p_corr = data.get("p_value_corrected", "N/A")
-                cohen_d = data.get("cohens_d", "N/A")
-
-                p_raw_str = f"{p_raw:.4f}" if isinstance(p_raw, float) else p_raw
-                p_corr_str = f"{p_corr:.4f}" if isinstance(p_corr, float) else p_corr
-                cohen_d_str = (
-                    f"{cohen_d:.2f}" if isinstance(cohen_d, float) else cohen_d
-                )
-
+            friedman_res = experiments.get("statistical_results")
+            if friedman_res:
+                f.write("\n--- Statistical Analysis (Repeated Measures) ---\n")
                 f.write(
-                    f"{exp_id:<25} | {p_raw_str:<15} | {p_corr_str:<15} | {cohen_d_str:<15}\n"
+                    f"Friedman Test: Chi-Square = {friedman_res['statistic']:.4f}, p-value = {friedman_res['p_value']:.4f}\n"
                 )
+                if friedman_res["p_value"] < 0.05:
+                    f.write(
+                        "-> The overall performance of the models is statistically different.\n"
+                    )
+
+                    # New, more informative table
+                    f.write(
+                        f"\n--- Nemenyi Post-Hoc Test (Critical Difference = {friedman_res['post_hoc'][list(friedman_res['post_hoc'].keys())[0]]['critical_diff']:.4f}) ---\n"
+                    )
+                    table_headers = ["Comparison", "Mean Rank Diff", "Result"]
+                    table_data = []
+                    main_model_id = args.main_model
+                    model_names = sorted(
+                        [k for k in experiments.keys() if k != "statistical_results"]
+                    )
+
+                    # Generate mean ranks for all models
+                    rmse_scores_by_model = [
+                        experiments[name]["rmse_folds"] for name in model_names
+                    ]
+                    friedman_data = np.array(rmse_scores_by_model).T
+                    ranks = np.argsort(friedman_data, axis=1) + 1
+                    mean_ranks = {
+                        name: np.mean(ranks.T[i]) for i, name in enumerate(model_names)
+                    }
+
+                    # Compare main model to all others
+                    for baseline_name in [n for n in model_names if n != main_model_id]:
+                        diff = abs(
+                            mean_ranks[main_model_id] - mean_ranks[baseline_name]
+                        )
+                        cd = friedman_res["post_hoc"][
+                            f"{main_model_id} vs {baseline_name}"
+                        ]["critical_diff"]
+                        result = "Significant" if diff > cd else "Not Significant"
+                        table_data.append(
+                            [
+                                f"{main_model_id} vs {baseline_name}",
+                                f"{diff:.4f}",
+                                result,
+                            ]
+                        )
+
+                    f.write(
+                        tabulate(table_data, headers=table_headers, tablefmt="plain")
+                        + "\n"
+                    )
+                else:
+                    f.write(
+                        "-> No statistically significant difference found between models.\n"
+                    )
 
             f.write("\n" + "=" * 120 + "\n\n")
 
