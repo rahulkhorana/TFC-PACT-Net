@@ -1,5 +1,5 @@
 aiohappyeyeballs==2.6.1
-aiohttp==3.12.14
+aiohttp==3.12.15
 aiosignal==1.4.0
 alembic==1.16.4
 annotated-types==0.7.0
@@ -192,7 +192,7 @@ terminado==0.18.1
 threadpoolctl==3.6.0
 tinycss2==1.4.0
 TopoNetX==0.2.0
-torch==2.7.1
+torch==2.8.0
 torch-geometric==2.6.1
 tornado==6.5.1
 tqdm==4.67.1
