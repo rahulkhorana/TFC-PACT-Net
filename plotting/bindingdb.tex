@@ -1,0 +1,28 @@
+\begin{table}[h]
+\centering
+\small % Font size
+\caption{Comprehensive performance comparison across all datasets and models.}
+\label{tab:full_results}
+% siunitx settings
+\sisetup{separate-uncertainty, table-align-text-post=false}
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}ll S[table-format=2.3(4)] S[table-format=2.3(4)] S[table-format=2.4(4)] S[table-format=2.4(4)]@{}}
+\toprule
+\textbf{Dataset} & \textbf{Model (Rep.)} & {Val RMSE} & {Val MAE} & {Test RMSE} & {Test MAE} \\
+\midrule
+\multirow{13}{*}{BINDINGDB} & GAT (ECFP) & 1.512 \pm 0.055 & 1.235 \pm 0.053 & 1.7750 \pm 0.2480 & 1.3360 \pm 0.1105 \\
+ & GAT (SELFIES) & 1.488 \pm 0.029 & 1.227 \pm 0.023 & 1.7820 \pm 0.2440 & 1.3600 \pm 0.1145 \\
+ & GAT (SMILES) & 1.491 \pm 0.028 & 1.230 \pm 0.020 & 1.7540 \pm 0.2395 & 1.3560 \pm 0.1100 \\
+ & GCN (ECFP) & 1.508 \pm 0.058 & 1.231 \pm 0.056 & 1.7620 \pm 0.2620 & 1.3220 \pm 0.1125 \\
+ & GCN (SELFIES) & 1.492 \pm 0.031 & 1.231 \pm 0.023 & 1.7700 \pm 0.2485 & 1.3590 \pm 0.1110 \\
+ & GCN (SMILES) & 1.495 \pm 0.031 & 1.234 \pm 0.023 & 1.8240 \pm 0.2750 & 1.3740 \pm 0.1210 \\
+ & GIN (ECFP) & 1.520 \pm 0.050 & 1.253 \pm 0.044 & 1.7830 \pm 0.2580 & 1.3540 \pm 0.1135 \\
+ & GIN (SELFIES) & 1.494 \pm 0.030 & 1.231 \pm 0.025 & 1.7550 \pm 0.2410 & 1.3450 \pm 0.1095 \\
+ & GIN (SMILES) & 1.494 \pm 0.032 & 1.230 \pm 0.027 & 1.7440 \pm 0.2420 & 1.3390 \pm 0.1070 \\
+ & POLYATOMIC & 1.479 \pm 0.034 & 1.211 \pm 0.030 & 1.7710 \pm 0.2420 & 1.3650 \pm 0.1080 \\
+ & SAGE (ECFP) & 1.506 \pm 0.054 & 1.235 \pm 0.046 & 1.7720 \pm 0.2610 & 1.3450 \pm 0.1140 \\
+ & SAGE (SELFIES) & 1.493 \pm 0.031 & 1.234 \pm 0.024 & 1.9120 \pm 0.3785 & 1.3760 \pm 0.1220 \\
+ & SAGE (SMILES) & 1.493 \pm 0.030 & 1.232 \pm 0.024 & 1.7870 \pm 0.2450 & 1.3810 \pm 0.1105 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

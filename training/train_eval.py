@@ -6,12 +6,15 @@ from tqdm import tqdm
 import numpy as np
 import os
 from datetime import datetime
+from pathlib import Path
 
 # polyatomic
 from torch.amp.autocast_mode import autocast
 
-LOG_ROOT = "logs"
-os.makedirs(LOG_ROOT, exist_ok=True)
+ROOT = Path(__file__).parent.parent.resolve().__str__()
+LOG_ROOT = Path(ROOT + "/" + "logs_hyperparameter")
+if not os.path.exists(LOG_ROOT):
+    os.makedirs(LOG_ROOT, exist_ok=False)
 
 
 def setup_log_file(model_name, rep_name, dataset_name):
@@ -20,9 +23,10 @@ def setup_log_file(model_name, rep_name, dataset_name):
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     fname = f"{model_name}_{rep_name}_{dataset_name}_{timestamp}.txt"
-    project_root = Path(__file__).resolve().parents[1]
-    log_dir = project_root / "logs"
-    log_dir.mkdir(parents=True, exist_ok=True)
+    parent = Path(__file__).parent.parent.resolve().__str__()
+    log_dir = Path(parent + "/" + "logs_hyperparameter")
+    if not os.path.exists(log_dir):
+        os.makedirs(LOG_ROOT, exist_ok=False)
 
     log_path = log_dir / fname
     print(f"[Logging] Writing to: {log_path}")

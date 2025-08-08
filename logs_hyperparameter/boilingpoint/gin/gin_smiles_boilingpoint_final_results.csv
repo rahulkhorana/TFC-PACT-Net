@@ -1,0 +1,2 @@
+val_rmse_mean,val_rmse_std,val_mae_mean,val_mae_std,test_rmse_mean,test_rmse_ci_low,test_rmse_ci_high,test_mae_mean,test_mae_ci_low,test_mae_ci_high
+59.281708,2.2706015,45.235466,2.0336912,57.16127,52.03966951370239,61.95229043960571,42.192806,38.523158168792726,46.084850215911864
