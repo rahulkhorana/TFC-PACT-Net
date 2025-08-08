@@ -185,7 +185,7 @@ def main(args):
                 baselines[name]["p_value_corrected"] = p_values_corrected[i]
 
     # --- 3. Generate the final report ---
-    report_path = output_dir / "full_results_summary.txt"
+    report_path = output_dir / f"{args.exp_name}_full_results_summary.txt"
     with open(report_path, "w") as f:
         f.write("=" * 120 + "\n")
         f.write("Comprehensive Performance Summary\n")
@@ -265,6 +265,12 @@ if __name__ == "__main__":
         type=str,
         required=True,
         help="Base name of the main model to compare against (e.g., 'polyatomic').",
+    )
+    parser.add_argument(
+        "--exp_name",
+        type=str,
+        required=True,
+        help="Name of the experiment/dataset.",
     )
 
     args = parser.parse_args()

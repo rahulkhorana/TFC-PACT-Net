@@ -1,0 +1,35 @@
+
+--- OUTER FOLD 1/5 ---
+INFO: Best params for fold 1: {'lr': 0.0006482131165247735, 'hidden_dim': 64, 'batch_size': 32}
+INFO: Fold 1 Val RMSE: 1.0073, MAE: 0.8102
+
+--- OUTER FOLD 2/5 ---
+INFO: Best params for fold 2: {'lr': 0.0006482131165247735, 'hidden_dim': 64, 'batch_size': 32}
+INFO: Fold 2 Val RMSE: 1.1408, MAE: 0.9177
+
+--- OUTER FOLD 3/5 ---
+INFO: Best params for fold 3: {'lr': 0.0006175439707655367, 'hidden_dim': 128, 'batch_size': 64}
+INFO: Fold 3 Val RMSE: 1.0114, MAE: 0.8183
+
+--- OUTER FOLD 4/5 ---
+INFO: Best params for fold 4: {'lr': 0.0007618320309633699, 'hidden_dim': 256, 'batch_size': 32}
+INFO: Fold 4 Val RMSE: 1.0004, MAE: 0.7949
+
+--- OUTER FOLD 5/5 ---
+INFO: Best params for fold 5: {'lr': 0.0008903488639350984, 'hidden_dim': 64, 'batch_size': 64}
+INFO: Fold 5 Val RMSE: 1.0265, MAE: 0.8217
+
+------ Nested Cross-Validation Summary ------
+Unbiased Validation RMSE: 1.0373 ± 0.0524
+Unbiased Validation MAE:  0.8326 ± 0.0436
+VAL FOLD RMSEs: [1.0072901, 1.1407707, 1.0114471, 1.0004274, 1.0264974]
+VAL FOLD MAEs: [0.81021464, 0.917704, 0.81825674, 0.7949195, 0.8217348]
+
+===== STEP 2: Final Model Training & Testing =====
+INFO: Finding best hyperparameters on the FULL train/val set for final model...
+INFO: Optimal hyperparameters for final model: {'lr': 0.0007618320309633699, 'hidden_dim': 256, 'batch_size': 32}
+INFO: Training final model...
+
+===== STEP 3: Final Held-Out Test Evaluation =====
+Test RMSE: 1.0813 (95% CI: [1.0369, 1.1286])
+Test MAE:  0.8811 (95% CI: [0.8410, 0.9245])
