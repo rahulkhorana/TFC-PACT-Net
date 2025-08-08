@@ -1,0 +1,28 @@
+\begin{table}[h]
+\centering
+\small % Font size
+\caption{Comprehensive performance comparison across all datasets and models.}
+\label{tab:full_results}
+% siunitx settings
+\sisetup{separate-uncertainty, table-align-text-post=false}
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}ll S[table-format=2.3(4)] S[table-format=2.3(4)] S[table-format=2.4(4)] S[table-format=2.4(4)]@{}}
+\toprule
+\textbf{Dataset} & \textbf{Model (Rep.)} & {Val RMSE} & {Val MAE} & {Test RMSE} & {Test MAE} \\
+\midrule
+\multirow{13}{*}{LIPOPHIL} & GAT (ECFP) & 0.875 \pm 0.025 & 0.666 \pm 0.021 & 0.8630 \pm 0.0500 & 0.6580 \pm 0.0385 \\
+ & GAT (SELFIES) & 1.037 \pm 0.052 & 0.833 \pm 0.044 & 1.0810 \pm 0.0460 & 0.8810 \pm 0.0415 \\
+ & GAT (SMILES) & 1.031 \pm 0.044 & 0.825 \pm 0.034 & 1.0690 \pm 0.0505 & 0.8600 \pm 0.0445 \\
+ & GCN (ECFP) & 0.866 \pm 0.024 & 0.663 \pm 0.021 & 0.8380 \pm 0.0495 & 0.6380 \pm 0.0360 \\
+ & GCN (SELFIES) & 1.070 \pm 0.041 & 0.863 \pm 0.033 & 1.1060 \pm 0.0460 & 0.9060 \pm 0.0420 \\
+ & GCN (SMILES) & 1.075 \pm 0.045 & 0.869 \pm 0.033 & 1.1100 \pm 0.0470 & 0.9060 \pm 0.0450 \\
+ & GIN (ECFP) & 0.829 \pm 0.036 & 0.620 \pm 0.036 & 0.8080 \pm 0.0500 & 0.6050 \pm 0.0355 \\
+ & GIN (SELFIES) & 1.062 \pm 0.065 & 0.848 \pm 0.054 & 1.0850 \pm 0.0530 & 0.8710 \pm 0.0430 \\
+ & GIN (SMILES) & 1.072 \pm 0.043 & 0.862 \pm 0.036 & 1.0730 \pm 0.0495 & 0.8650 \pm 0.0410 \\
+ & POLYATOMIC & 0.717 \pm 0.027 & 0.531 \pm 0.023 & 0.7500 \pm 0.0505 & 0.5460 \pm 0.0335 \\
+ & SAGE (ECFP) & 0.865 \pm 0.021 & 0.663 \pm 0.022 & 0.8500 \pm 0.0480 & 0.6510 \pm 0.0365 \\
+ & SAGE (SELFIES) & 0.947 \pm 0.038 & 0.750 \pm 0.027 & 1.0300 \pm 0.0615 & 0.8120 \pm 0.0435 \\
+ & SAGE (SMILES) & 0.955 \pm 0.041 & 0.763 \pm 0.035 & 1.0160 \pm 0.0630 & 0.7970 \pm 0.0435 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
