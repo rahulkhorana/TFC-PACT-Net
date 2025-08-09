@@ -1,43 +1,45 @@
-========================================================================================================================
-Comprehensive Performance Summary
-========================================================================================================================
+====================================================================================================
+Comprehensive Performance and Statistical Analysis Summary
+====================================================================================================
 
 --- Dataset: LIPOPHIL ---
 
-Model                     | Val RMSE             | Val MAE              | Test RMSE                 | Test MAE                 
--------------------------------------------------------------------------------------------------------------------------------------
-gat_ecfp                  | 0.8748 ± 0.0246      | 0.6655 ± 0.0212      | 0.8630 [0.8122, 0.9123]   | 0.6582 [0.6191, 0.6964]  
-gat_selfies               | 1.0373 ± 0.0524      | 0.8326 ± 0.0436      | 1.0813 [1.0369, 1.1286]   | 0.8811 [0.8410, 0.9245]  
-gat_smiles                | 1.0307 ± 0.0438      | 0.8247 ± 0.0343      | 1.0687 [1.0178, 1.1189]   | 0.8601 [0.8162, 0.9050]  
-gcn_ecfp                  | 0.8657 ± 0.0243      | 0.6628 ± 0.0211      | 0.8376 [0.7875, 0.8874]   | 0.6376 [0.6008, 0.6733]  
-gcn_selfies               | 1.0700 ± 0.0413      | 0.8627 ± 0.0326      | 1.1055 [1.0573, 1.1495]   | 0.9057 [0.8631, 0.9466]  
-gcn_smiles                | 1.0750 ± 0.0451      | 0.8689 ± 0.0328      | 1.1096 [1.0627, 1.1570]   | 0.9059 [0.8598, 0.9497]  
-gin_ecfp                  | 0.8291 ± 0.0357      | 0.6205 ± 0.0356      | 0.8080 [0.7599, 0.8597]   | 0.6049 [0.5708, 0.6421]  
-gin_selfies               | 1.0619 ± 0.0653      | 0.8479 ± 0.0543      | 1.0850 [1.0324, 1.1378]   | 0.8714 [0.8266, 0.9134]  
-gin_smiles                | 1.0717 ± 0.0433      | 0.8622 ± 0.0362      | 1.0734 [1.0268, 1.1259]   | 0.8653 [0.8259, 0.9082]  
-polyatomic                | 0.7168 ± 0.0272      | 0.5312 ± 0.0226      | 0.7502 [0.7015, 0.8015]   | 0.5462 [0.5117, 0.5792]  
-sage_ecfp                 | 0.8649 ± 0.0214      | 0.6630 ± 0.0219      | 0.8504 [0.8030, 0.8994]   | 0.6512 [0.6164, 0.6886]  
-sage_selfies              | 0.9466 ± 0.0385      | 0.7499 ± 0.0270      | 1.0301 [0.9724, 1.0951]   | 0.8117 [0.7664, 0.8533]  
-sage_smiles               | 0.9552 ± 0.0405      | 0.7628 ± 0.0352      | 1.0165 [0.9537, 1.0803]   | 0.7974 [0.7556, 0.8429]  
+Model                     | Test RMSE (95% CI)             | Validation RMSE (Mean ± StDev)     
+-------------------------------------------------------------------------------------------------
+gat_ecfp                  | 0.8630 [0.8122, 0.9123]        | 0.8748 ± 0.0246                    
+gat_selfies               | 1.0813 [1.0369, 1.1286]        | 1.0373 ± 0.0524                    
+gat_smiles                | 1.0687 [1.0178, 1.1189]        | 1.0307 ± 0.0438                    
+gcn_ecfp                  | 0.8376 [0.7875, 0.8874]        | 0.8657 ± 0.0243                    
+gcn_selfies               | 1.1055 [1.0573, 1.1495]        | 1.0700 ± 0.0413                    
+gcn_smiles                | 1.1096 [1.0627, 1.1570]        | 1.0750 ± 0.0451                    
+gin_ecfp                  | 0.8080 [0.7599, 0.8597]        | 0.8291 ± 0.0357                    
+gin_selfies               | 1.0850 [1.0324, 1.1378]        | 1.0619 ± 0.0653                    
+gin_smiles                | 1.0734 [1.0268, 1.1259]        | 1.0717 ± 0.0433                    
+polyatomic                | 0.7502 [0.7015, 0.8015]        | 0.7168 ± 0.0272                    
+sage_ecfp                 | 0.8504 [0.8030, 0.8994]        | 0.8649 ± 0.0214                    
+sage_selfies              | 1.0301 [0.9724, 1.0951]        | 0.9466 ± 0.0385                    
+sage_smiles               | 1.0165 [0.9537, 1.0803]        | 0.9552 ± 0.0405                    
 
---- Statistical Analysis (Friedman + Nemenyi Post-Hoc) ---
+--- Statistical Analysis ---
 Friedman Test: Chi-Square = 54.3560, p-value = 0.0000
+Kendall's W Effect Size: 0.9059 (Large effect)
 -> The overall performance of the models is statistically different.
 
---- Nemenyi Post-Hoc Test (Critical Difference = 8.8424) ---
-Comparison                    Mean Rank Diff  Result
-polyatomic vs gat_ecfp                   3.6  Not Significant
-polyatomic vs gat_selfies                8.4  Not Significant
-polyatomic vs gat_smiles                 8    Not Significant
-polyatomic vs gcn_ecfp                   2.8  Not Significant
-polyatomic vs gcn_selfies               10.2  Significant
-polyatomic vs gcn_smiles                10.6  Significant
-polyatomic vs gin_ecfp                   1    Not Significant
-polyatomic vs gin_selfies                9.6  Significant
-polyatomic vs gin_smiles                 9.8  Significant
-polyatomic vs sage_ecfp                  2.6  Not Significant
-polyatomic vs sage_selfies               5.4  Not Significant
-polyatomic vs sage_smiles                6    Not Significant
+--- Holm's Post-Hoc Test (Control: polyatomic) ---
+                Adjusted p-value  Significant
+gat_ecfp             0.00347975   True
+gat_selfies          2.11873e-11  True
+gat_smiles           1.00073e-10  True
+gcn_ecfp             0.0559725    False
+gcn_selfies          2.85166e-14  True
+gcn_smiles           7.04529e-15  True
+gin_ecfp             1            False
+gin_selfies          2.43461e-13  True
+gin_smiles           1.18791e-13  True
+polyatomic           1            False
+sage_ecfp            0.103074     False
+sage_selfies         3.19349e-06  True
+sage_smiles          2.80174e-07  True
 
-========================================================================================================================
+====================================================================================================
 
