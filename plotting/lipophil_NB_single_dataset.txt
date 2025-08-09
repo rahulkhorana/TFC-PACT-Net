@@ -1,0 +1,73 @@
+==============================================================================================================
+Dataset: lipophil — Control vs competitors (NB-corrected t on outer folds; Holm across competitors)
+==============================================================================================================
+
+Control exp_id: polyatomic_polyatomic
+k folds: 5, alpha: 0.05
+
+Model (exp_id)             | Test RMSE (95% CI)             | Test MAE (95% CI)              | Val RMSE mean±sd       | Val MAE mean±sd       
+-----------------------------------------------------------------------------------------------------------------------------------------------
+gat_ecfp                   | 0.862967 [0.812183, 0.912302]  | 0.658228  [0.619103,  0.696421]  | 0.874813 ± 0.024628    | 0.665527 ± 0.021160
+gat_selfies                | 1.081340 [1.036938, 1.128630]  | 0.881104  [0.840970,  0.924473]  | 1.037287 ± 0.052443    | 0.832566 ± 0.043560
+gat_smiles                 | 1.068747 [1.017778, 1.118856]  | 0.860112  [0.816209,  0.905022]  | 1.030685 ± 0.043815    | 0.824656 ± 0.034261
+gcn_ecfp                   | 0.837618 [0.787549, 0.887376]  | 0.637590  [0.600752,  0.673294]  | 0.865728 ± 0.024324    | 0.662833 ± 0.021128
+gcn_selfies                | 1.105532 [1.057341, 1.149453]  | 0.905712  [0.863079,  0.946613]  | 1.069965 ± 0.041310    | 0.862737 ± 0.032622
+gcn_smiles                 | 1.109580 [1.062683, 1.157009]  | 0.905936  [0.859846,  0.949710]  | 1.075038 ± 0.045100    | 0.868886 ± 0.032822
+gin_ecfp                   | 0.807951 [0.759879, 0.859746]  | 0.604900  [0.570841,  0.642128]  | 0.829080 ± 0.035731    | 0.620488 ± 0.035590
+gin_selfies                | 1.084986 [1.032412, 1.137770]  | 0.871410  [0.826601,  0.913421]  | 1.061878 ± 0.065333    | 0.847859 ± 0.054295
+gin_smiles                 | 1.073379 [1.026774, 1.125871]  | 0.865299  [0.825895,  0.908155]  | 1.071704 ± 0.043282    | 0.862245 ± 0.036236
+polyatomic_polyatomic      | 0.750166 [0.701453, 0.801550]  | 0.546201  [0.511713,  0.579163]  | 0.716816 ± 0.027181    | 0.531184 ± 0.022649
+sage_ecfp                  | 0.850434 [0.802967, 0.899354]  | 0.651153  [0.616387,  0.688607]  | 0.864885 ± 0.021444    | 0.663023 ± 0.021885
+sage_selfies               | 1.030099 [0.972416, 1.095108]  | 0.811732  [0.766428,  0.853343]  | 0.946567 ± 0.038476    | 0.749871 ± 0.026962
+sage_smiles                | 1.016465 [0.953699, 1.080275]  | 0.797396  [0.755563,  0.842923]  | 0.955182 ± 0.040513    | 0.762820 ± 0.035193
+
+--- NB-corrected t (outer folds) per competitor ---
+                           comparison  mean_diff_RMSE(comp-ctrl)  t_NB_RMSE  p_one_sided_RMSE  mean_diff_MAE(comp-ctrl)  t_NB_MAE  p_one_sided_MAE  NB_CI_RMSE_low  NB_CI_RMSE_high  NB_CI_MAE_low  NB_CI_MAE_high
+    polyatomic_polyatomic vs gat_ecfp                   0.157998   8.365009          0.000558                  0.134343  9.321019         0.000369        0.105556         0.210439       0.094327        0.174360
+ polyatomic_polyatomic vs gat_selfies                   0.320471  11.120423          0.000186                  0.301382 14.562756         0.000065        0.240459         0.400483       0.243923        0.358842
+  polyatomic_polyatomic vs gat_smiles                   0.313869   8.565269          0.000510                  0.293472 11.414344         0.000168        0.212128         0.415611       0.222087        0.364857
+    polyatomic_polyatomic vs gcn_ecfp                   0.148912   8.516503          0.000521                  0.131650 10.908886         0.000200        0.100366         0.197459       0.098143        0.165156
+ polyatomic_polyatomic vs gcn_selfies                   0.353149  20.048041          0.000018                  0.331553 35.042785         0.000002        0.304242         0.402057       0.305284        0.357823
+  polyatomic_polyatomic vs gcn_smiles                   0.358223  17.664564          0.000030                  0.337702 32.600741         0.000003        0.301919         0.414527       0.308942        0.366463
+    polyatomic_polyatomic vs gin_ecfp                   0.112264   4.076504          0.007571                  0.089304  3.639682         0.010985        0.035803         0.188725       0.021181        0.157428
+ polyatomic_polyatomic vs gin_selfies                   0.345063   6.854546          0.001186                  0.316676  7.517883         0.000838        0.205295         0.484831       0.199724        0.433628
+  polyatomic_polyatomic vs gin_smiles                   0.354888  13.627886          0.000084                  0.331062 15.061764         0.000057        0.282586         0.427191       0.270035        0.392089
+   polyatomic_polyatomic vs sage_ecfp                   0.148070   9.090749          0.000406                  0.131840 10.860730         0.000204        0.102847         0.193293       0.098136        0.165543
+polyatomic_polyatomic vs sage_selfies                   0.229752   9.643055          0.000323                  0.218688 15.687052         0.000048        0.163601         0.295902       0.179982        0.257393
+ polyatomic_polyatomic vs sage_smiles                   0.238367   9.619994          0.000326                  0.231637 13.137888         0.000097        0.169571         0.307162       0.182685        0.280589
+
+--- Holm-adjusted p-values (RMSE family) ---
+                           comparison    p_raw   p_holm  Significant
+ polyatomic_polyatomic vs gcn_selfies 0.000018 0.000219         True
+  polyatomic_polyatomic vs gcn_smiles 0.000030 0.000332         True
+  polyatomic_polyatomic vs gin_smiles 0.000084 0.000839         True
+ polyatomic_polyatomic vs gat_selfies 0.000186 0.001674         True
+polyatomic_polyatomic vs sage_selfies 0.000323 0.002587         True
+ polyatomic_polyatomic vs sage_smiles 0.000326 0.002587         True
+   polyatomic_polyatomic vs sage_ecfp 0.000406 0.002587         True
+  polyatomic_polyatomic vs gat_smiles 0.000510 0.002587         True
+    polyatomic_polyatomic vs gcn_ecfp 0.000521 0.002587         True
+    polyatomic_polyatomic vs gat_ecfp 0.000558 0.002587         True
+ polyatomic_polyatomic vs gin_selfies 0.001186 0.002587         True
+    polyatomic_polyatomic vs gin_ecfp 0.007571 0.007571         True
+
+--- Holm-adjusted p-values (MAE family)  ---
+                           comparison    p_raw   p_holm  Significant
+ polyatomic_polyatomic vs gcn_selfies 0.000002 0.000024         True
+  polyatomic_polyatomic vs gcn_smiles 0.000003 0.000029         True
+polyatomic_polyatomic vs sage_selfies 0.000048 0.000482         True
+  polyatomic_polyatomic vs gin_smiles 0.000057 0.000510         True
+ polyatomic_polyatomic vs gat_selfies 0.000065 0.000517         True
+ polyatomic_polyatomic vs sage_smiles 0.000097 0.000678         True
+  polyatomic_polyatomic vs gat_smiles 0.000168 0.001008         True
+    polyatomic_polyatomic vs gcn_ecfp 0.000200 0.001008         True
+   polyatomic_polyatomic vs sage_ecfp 0.000204 0.001008         True
+    polyatomic_polyatomic vs gat_ecfp 0.000369 0.001106         True
+ polyatomic_polyatomic vs gin_selfies 0.000838 0.001676         True
+    polyatomic_polyatomic vs gin_ecfp 0.010985 0.010985         True
+
+==============================================================================================================
+Notes:
+• Tests are within-dataset, one-sided for control superiority, on outer-fold differences with Nadeau–Bengio SE correction (df = k-1).
+• Holm controls family-wise error across competitors per metric family.
+• Held-out Test metrics above are for context only; no fold-based omnibus tests are used.

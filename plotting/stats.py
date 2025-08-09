@@ -1,245 +1,393 @@
+"""
+Single-dataset statistical comparison: control vs competitors via
+Nadeau–Bengio corrected t-tests on outer folds (k-fold CV), with Holm FWER control.
+No Wilcoxon. No Friedman. Test metrics are shown for context only.
+"""
+
 import argparse
 import re
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
-from scipy.stats import friedmanchisquare
-from tabulate import tabulate
-import scikit_posthocs as sp
+from math import sqrt
 
+from statsmodels.stats.multitest import multipletests  # Holm
+from scipy.stats import t as tdist  # t distribution for NB p-values
 
 np.random.seed(42)
 
+# -----------------------------
+# parse helpers
+# -----------------------------
 
-def parse_log_file(log_path):
+
+def _parse_list_in_brackets(inner: str) -> Optional[List[float]]:
+    parts = [p.strip() for p in inner.split(",") if p.strip()]
+    out: List[float] = []
+    for p in parts:
+        try:
+            out.append(float(p))
+        except Exception:
+            return None
+    return out
+
+
+def parse_log_file(
+    log_path: Path, expected_k: int = 5
+) -> Tuple[Optional[List[float]], Optional[List[float]]]:
     """
-    Parses a log file to extract the 5-fold validation RMSE and MAE scores.
+    Extract K outer-fold validation RMSE and MAE arrays.
+    Looks for:
+      VAL FOLD RMSEs: [v1, ..., vK]
+      VAL FOLD MAEs:  [v1, ..., vK]
     """
     try:
-        with open(log_path, "r") as f:
-            content = f.read()
-            rmse_match = re.search(r"VAL FOLD RMSEs: \[(.*?)\]", content)
-            mae_match = re.search(r"VAL FOLD MAEs: \[(.*?)\]", content)
-            if rmse_match and mae_match:
-                rmse_scores = [float(s.strip()) for s in rmse_match.group(1).split(",")]
-                mae_scores = [float(s.strip()) for s in mae_match.group(1).split(",")]
-                if len(rmse_scores) == 5 and len(mae_scores) == 5:
-                    return rmse_scores, mae_scores
-    except FileNotFoundError:
-        print(f"Warning: Log file not found at {log_path}")
-    except Exception as e:
-        print(f"Warning: Could not parse log file {log_path}. Error: {e}")
-    return None, None
+        text = log_path.read_text()
+    except Exception:
+        return None, None
+
+    rmse_match = re.search(
+        r"VAL\s+FOLD\s+RMSEs:\s*\[(.*?)\]", text, flags=re.IGNORECASE
+    )
+    mae_match = re.search(r"VAL\s+FOLD\s+MAEs:\s*\[(.*?)\]", text, flags=re.IGNORECASE)
+    if not (rmse_match and mae_match):
+        return None, None
+
+    rmse_scores = _parse_list_in_brackets(rmse_match.group(1))
+    mae_scores = _parse_list_in_brackets(mae_match.group(1))
+    if rmse_scores is None or mae_scores is None:
+        return None, None
+    if len(rmse_scores) != expected_k or len(mae_scores) != expected_k:
+        return None, None
+    return rmse_scores, mae_scores
 
 
-def parse_csv_file(csv_path):
+def parse_csv_file(csv_path: Path) -> Optional[Dict[str, float]]:
     """
-    Parses the final results CSV to get all summary statistics.
+    Parse *_final_results.csv with expected columns:
+      val_rmse_mean, val_rmse_std, val_mae_mean, val_mae_std,
+      test_rmse_mean, test_rmse_ci_low, test_rmse_ci_high,
+      test_mae_mean,  test_mae_ci_low,  test_mae_ci_high
     """
     try:
         df = pd.read_csv(csv_path)
-        return {
-            "val_rmse_mean": df["val_rmse_mean"].iloc[0],
-            "val_rmse_std": df["val_rmse_std"].iloc[0],
-            "val_mae_mean": df["val_mae_mean"].iloc[0],
-            "val_mae_std": df["val_mae_std"].iloc[0],
-            "test_rmse_mean": df["test_rmse_mean"].iloc[0],
-            "test_rmse_ci_low": df["test_rmse_ci_low"].iloc[0],
-            "test_rmse_ci_high": df["test_rmse_ci_high"].iloc[0],
-            "test_mae_mean": df["test_mae_mean"].iloc[0],
-            "test_mae_ci_low": df["test_mae_ci_low"].iloc[0],
-            "test_mae_ci_high": df["test_mae_ci_high"].iloc[0],
-        }
-    except FileNotFoundError:
-        print(f"Warning: CSV file not found at {csv_path}")
-    except Exception as e:
-        print(f"Warning: Could not parse CSV file {csv_path}. Error: {e}")
-    return None
+    except Exception:
+        return None
+    cols = [
+        "val_rmse_mean",
+        "val_rmse_std",
+        "val_mae_mean",
+        "val_mae_std",
+        "test_rmse_mean",
+        "test_rmse_ci_low",
+        "test_rmse_ci_high",
+        "test_mae_mean",
+        "test_mae_ci_low",
+        "test_mae_ci_high",
+    ]
+    if not all(c in df.columns for c in cols):
+        return None
+    row = df.iloc[0]
+    return {k: float(row[k]) for k in cols}
 
 
-def interpret_kendalls_w(w):
-    """Provides a qualitative interpretation of Kendall's W effect size."""
-    if w < 0.1:
-        return "Negligible effect"
-    if w < 0.3:
-        return "Small effect"
-    if w < 0.5:
-        return "Moderate effect"
-    return "Large effect"
-
-
-def main(args):
+def clean_base_and_exp_id(base_name: str) -> Tuple[str, str]:
     """
-    Main function to drive the parsing, statistical analysis, and report generation.
+    Strip trailing _YYYYMMDD_HHMMSS. exp_id := first two tokens (e.g., 'gat_ecfp'),
+    or 'polyatomic_polyatomic'.
     """
-    results_dir = Path(args.results_dir)
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(exist_ok=True)
+    clean = re.sub(r"_\d{8}_\d{6}$", "", base_name)
+    toks = clean.split("_")
+    exp_id = "_".join(toks[:2]) if len(toks) >= 2 else clean
+    return clean, exp_id
 
-    # --- 1. Parse all experiment directories ---
-    all_data = {}
-    is_single_dataset = any(
-        p.name in ["gcn", "gat", "gin", "sage", "polyatomic"]
-        for p in results_dir.iterdir()
-    )
-    dataset_dirs = (
-        [results_dir]
-        if is_single_dataset
-        else [p for p in results_dir.iterdir() if p.is_dir()]
-    )
 
-    for dataset_dir in dataset_dirs:
-        dataset_name = dataset_dir.name
-        all_data[dataset_name] = {}
-
-        for model_family_dir in dataset_dir.iterdir():
-            if not model_family_dir.is_dir():
-                continue
-
-            # CORRECTED: Use .rglob() to recursively find log files in any structure.
-            for log_file in model_family_dir.rglob("*.txt"):
-                base_name = log_file.stem
-                clean_name = re.sub(r"_\d{8}_\d{6}$", "", base_name)
-                exp_id = (
-                    args.main_model
-                    if args.main_model in clean_name
-                    else "_".join(clean_name.split("_")[:2])
-                )
-
-                csv_file_name = re.sub(
-                    r"_\d{8}_\d{6}$", "_final_results.csv", base_name
-                )
-                csv_file = log_file.with_name(csv_file_name)
-
-                rmse_scores, mae_scores = parse_log_file(log_file)
-                summary_stats = parse_csv_file(csv_file)
-
-                if rmse_scores and mae_scores and summary_stats:
-                    if exp_id not in all_data[dataset_name]:
-                        all_data[dataset_name][exp_id] = {
-                            "rmse_folds": rmse_scores,
-                            "summary": summary_stats,
-                        }
-
-    # --- 2. Perform statistical analysis for each dataset ---
-    for dataset_name, experiments in all_data.items():
-        if len(experiments) < 2:
+def discover_dataset(results_dir: Path, expected_k: int = 5) -> Dict[str, Dict]:
+    """
+    Scan one dataset dir. Keep first valid (log,csv) per exp_id.
+    Returns:
+      data[exp_id] = {
+        'rmse_folds': [K] or None,
+        'mae_folds' : [K] or None,
+        'summary'   : {...},
+        'log_path'  : str,
+        'csv_path'  : str
+      }
+    """
+    data: Dict[str, Dict] = {}
+    for model_dir in results_dir.iterdir():
+        if not model_dir.is_dir():
             continue
+        for log_file in sorted(model_dir.glob("*.txt")):
+            base = log_file.stem
+            clean, exp_id = clean_base_and_exp_id(base)
+            csv_file = log_file.with_name(f"{clean}_final_results.csv")
+            if not csv_file.exists():
+                continue
+            rmse_scores, mae_scores = parse_log_file(log_file, expected_k=expected_k)
+            summary_stats = parse_csv_file(csv_file)
+            if summary_stats is None:
+                continue
+            if exp_id not in data:
+                data[exp_id] = {
+                    "rmse_folds": rmse_scores,
+                    "mae_folds": mae_scores,
+                    "summary": summary_stats,
+                    "log_path": str(log_file),
+                    "csv_path": str(csv_file),
+                }
+    return data
 
-        model_names = sorted(experiments.keys())
-        rmse_data = np.array([experiments[name]["rmse_folds"] for name in model_names])
 
-        # Run the Friedman test
-        try:
-            friedman_stat, p_value = friedmanchisquare(*rmse_data)
-        except ValueError:
-            friedman_stat, p_value = np.nan, 1.0
+# -----------------------------
+# Nadeau–Bengio corrected t (within dataset)
+# -----------------------------
 
-        # NEW: Calculate Kendall's W effect size
-        k = len(model_names)  # number of models
-        n = len(rmse_data[0])  # number of folds
-        kendalls_w = friedman_stat / (n * (k - 1)) if n * (k - 1) != 0 else 0
 
-        experiments["statistical_results"] = {
-            "friedman_stat": friedman_stat,
-            "p_value": p_value,
-            "kendalls_w": kendalls_w,
-            "post_hoc": None,
-        }
+def nb_corrected_t(diffs: np.ndarray, k: int) -> Tuple[float, float, float]:
+    """
+    Nadeau–Bengio corrected resampled t for k-fold CV differences.
+    diffs: array length k with (competitor - control) per fold (loss metric).
+           Negative mean favors control. Returns (t_stat, SE_NB, mean_diff).
+    Correction uses rho0 = 1/(k-1) → SE_NB = sqrt((1/k + 1/(k-1)) * s^2),
+    where s^2 is unbiased sample variance across folds.
+    """
+    diffs = np.asarray(diffs, dtype=float)
+    if diffs.size != k:
+        raise ValueError("diffs length must equal k")
+    mean_d = float(diffs.mean())
+    if k <= 1:
+        return np.nan, np.nan, mean_d
+    s2 = float(np.var(diffs, ddof=1))
+    rho0 = 1.0 / (k - 1.0)
+    se_nb = sqrt((1.0 / k + rho0) * s2)
+    t_stat = (
+        mean_d / se_nb
+        if se_nb > 0
+        else (-np.inf if mean_d < 0 else np.inf if mean_d > 0 else 0.0)
+    )
+    return t_stat, se_nb, mean_d
 
-        # NEW: Replace Nemenyi with Holm's post-hoc test if Friedman is significant
-        if p_value < 0.05 and args.main_model in model_names:
-            # Reshape data for scikit-posthocs (rows are folds, columns are models)
-            df_posthoc = pd.DataFrame(rmse_data.T, columns=model_names)
-            # Perform Holm's test against the specified control model
-            holm_results = sp.posthoc_conover_friedman(df_posthoc, p_adjust="holm")
-            experiments["statistical_results"]["post_hoc"] = holm_results
 
-    # --- 3. Generate the final, enhanced report ---
-    report_path = output_dir / f"{args.exp_name}_full_results_summary.txt"
-    with open(report_path, "w") as f:
-        f.write("=" * 100 + "\n")
-        f.write("Comprehensive Performance and Statistical Analysis Summary\n")
-        f.write("=" * 100 + "\n\n")
+# -----------------------------
+# main
+# -----------------------------
 
-        for dataset_name in sorted(all_data.keys()):
-            f.write(f"--- Dataset: {dataset_name.upper()} ---\n\n")
-            header = f"{'Model':<25} | {'Test RMSE (95% CI)':<30} | {'Validation RMSE (Mean ± StDev)':<35}\n"
-            f.write(header)
-            f.write("-" * len(header) + "\n")
 
-            experiments = all_data[dataset_name]
-            model_keys = sorted(
-                [k for k in experiments.keys() if k != "statistical_results"]
+def main():
+    ap = argparse.ArgumentParser(
+        description="Single-dataset comparison: NB-corrected t on outer folds (control vs all) with Holm; prints Test metrics for context."
+    )
+    ap.add_argument(
+        "--results_dir",
+        type=str,
+        required=True,
+        help="Dataset directory (e.g., ./logs_hyperparameter/qm9) with model-family subfolders.",
+    )
+    ap.add_argument(
+        "--output_dir", type=str, required=True, help="Directory to save the report."
+    )
+    ap.add_argument(
+        "--exp_name",
+        type=str,
+        required=True,
+        help="Base name for the output report file.",
+    )
+    ap.add_argument(
+        "--control_model",
+        type=str,
+        required=True,
+        help="Control exp_id (e.g., 'polyatomic_polyatomic'). Unique substring allowed.",
+    )
+    ap.add_argument(
+        "--k", type=int, default=5, help="Expected number of outer folds (default: 5)."
+    )
+    ap.add_argument(
+        "--alpha",
+        type=float,
+        default=0.05,
+        help="FWER level for Holm; also used for NB CIs if --print_ci.",
+    )
+    ap.add_argument(
+        "--print_ci",
+        action="store_true",
+        help="Also print NB-style CIs for the mean fold difference.",
+    )
+    args = ap.parse_args()
+
+    results_dir = Path(args.results_dir)
+    out_dir = Path(args.output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    report_path = out_dir / f"{args.exp_name}_NB_single_dataset.txt"
+
+    data = discover_dataset(results_dir, expected_k=args.k)
+    if not data:
+        raise SystemExit(
+            f"No models found under {results_dir} with valid logs + *_final_results.csv"
+        )
+
+    exp_ids = sorted(data.keys())
+
+    # match control (exact or unique substring)
+    ctrl = args.control_model
+    if ctrl not in data:
+        matches = [e for e in exp_ids if ctrl.lower() in e.lower()]
+        if len(matches) == 1:
+            ctrl = matches[0]
+        else:
+            raise SystemExit(
+                f"Control '{args.control_model}' not found. Available exp_ids: {exp_ids}"
             )
 
-            for exp_id in model_keys:
-                summary = experiments[exp_id]["summary"]
-                val_rmse_str = (
-                    f"{summary['val_rmse_mean']:.4f} ± {summary['val_rmse_std']:.4f}"
+    with open(report_path, "w") as f:
+        f.write("=" * 110 + "\n")
+        f.write(
+            f"Dataset: {results_dir.name} — Control vs competitors (NB-corrected t on outer folds; Holm across competitors)\n"
+        )
+        f.write("=" * 110 + "\n\n")
+        f.write(f"Control exp_id: {ctrl}\n")
+        f.write(f"k folds: {args.k}, alpha: {args.alpha}\n\n")
+
+        # context table
+        header = f"{'Model (exp_id)':<26} | {'Test RMSE (95% CI)':<30} | {'Test MAE (95% CI)':<30} | {'Val RMSE mean±sd':<22} | {'Val MAE mean±sd':<22}\n"
+        f.write(header)
+        f.write("-" * len(header) + "\n")
+        for exp_id in exp_ids:
+            s = data[exp_id]["summary"]
+            line = (
+                f"{exp_id:<26} | "
+                f"{s['test_rmse_mean']:.6f} [{s['test_rmse_ci_low']:.6f}, {s['test_rmse_ci_high']:.6f}]  | "
+                f"{s['test_mae_mean']:.6f}  [{s['test_mae_ci_low']:.6f},  {s['test_mae_ci_high']:.6f}]  | "
+                f"{s['val_rmse_mean']:.6f} ± {s['val_rmse_std']:.6f}    | "
+                f"{s['val_mae_mean']:.6f} ± {s['val_mae_std']:.6f}\n"
+            )
+            f.write(line)
+        f.write("\n")
+
+        # NB tests per competitor (RMSE and MAE on outer folds)
+        comps = [e for e in exp_ids if e != ctrl]
+        rows = []
+        pvals_rmse, labels_rmse = [], []
+        pvals_mae, labels_mae = [], []
+
+        ctrl_rmse = np.array(
+            data[ctrl]["rmse_folds"] if data[ctrl]["rmse_folds"] is not None else [],
+            dtype=float,
+        )
+        ctrl_mae = np.array(
+            data[ctrl]["mae_folds"] if data[ctrl]["mae_folds"] is not None else [],
+            dtype=float,
+        )
+
+        if ctrl_rmse.size != args.k or ctrl_mae.size != args.k:
+            f.write(
+                "WARNING: Control model missing complete fold arrays; NB testing cannot proceed.\n"
+            )
+        else:
+            for comp in comps:
+                comp_rmse = data[comp]["rmse_folds"]
+                comp_mae = data[comp]["mae_folds"]
+                if comp_rmse is None or comp_mae is None:
+                    continue
+                comp_rmse = np.array(comp_rmse, dtype=float)
+                comp_mae = np.array(comp_mae, dtype=float)
+                if comp_rmse.size != args.k or comp_mae.size != args.k:
+                    continue
+
+                # diffs = competitor - control (losses); control better ⇒ positive mean
+                d_rmse = comp_rmse - ctrl_rmse
+                d_mae = comp_mae - ctrl_mae
+
+                t_rmse, se_rmse, mean_rmse = nb_corrected_t(d_rmse, k=args.k)
+                t_mae, se_mae, mean_mae = nb_corrected_t(d_mae, k=args.k)
+
+                df = args.k - 1
+                # RIGHT (upper tail): control better ⇢ mean(comp - ctrl) > 0
+                p_rmse = float(tdist.sf(t_rmse, df=df))  # sf = 1 - cdf
+                p_mae = float(tdist.sf(t_mae, df=df))
+
+                pvals_rmse.append(p_rmse)
+                labels_rmse.append(f"{ctrl} vs {comp}")
+                pvals_mae.append(p_mae)
+                labels_mae.append(f"{ctrl} vs {comp}")
+
+                row = {
+                    "comparison": f"{ctrl} vs {comp}",
+                    "mean_diff_RMSE(comp-ctrl)": mean_rmse,
+                    "t_NB_RMSE": t_rmse,
+                    "p_one_sided_RMSE": p_rmse,
+                    "mean_diff_MAE(comp-ctrl)": mean_mae,
+                    "t_NB_MAE": t_mae,
+                    "p_one_sided_MAE": p_mae,
+                }
+
+                if args.print_ci:
+                    tcrit = float(tdist.ppf(1 - args.alpha / 2, df=df))
+                    row["NB_CI_RMSE_low"] = mean_rmse - tcrit * se_rmse
+                    row["NB_CI_RMSE_high"] = mean_rmse + tcrit * se_rmse
+                    row["NB_CI_MAE_low"] = mean_mae - tcrit * se_mae
+                    row["NB_CI_MAE_high"] = mean_mae + tcrit * se_mae
+
+                rows.append(row)
+
+        df_rows = pd.DataFrame(rows)
+        if not df_rows.empty:
+            f.write("--- NB-corrected t (outer folds) per competitor ---\n")
+            f.write(
+                df_rows.to_string(index=False, float_format=lambda x: f"{x:.6f}")
+                + "\n\n"
+            )
+        else:
+            f.write(
+                "No comparable competitors with complete fold arrays. Nothing to test.\n\n"
+            )
+
+        # Holm across competitors per metric family
+        def holm_table(pvals: List[float], labels: List[str], title: str):
+            if not pvals:
+                f.write(f"{title}\n(no p-values)\n\n")
+                return
+            reject, p_adj, _, _ = multipletests(
+                pvals=pvals, alpha=args.alpha, method="holm"
+            )
+            df = pd.DataFrame(
+                {
+                    "comparison": labels,
+                    "p_raw": pvals,
+                    "p_holm": p_adj,
+                    "Significant": reject.astype(bool),
+                }
+            )
+            f.write(title + "\n")
+            f.write(
+                df.sort_values("p_raw").to_string(
+                    index=False, float_format=lambda x: f"{x:.6f}"
                 )
-                test_rmse_str = f"{summary['test_rmse_mean']:.4f} [{summary['test_rmse_ci_low']:.4f}, {summary['test_rmse_ci_high']:.4f}]"
-                f.write(f"{exp_id:<25} | {test_rmse_str:<30} | {val_rmse_str:<35}\n")
+                + "\n\n"
+            )
 
-            stats_res = experiments.get("statistical_results")
-            if stats_res:
-                f.write("\n--- Statistical Analysis ---\n")
-                f.write(
-                    f"Friedman Test: Chi-Square = {stats_res['friedman_stat']:.4f}, p-value = {stats_res['p_value']:.4f}\n"
-                )
+        holm_table(
+            pvals_rmse, labels_rmse, "--- Holm-adjusted p-values (RMSE family) ---"
+        )
+        holm_table(
+            pvals_mae, labels_mae, "--- Holm-adjusted p-values (MAE family)  ---"
+        )
 
-                # Report Kendall's W
-                w_interp = interpret_kendalls_w(stats_res["kendalls_w"])
-                f.write(
-                    f"Kendall's W Effect Size: {stats_res['kendalls_w']:.4f} ({w_interp})\n"
-                )
+        f.write("=" * 110 + "\nNotes:\n")
+        f.write(
+            "• Tests are within-dataset, one-sided for control superiority, on outer-fold differences with Nadeau–Bengio SE correction (df = k-1).\n"
+        )
+        f.write(
+            "• Holm controls family-wise error across competitors per metric family.\n"
+        )
+        f.write(
+            "• Held-out Test metrics above are for context only; no fold-based omnibus tests are used.\n"
+        )
 
-                if stats_res["p_value"] < 0.05:
-                    f.write(
-                        "-> The overall performance of the models is statistically different.\n"
-                    )
-                    if stats_res["post_hoc"] is not None:
-                        f.write(
-                            f"\n--- Holm's Post-Hoc Test (Control: {args.main_model}) ---\n"
-                        )
-                        # We only need the p-values column against the control
-                        holm_df = stats_res["post_hoc"][[args.main_model]].rename(
-                            columns={args.main_model: "Adjusted p-value"}
-                        )
-                        holm_df["Significant"] = holm_df["Adjusted p-value"] < 0.05
-                        f.write(tabulate(holm_df, headers="keys", tablefmt="plain"))
-                        f.write("\n")
-                else:
-                    f.write(
-                        "-> No statistically significant difference found between models.\n"
-                    )
-
-            f.write("\n" + "=" * 100 + "\n\n")
-
-    print(f"Report successfully generated at: {report_path}")
+    print(f"Report successfully written to: {report_path}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Collate and analyze model performance results."
-    )
-    parser.add_argument(
-        "--results_dir", type=str, required=True, help="Directory containing results."
-    )
-    parser.add_argument(
-        "--output_dir",
-        type=str,
-        required=True,
-        help="Directory to save the final report.",
-    )
-    parser.add_argument(
-        "--main_model",
-        type=str,
-        required=True,
-        help="Base name of the control model (e.g., 'polyatomic').",
-    )
-    parser.add_argument(
-        "--exp_name", type=str, required=True, help="Name for the output report file."
-    )
-    args = parser.parse_args()
-    main(args)
+    main()
