@@ -1,0 +1,31 @@
+
+% Auto-generated compact NB tables
+% Requires in preamble: \usepackage{booktabs,tabularx,siunitx}
+% \sisetup{round-mode=places,round-precision=3,scientific-notation=true}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{RMSE: NB-corrected one-sided tests (outer folds, $K=5$) on dataset \texttt{qm9}; control \texttt{polyatomic\_polyatomic}.
+Positive $\Delta$ (competitor $-$ control) favors control. Holm controls FWER.}
+\label{tab:qm9_nb_compact_rmse}
+\begin{tabularx}{\linewidth}{@{}l S S S S S@{}}
+\toprule
+Comparison & {\(\Delta\)RMSE} & {$t_{\text{NB}}$} & {CI\(_{\text{low}}\)} & {CI\(_{\text{high}}\)} & {p\(_{\text{Holm}}\)}\\
+\midrule
+polyatomic\_polyatomic vs gcn\_smiles & 1.424 & 30.029 & 1.292 & 1.556 & 4.4e-05 \\
+polyatomic\_polyatomic vs gcn\_selfies & 1.359 & 19.070 & 1.161 & 1.556 & 0.000245 \\
+polyatomic\_polyatomic vs gin\_ecfp & 1.584 & 16.790 & 1.322 & 1.846 & 0.000369 \\
+polyatomic\_polyatomic vs gat\_ecfp & 1.491 & 16.167 & 1.235 & 1.747 & 0.000385 \\
+polyatomic\_polyatomic vs sage\_ecfp & 1.516 & 14.189 & 1.220 & 1.813 & 0.000573 \\
+polyatomic\_polyatomic vs gcn\_ecfp & 1.484 & 12.955 & 1.166 & 1.802 & 0.000717 \\
+polyatomic\_polyatomic vs gat\_smiles & 0.897 & 12.286 & 0.694 & 1.100 & 0.000756 \\
+polyatomic\_polyatomic vs gin\_selfies & 0.884 & 11.020 & 0.661 & 1.107 & 0.000964 \\
+polyatomic\_polyatomic vs gin\_smiles & 0.877 & 10.341 & 0.641 & 1.112 & 0.000987 \\
+polyatomic\_polyatomic vs gat\_selfies & 0.899 & 8.979 & 0.621 & 1.177 & 0.00128 \\
+polyatomic\_polyatomic vs sage\_selfies & 0.562 & 6.329 & 0.315 & 0.808 & 0.00319 \\
+polyatomic\_polyatomic vs sage\_smiles & 0.553 & 6.171 & 0.304 & 0.802 & 0.00319 \\
+\bottomrule
+\end{tabularx}
+\end{table}
