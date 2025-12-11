@@ -13,3 +13,9 @@ python main.py --model polyatomic --rep polyatomic --dataset esol
   note      = {Poster presentation}
 }
 ```
+
+### NeurIPS:
+[Topological Feature Compression for Molecular Graph Neural Networks](https://neurips.cc/virtual/2025/loc/san-diego/125958)
+
+### Poster Visual:
+[Poster](https://neurips.cc/media/PosterPDFs/NeurIPS%202025/125958.png?t=1763408261.1942737)
