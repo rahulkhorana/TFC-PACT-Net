@@ -19,3 +19,6 @@ python main.py --model polyatomic --rep polyatomic --dataset esol
 
 ### Poster Visual:
 [Poster](https://neurips.cc/media/PosterPDFs/NeurIPS%202025/125958.png?t=1763408261.1942737)
+
+### OpenReview
+[OpenReview](https://openreview.net/forum?id=HxeBBlQo9e)
